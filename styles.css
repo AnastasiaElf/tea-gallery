@@ -1,0 +1,20 @@
+html, body, .container {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    font-family: 'Roboto';
+}
+
+.table-container {
+    margin: 10px;
+    padding: 10px;
+    border: 2px solid #729c55;
+    border-radius: 10px;
+}
+
+.table-name {
+    margin: 0;
+    margin-bottom: 10px;
+    font-size: 24px;
+    text-align: center;
+}
