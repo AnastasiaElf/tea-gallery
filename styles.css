@@ -6,10 +6,9 @@ html, body, .container {
 }
 
 .table-container {
-    margin: 10px;
-    padding: 10px;
-    border: 2px solid #729c55;
-    border-radius: 10px;
+    border-bottom: 2px solid #9E9E9E;
+    padding: 20px;
+    background: #f7f7f7;
 }
 
 .table-name {
@@ -17,4 +16,19 @@ html, body, .container {
     margin-bottom: 10px;
     font-size: 24px;
     text-align: center;
+}
+
+.tea-card {
+    padding: 10px;
+    border: 2px solid #729c55;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    background: #ffffff;
+}
+
+.tea-name {
+    margin: 0;
+    margin-bottom: 10px;
+    font-size: 20px;
+    color: mediumseagreen;
 }
