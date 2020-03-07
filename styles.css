@@ -3,6 +3,7 @@ html, body, .container {
     width: 100%;
     margin: 0;
     font-family: 'Roboto';
+    color: #333333;
 }
 
 .table-container {
@@ -16,7 +17,6 @@ html, body, .container {
     margin-bottom: 10px;
     font-size: 24px;
     text-align: center;
-    color: #333333;
 }
 
 .tea-card {
@@ -125,10 +125,6 @@ html, body, .container {
 
 .tea-card.tea-category-shen {
     border-color: #436b26;
-}
-
-.tea-card.tea-category-shen {
-    color: #436b26;
 }
 
 .tea-category-icon-container.tea-category-shen {
