@@ -69,7 +69,7 @@ function onGetDataFromSpreadsheet(data) {
             output += '</h6>';
             output += '<div class="tea-param">';
             output += "<b>" + KEYS_MAP.BREWING_TIME + "</b>: ";
-            output += teaData[KEYS_MAP.BREWING_TIME] ? teaData[KEYS_MAP.BREWING_TIME] + "c" : "---";
+            output += getFormattedTime(teaData[KEYS_MAP.BREWING_TIME]) || "---";
             output += '</div>';
             output += '<div class="tea-param">';
             output += "<b>" + KEYS_MAP.TEMPERATURE + "</b>: ";
@@ -99,6 +99,27 @@ function onGetDataFromSpreadsheet(data) {
     });
 
     dataItem.innerHTML = output;
+}
+
+function getFormattedTime(time) {
+    if (!time) {
+        return;
+    }
+
+    if (time.includes("-")) {
+        // TODO: add parsing and formatting for complex time
+        return time + "c"
+    }
+
+    let hours = Math.trunc(time / 3600);
+    let minutes = Math.trunc((time - (hours * 3600)) / 60);
+    let seconds = time % 60;
+    
+    let result = "";
+    result += hours ? hours + "ч ": "";
+    result += minutes ? minutes + "мин ": "";
+    result += seconds ? seconds + "с ": "";
+    return result;
 }
 
 function getCardCategoryIcon(category) {
