@@ -1,182 +1,224 @@
-html, body, .container {
-    height: 100%;
-    width: 100%;
-    margin: 0;
-    font-family: 'Roboto';
-    color: #333333;
+html,
+body,
+.container {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	font-family: "Roboto";
+	color: #333333;
 }
 
 .table-container {
-    border-bottom: 2px solid #9E9E9E;
-    padding: 20px;
-    background: #f7f7f7;
+	border-bottom: 2px solid #9e9e9e;
+	padding: 20px;
+	background: #f7f7f7;
 }
 
 .table-name {
-    margin: 0;
-    margin-bottom: 10px;
-    font-size: 24px;
-    text-align: center;
+	margin: 0;
+	margin-bottom: 10px;
+	font-size: 24px;
+	text-align: center;
 }
 
 .tea-card {
-    padding: 10px;
-    border: 2px solid #729c55;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    background: #ffffff;
-    max-width: 300px;
-    margin: 10px;
-    width: 100%;
-    position: relative;
+	padding: 10px;
+	border: 2px solid #729c55;
+	border-radius: 10px;
+	margin: 10px;
+	margin-top: 20px;
+	background: #ffffff;
+	max-width: 300px;
+	width: 100%;
+	position: relative;
+}
+
+.tea-card.with-rating {
+	padding-top: 30px;
 }
 
 .tea-name {
-    margin: 0;
-    margin-bottom: 10px;
-    font-size: 20px;
-    color: #729c55;
-    text-align: center;
+	margin: 0;
+	margin-bottom: 10px;
+	font-size: 20px;
+	color: #729c55;
+	text-align: center;
 }
 
 .table-data {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
 }
 
 .tea-category-icon-container {
-    position: absolute;
-    top: -14px;
-    right: -12px;
-    background: white;
-    border: 2px solid #729c55;
-    border-radius: 50%;
-    width: 35px;
-    height: 35px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+	position: absolute;
+	top: -14px;
+	right: -12px;
+	background: white;
+	border: 2px solid #729c55;
+	border-radius: 50%;
+	width: 35px;
+	height: 35px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .tea-category-icon {
-    width: 20px;
+	width: 20px;
 }
 
-.tea-card.tea-category-green {
-    border-color: #009245;
+.tea-card.tea-category-green,
+.tea-card.tea-category-green * {
+	border-color: #009245;
 }
 
 .tea-category-icon-container.tea-category-green {
-    border-color: #009245;
+	border-color: #009245;
 }
 
 .tea-category-icon-container.tea-category-green .tea-category-icon {
-    fill: #009245;
+	fill: #009245;
 }
 
-.tea-card.tea-card.tea-category-red {
-    border-color: #e0421b;
+.tea-card.tea-card.tea-category-red,
+.tea-card.tea-card.tea-category-red * {
+	border-color: #e0421b;
 }
 
 .tea-category-icon-container.tea-category-red {
-    border-color: #e0421b;
+	border-color: #e0421b;
 }
 
 .tea-category-icon-container.tea-category-red .tea-category-icon {
-    fill: #e0421b;
+	fill: #e0421b;
 }
 
-.tea-card.tea-category-white {
-    border-color: #cccccc;
+.tea-card.tea-category-white,
+.tea-card.tea-category-white * {
+	border-color: #cccccc;
 }
 
 .tea-category-icon-container.tea-category-white {
-    border-color: #cccccc;
+	border-color: #cccccc;
 }
 
 .tea-category-icon-container.tea-category-white .tea-category-icon {
-    fill: #cccccc;
+	fill: #cccccc;
 }
 
-.tea-card.tea-category-japanese {
-    border-color: #709200;
+.tea-card.tea-category-japanese,
+.tea-card.tea-category-japanese * {
+	border-color: #709200;
 }
 
 .tea-category-icon-container.tea-category-japanese {
-    border-color: #709200;
+	border-color: #709200;
 }
 
 .tea-category-icon-container.tea-category-japanese .tea-category-icon {
-    fill: #709200;
+	fill: #709200;
 }
 
-.tea-card.tea-category-shu {
-    border-color: #925c00;
+.tea-card.tea-category-shu,
+.tea-card.tea-category-shu * {
+	border-color: #925c00;
 }
 
 .tea-category-icon-container.tea-category-shu {
-    border-color: #925c00;
+	border-color: #925c00;
 }
 
 .tea-category-icon-container.tea-category-shu .tea-category-icon {
-    fill: #925c00;
+	fill: #925c00;
 }
 
-.tea-card.tea-category-shen {
-    border-color: #436b26;
+.tea-card.tea-category-shen,
+.tea-card.tea-category-shen * {
+	border-color: #436b26;
 }
 
 .tea-category-icon-container.tea-category-shen {
-    border-color: #436b26;
+	border-color: #436b26;
 }
 
 .tea-category-icon-container.tea-category-shen .tea-category-icon {
-    fill: #436b26;
+	fill: #436b26;
 }
 
-.tea-card.tea-category-oolong {
-    border-color: #00b3ad;
+.tea-card.tea-category-oolong,
+.tea-card.tea-category-oolong * {
+	border-color: #00b3ad;
 }
 
 .tea-category-icon-container.tea-category-oolong {
-    border-color: #00b3ad;
+	border-color: #00b3ad;
 }
 
 .tea-category-icon-container.tea-category-oolong .tea-category-icon {
-    fill: #00b3ad;
+	fill: #00b3ad;
 }
 
-.tea-card.tea-category-others {
-    border-color: #80559c;
+.tea-card.tea-category-others,
+.tea-card.tea-category-others * {
+	border-color: #80559c;
 }
 
 .tea-category-icon-container.tea-category-others {
-    border-color: #80559c;
+	border-color: #80559c;
 }
 .tea-category-icon-container.tea-category-others .tea-category-icon {
-    fill: #80559c;
+	fill: #80559c;
 }
 .tea-tableware-container {
-    display: flex;
-    align-items: center;
-    height: 40px;
+	display: flex;
+	align-items: center;
+	height: 40px;
 }
 
 .tableware-icon {
-    margin: 0 5px;
+	margin: 0 5px;
 }
 
 .tableware-icon.clay {
-    width: 40px;
-    height: 40px;
+	width: 40px;
+	height: 40px;
 }
 
 .tableware-icon.porcelain {
-    width: 40px;
-    height: 40px;
+	width: 40px;
+	height: 40px;
 }
 
 .tableware-icon.glass {
-    height: 28px;
+	height: 28px;
+}
+
+.tea-rating-container {
+	display: flex;
+	align-items: center;
+	position: absolute;
+	justify-content: center;
+	width: 100%;
+	top: -14px;
+	left: 0;
+}
+
+.rating-icon-wrapper {
+	padding: 2px 5px;
+	border: 2px solid;
+	border-radius: 10px;
+	background: white;
+}
+
+.rating-icon {
+	height: 26px;
+	width: 26px;
+	margin-right: 3px;
+	fill: none;
+}
+
+.rating-icon.filled {
+	fill: #ffc107;
 }

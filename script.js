@@ -69,7 +69,7 @@ function onGetDataFromSpreadsheet(data) {
         let teasArray = value.all();
 
         teasArray.forEach(teaData => {
-            output += '<div class="tea-card tea-category-' + CATEGORIES_CLASSNAMES_MAP[key] + '">';
+            output += `<div class="tea-card tea-category-${CATEGORIES_CLASSNAMES_MAP[key]} ${teaData[KEYS_MAP.RATING] ? "with-rating" : ""}">`;
             output += '<h6 class="tea-name">';
             output += teaData[KEYS_MAP.NAME];
             output += '</h6>';
@@ -89,10 +89,7 @@ function onGetDataFromSpreadsheet(data) {
             output += "<b>" + KEYS_MAP.COST + "</b>: ";
             output += teaData[KEYS_MAP.COST] ? teaData[KEYS_MAP.COST] + " BYN" : "---";
             output += '</div>';
-            output += '<div class="tea-param">';
-            output += "<b>" + KEYS_MAP.RATING + "</b>: ";
-            output += teaData[KEYS_MAP.RATING] ? teaData[KEYS_MAP.RATING] + "/5" : "---";
-            output += '</div>';
+            output += getItemRatingInfo(teaData[KEYS_MAP.RATING]);
             output += '<div class="tea-param">';
             output += "<b>" + KEYS_MAP.REVIEW + "</b>: ";
             output += teaData[KEYS_MAP.REVIEW] || "---";
@@ -194,6 +191,26 @@ function getItemTablewareInfo(tableware) {
         }
     })
 
+    result += '</div>';
+    return result;
+}
+
+function getItemRatingInfo(rating) {
+    if (!rating) {
+        return "";
+    }
+
+    let result = '';
+    result += '<div class="tea-rating-container">';
+    result += '<div class="rating-icon-wrapper">';
+
+    for (let i = 0; i < 5; i++) {
+        result += `<svg viewBox="0 0 512 512" class="rating-icon ${parseInt(rating) > i ? "filled" : ""}">
+                <path style="stroke:#000000;stroke-width:30;stroke-miterlimit:10;" d="M479,188.9l-144.8-22.1L269.3,28.6c-4.8-10.3-21.8-10.3-26.6,0l-64.9,138.2L33,188.9 c-11.9,1.8-16.6,16.3-8.3,24.8l105.2,107.8L105,474c-2,12.1,11,21.2,21.6,15.2L256,417.8l129.3,71.5c10.6,5.9,23.6-3,21.6-15.2 l-24.9-152.4l105.2-107.8C495.6,205.2,490.9,190.8,479,188.9L479,188.9z"/>
+            </svg>`;
+    }
+
+    result += '</div>';
     result += '</div>';
     return result;
 }
