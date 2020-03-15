@@ -75,11 +75,10 @@ function onGetDataFromSpreadsheet(data) {
             output += '</h6>';
             output += '<div class="tea-param">';
             output += "<b>" + KEYS_MAP.BREWING_TIME + "</b>: ";
-            output += getFormattedTime(teaData[KEYS_MAP.BREWING_TIME]) || "---";
+            output += getItemBrewingTimeInfo(teaData[KEYS_MAP.BREWING_TIME]);
             output += '</div>';
             output += '<div class="tea-param">';
             output += "<b>" + KEYS_MAP.TEMPERATURE + "</b>: ";
-            // output += teaData[KEYS_MAP.TEMPERATURE] ? teaData[KEYS_MAP.TEMPERATURE] + "°C" : "---";
             output += getItemTemperatureInfo(teaData[KEYS_MAP.TEMPERATURE]);
             output += '</div>';
             output += '<div class="tea-param">';
@@ -105,24 +104,41 @@ function onGetDataFromSpreadsheet(data) {
     dataItem.innerHTML = output;
 }
 
-function getFormattedTime(time) {
+function getItemBrewingTimeInfo(time) {
     if (!time) {
-        return;
+        return "";
     }
 
-    if (time.includes("-")) {
-        // TODO: add parsing and formatting for complex time
-        return time + "c"
+    timeArray = time.split("-").map(elem => parseInt(elem));
+    minTime = timeArray[0];
+    maxTime = timeArray[1];
+
+    let timeFrom;
+    let timeTo;
+
+    if (maxTime) {
+        if (maxTime >= 60) {
+            let minutesTo = maxTime % 60 === 0 ? (maxTime / 60).toFixed(0) : (maxTime / 60).toFixed(1);
+            timeTo = { value: minutesTo, unit: "мин" };
+        } else {
+            timeTo = { value: maxTime, unit: "c" };
+        }
     }
 
-    let hours = Math.trunc(time / 3600);
-    let minutes = Math.trunc((time - (hours * 3600)) / 60);
-    let seconds = time % 60;
+    if (minTime >= 60) {
+        let minutesFrom = minTime % 60 === 0 ? (minTime / 60).toFixed(0) : (minTime / 60).toFixed(1);
+        timeFrom = { value: minutesFrom, unit: "мин" };
+    } else {
+        timeFrom = { value: minTime, unit: "c" };
+    }
+
+    console.log(time, timeFrom.value + (timeTo ? (timeFrom.unit !== timeTo.unit ? timeFrom.unit : "") + "-" + timeTo.value + timeTo.unit : timeFrom.unit))
 
     let result = "";
-    result += hours ? hours + "ч " : "";
-    result += minutes ? minutes + "мин " : "";
-    result += seconds ? seconds + "с " : "";
+    // TODO: add circle progress
+    // result += '<div class="tea-brewing-time-container">';
+    result += timeFrom.value + (timeTo ? (timeFrom.unit !== timeTo.unit ? timeFrom.unit : "") + "-" + timeTo.value + timeTo.unit : timeFrom.unit);
+    // result += '</div>';
     return result;
 }
 
