@@ -79,7 +79,8 @@ function onGetDataFromSpreadsheet(data) {
             output += '</div>';
             output += '<div class="tea-param">';
             output += "<b>" + KEYS_MAP.TEMPERATURE + "</b>: ";
-            output += teaData[KEYS_MAP.TEMPERATURE] ? teaData[KEYS_MAP.TEMPERATURE] + "°C" : "---";
+            // output += teaData[KEYS_MAP.TEMPERATURE] ? teaData[KEYS_MAP.TEMPERATURE] + "°C" : "---";
+            output += getItemTemperatureInfo(teaData[KEYS_MAP.TEMPERATURE]);
             output += '</div>';
             output += '<div class="tea-param">';
             output += "<b>" + KEYS_MAP.TABLEWARE + "</b>: ";
@@ -122,6 +123,26 @@ function getFormattedTime(time) {
     result += hours ? hours + "ч " : "";
     result += minutes ? minutes + "мин " : "";
     result += seconds ? seconds + "с " : "";
+    return result;
+}
+
+function getItemTemperatureInfo(temperature) {
+    if (!temperature || temperature > 100) {
+        return "";
+    }
+
+    let result = '';
+    result += '<div class="tea-temperature-container">';
+    result += '<div class="temperature-bar">';
+
+    let temperatureArray = temperature.split("-").map(elem => parseInt(elem)).sort((a, b) => b - a);
+
+    result += `<div class="temperature-bar-overlap" style="width: calc(${100 - temperatureArray[0]}% + 21px);"></div>`;
+    result += '</div>';
+    result += '<div class="temperature-value">';
+    result += temperature + "°C";
+    result += '</div>';
+    result += '</div>';
     return result;
 }
 

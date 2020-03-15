@@ -69,8 +69,9 @@ body,
 	width: 20px;
 }
 
+/* TODO: refactor styles by parent category class */
 .tea-card.tea-category-green,
-.tea-card.tea-category-green * {
+.tea-card.tea-category-green .rating-icon-wrapper {
 	border-color: #009245;
 }
 
@@ -83,7 +84,7 @@ body,
 }
 
 .tea-card.tea-card.tea-category-red,
-.tea-card.tea-card.tea-category-red * {
+.tea-card.tea-card.tea-category-red .rating-icon-wrapper {
 	border-color: #e0421b;
 }
 
@@ -96,7 +97,7 @@ body,
 }
 
 .tea-card.tea-category-white,
-.tea-card.tea-category-white * {
+.tea-card.tea-category-white .rating-icon-wrapper {
 	border-color: #cccccc;
 }
 
@@ -109,7 +110,7 @@ body,
 }
 
 .tea-card.tea-category-japanese,
-.tea-card.tea-category-japanese * {
+.tea-card.tea-category-japanese .rating-icon-wrapper {
 	border-color: #709200;
 }
 
@@ -122,7 +123,7 @@ body,
 }
 
 .tea-card.tea-category-shu,
-.tea-card.tea-category-shu * {
+.tea-card.tea-category-shu .rating-icon-wrapper {
 	border-color: #925c00;
 }
 
@@ -135,7 +136,7 @@ body,
 }
 
 .tea-card.tea-category-shen,
-.tea-card.tea-category-shen * {
+.tea-card.tea-category-shen .rating-icon-wrapper {
 	border-color: #436b26;
 }
 
@@ -148,7 +149,7 @@ body,
 }
 
 .tea-card.tea-category-oolong,
-.tea-card.tea-category-oolong * {
+.tea-card.tea-category-oolong .rating-icon-wrapper {
 	border-color: #00b3ad;
 }
 
@@ -161,7 +162,7 @@ body,
 }
 
 .tea-card.tea-category-others,
-.tea-card.tea-category-others * {
+.tea-card.tea-category-others .rating-icon-wrapper {
 	border-color: #80559c;
 }
 
@@ -221,4 +222,47 @@ body,
 
 .rating-icon.filled {
 	fill: #ffc107;
+}
+
+.tea-temperature-container {
+	position: relative;
+	margin: 5px 0;
+}
+
+.temperature-bar {
+	height: 20px;
+	border-radius: 12px;
+	width: 100%;
+	background: linear-gradient(to left, #ff0909, #f3481a 20%, #faba2c 50%, #00bcf2 100%);
+	border: 1px solid #333333;
+	position: relative;
+	overflow: hidden;
+}
+
+.temperature-bar-overlap {
+	height: 20px;
+	border-radius: 12px;
+	width: 40%;
+	position: absolute;
+	top: 0;
+	right: 0;
+	overflow: hidden;
+}
+
+.temperature-bar-overlap:before {
+	content: "";
+	position: absolute;
+	margin: -1px;
+	padding: 11px;
+	border-radius: 50%;
+	box-shadow: 0 0 0 300px #ffffff;
+}
+
+.temperature-value {
+	text-align: center;
+	font-weight: bold;
+	position: absolute;
+	width: 100%;
+	left: 0;
+	top: 2px;
 }
