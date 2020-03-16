@@ -234,7 +234,7 @@ body,
 	border-radius: 12px;
 	width: 100%;
 	background: linear-gradient(to left, #ff0909, #f3481a 20%, #faba2c 50%, #00bcf2 100%);
-	border: 1px solid #333333;
+	border: 1px solid #989898;
 	position: relative;
 	overflow: hidden;
 }
@@ -259,6 +259,35 @@ body,
 }
 
 .temperature-value {
+	text-align: center;
+	font-weight: bold;
+	position: absolute;
+	width: 100%;
+	left: 0;
+	top: 2px;
+}
+
+.tea-brewing-time-container {
+	position: relative;
+	margin: 5px 0;
+}
+
+.time-bar {
+	height: 20px;
+	border-radius: 12px;
+	width: 100%;
+	border: 1px solid #989898;
+	position: relative;
+	overflow: hidden;
+}
+
+.time-bar-overlap {
+	height: 20px;
+	background: #9bdaff;
+	border-radius: 12px;
+}
+
+.time-value {
 	text-align: center;
 	font-weight: bold;
 	position: absolute;

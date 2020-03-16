@@ -132,13 +132,15 @@ function getItemBrewingTimeInfo(time) {
         timeFrom = { value: minTime, unit: "c" };
     }
 
-    console.log(time, timeFrom.value + (timeTo ? (timeFrom.unit !== timeTo.unit ? timeFrom.unit : "") + "-" + timeTo.value + timeTo.unit : timeFrom.unit))
-
     let result = "";
-    // TODO: add circle progress
-    // result += '<div class="tea-brewing-time-container">';
+    result += '<div class="tea-brewing-time-container">';
+    result += '<div class="time-bar">';
+    result += `<div class="time-bar-overlap" style="width: ${maxTime ? (maxTime < 60 ? maxTime : 100) : (minTime ? (minTime < 60 ? minTime : 100) : 0)}%;"></div>`;
+    result += '</div>';
+    result += '<div class="time-value">';
     result += timeFrom.value + (timeTo ? (timeFrom.unit !== timeTo.unit ? timeFrom.unit : "") + "-" + timeTo.value + timeTo.unit : timeFrom.unit);
-    // result += '</div>';
+    result += '</div>';
+    result += '</div>';
     return result;
 }
 
