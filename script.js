@@ -73,27 +73,12 @@ function onGetDataFromSpreadsheet(data) {
             output += '<h6 class="tea-name">';
             output += teaData[KEYS_MAP.NAME];
             output += '</h6>';
-            output += '<div class="tea-param">';
-            output += "<b>" + KEYS_MAP.BREWING_TIME + "</b>: ";
             output += getItemBrewingTimeInfo(teaData[KEYS_MAP.BREWING_TIME]);
-            output += '</div>';
-            output += '<div class="tea-param">';
-            output += "<b>" + KEYS_MAP.TEMPERATURE + "</b>: ";
             output += getItemTemperatureInfo(teaData[KEYS_MAP.TEMPERATURE]);
-            output += '</div>';
-            output += '<div class="tea-param">';
-            output += "<b>" + KEYS_MAP.TABLEWARE + "</b>: ";
             output += getItemTablewareInfo(teaData[KEYS_MAP.TABLEWARE]);
-            output += '</div>';
-            output += '<div class="tea-param">';
-            output += "<b>" + KEYS_MAP.COST + "</b>: ";
-            output += teaData[KEYS_MAP.COST] ? teaData[KEYS_MAP.COST] + " BYN" : "---";
-            output += '</div>';
+            output += getItemCostInfo(teaData[KEYS_MAP.COST]);
+            output += getItemReviewInfo(teaData[KEYS_MAP.REVIEW]);
             output += getItemRatingInfo(teaData[KEYS_MAP.RATING]);
-            output += '<div class="tea-param">';
-            output += "<b>" + KEYS_MAP.REVIEW + "</b>: ";
-            output += teaData[KEYS_MAP.REVIEW] || "---";
-            output += '</div>';
             output += getCardCategoryIcon(key);
             output += '</div>';
         });
@@ -106,7 +91,7 @@ function onGetDataFromSpreadsheet(data) {
 
 function getItemBrewingTimeInfo(time) {
     if (!time) {
-        return "";
+        return '<div class="tea-param"><b>'+ KEYS_MAP.BREWING_TIME +'</b>: ---</div>';
     }
 
     timeArray = time.split("-").map(elem => parseInt(elem));
@@ -133,6 +118,8 @@ function getItemBrewingTimeInfo(time) {
     }
 
     let result = "";
+    result += '<div class="tea-param">';
+    result += "<b>" + KEYS_MAP.BREWING_TIME + "</b>: ";
     result += '<div class="tea-brewing-time-container">';
     result += '<div class="time-bar">';
     result += `<div class="time-bar-overlap" style="width: ${maxTime ? (maxTime < 60 ? maxTime : 100) : (minTime ? (minTime < 60 ? minTime : 100) : 0)}%;"></div>`;
@@ -141,15 +128,18 @@ function getItemBrewingTimeInfo(time) {
     result += timeFrom.value + (timeTo ? (timeFrom.unit !== timeTo.unit ? timeFrom.unit : "") + "-" + timeTo.value + timeTo.unit : timeFrom.unit);
     result += '</div>';
     result += '</div>';
+    result += '</div>';
     return result;
 }
 
 function getItemTemperatureInfo(temperature) {
     if (!temperature || temperature > 100) {
-        return "";
+        return '<div class="tea-param"><b>'+ KEYS_MAP.TEMPERATURE +'</b>: ---</div>';
     }
 
     let result = '';
+    result += '<div class="tea-param">';
+    result += "<b>" + KEYS_MAP.TEMPERATURE + "</b>: ";
     result += '<div class="tea-temperature-container">';
     result += '<div class="temperature-bar">';
 
@@ -159,6 +149,7 @@ function getItemTemperatureInfo(temperature) {
     result += '</div>';
     result += '<div class="temperature-value">';
     result += temperature + "°C";
+    result += '</div>';
     result += '</div>';
     result += '</div>';
     return result;
@@ -176,10 +167,12 @@ function getCardCategoryIcon(category) {
 
 function getItemTablewareInfo(tableware) {
     if (!tableware) {
-        return "";
+        return '<div class="tea-param"><b>'+ KEYS_MAP.TABLEWARE +'</b>: ---</div>';
     }
 
     let result = '';
+    result += '<div class="tea-param">';
+    result += "<b>" + KEYS_MAP.TABLEWARE + "</b>: ";
     result += '<div class="tea-tableware-container">';
 
     let tablewareArray = tableware.split(",").map(elem => elem.trim()).sort();
@@ -230,6 +223,37 @@ function getItemTablewareInfo(tableware) {
         }
     })
 
+    result += '</div>';
+    result += '</div>';
+    return result;
+}
+
+function getItemCostInfo(cost) {
+    if (!cost) {
+        return '<div class="tea-param"><b>'+ KEYS_MAP.COST +'</b>: ---</div>';
+    }
+
+    let result = '';
+    result += '<div class="tea-param">';
+    result += '<div class="tea-cost-container">';
+    result += "<b>" + KEYS_MAP.COST + "</b>: ";
+    result += cost + " BYN";
+    result += '</div>';
+    result += '</div>';
+    return result;
+}
+
+function getItemReviewInfo(review) {
+    if (!review) {
+        return '<div class="tea-param"><b>'+ KEYS_MAP.REVIEW +'</b>: ---</div>';
+    }
+
+    let result = '';
+    result += '<div class="tea-param">';
+    result += '<div class="tea-cost-container">';
+    result += "<b>" + KEYS_MAP.REVIEW + "</b>: ";
+    result += review;
+    result += '</div>';
     result += '</div>';
     return result;
 }
