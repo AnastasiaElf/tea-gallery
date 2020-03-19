@@ -1,4 +1,5 @@
 let dataItem = document.getElementById("data");
+let categoryFilterItem = document.getElementById("category-filter");
 
 const publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/13gZJCXrIJ7dBWW-TaZ0c_CDD0pYNnZhVdrQD98VDcQE/edit?usp=sharing';
 
@@ -40,7 +41,11 @@ const TABLEWARE = {
     GLASS: "Стекло"
 }
 
+// TODO: refactor to the Class
+
 let tableTopData = null;
+let categoriesData = null;
+let categoryFilter = null;
 
 function initTableTop() {
     Tabletop.init({
@@ -50,26 +55,33 @@ function initTableTop() {
 }
 
 function onGetDataFromSpreadsheet(data) {
-    let output = '';
-
     tableTopData = data;
 
     let categoriesArray = Object.values(CATEGORIES_MAP);
     categoriesArray.sort();
+    categoriesData = categoriesArray;
 
-    categoriesArray.forEach((key) => {
-        let value = tableTopData[key];
+    updateList();
+}
+
+function updateList() {
+    let output = '';
+
+    renderCategoriesFilter();
+
+    categoriesData.filter((category) => !categoryFilter || category === categoryFilter).forEach((category) => {
+        let value = tableTopData[category];
 
         output += '<div class="table-container">';
         output += '<h5 class="table-name">';
-        output += key;
+        output += category;
         output += '</h5>';
         output += '<div class="table-data">';
 
         let teasArray = value.all();
 
         teasArray.forEach(teaData => {
-            output += `<div class="tea-card tea-category-${CATEGORIES_CLASSNAMES_MAP[key]} ${teaData[KEYS_MAP.RATING] ? "with-rating" : ""}">`;
+            output += `<div class="tea-card tea-category-${CATEGORIES_CLASSNAMES_MAP[category]} ${teaData[KEYS_MAP.RATING] ? "with-rating" : ""}">`;
             output += '<h6 class="tea-name">';
             output += teaData[KEYS_MAP.NAME];
             output += '</h6>';
@@ -79,7 +91,7 @@ function onGetDataFromSpreadsheet(data) {
             output += getItemCostInfo(teaData[KEYS_MAP.COST]);
             output += getItemReviewInfo(teaData[KEYS_MAP.REVIEW]);
             output += getItemRatingInfo(teaData[KEYS_MAP.RATING]);
-            output += getCardCategoryIcon(key);
+            output += getCardCategoryIcon(category);
             output += '</div>';
         });
         output += '</div>';
@@ -89,9 +101,36 @@ function onGetDataFromSpreadsheet(data) {
     dataItem.innerHTML = output;
 }
 
+function renderCategoriesFilter() {
+    let output = '<div class="tea-categories-container">';
+
+    categoriesData.forEach((category) => {
+        output += '<div class="tea-category-icon-container tea-category-' + CATEGORIES_CLASSNAMES_MAP[category] + ' ' + (category === categoryFilter ? "filled" : "") + '" onclick="handleChangeCategory(this)" data-category="' + category + '" >';
+        output += '<svg class="tea-category-icon ' + (category === categoryFilter ? "filled" : "") + '" viewBox="0 0 72.51 96.47">';
+        output += '<path d="M53,0s8.52,20.85-28,34.85C5.19,42.46-10.06,62,8.15,92.08c1.5-13.46,8-43.15,35.76-49.92,0,0-25.87,9.67-28.15,53.46,13.29,1.86,44.46,3.12,53.72-23.94C81.7,35.94,53,0,53,0"/>';
+        output += '</svg>';
+        output += '</div>';
+    });
+
+    output += '</div>';
+
+    categoryFilterItem.innerHTML = output;
+}
+
+function handleChangeCategory(target) {
+    console.log("FFF", target.getAttribute('data-category'));
+    let newCategoryFilter = target.getAttribute('data-category');
+    if (newCategoryFilter !== categoryFilter) {
+        categoryFilter = newCategoryFilter;
+    } else {
+        categoryFilter = null;
+    }
+    updateList();
+}
+
 function getItemBrewingTimeInfo(time) {
     if (!time) {
-        return '<div class="tea-param"><b>'+ KEYS_MAP.BREWING_TIME +'</b>: ---</div>';
+        return '<div class="tea-param"><b>' + KEYS_MAP.BREWING_TIME + '</b>: ---</div>';
     }
 
     timeArray = time.split("-").map(elem => parseInt(elem));
@@ -134,7 +173,7 @@ function getItemBrewingTimeInfo(time) {
 
 function getItemTemperatureInfo(temperature) {
     if (!temperature || temperature > 100) {
-        return '<div class="tea-param"><b>'+ KEYS_MAP.TEMPERATURE +'</b>: ---</div>';
+        return '<div class="tea-param"><b>' + KEYS_MAP.TEMPERATURE + '</b>: ---</div>';
     }
 
     let result = '';
@@ -167,7 +206,7 @@ function getCardCategoryIcon(category) {
 
 function getItemTablewareInfo(tableware) {
     if (!tableware) {
-        return '<div class="tea-param"><b>'+ KEYS_MAP.TABLEWARE +'</b>: ---</div>';
+        return '<div class="tea-param"><b>' + KEYS_MAP.TABLEWARE + '</b>: ---</div>';
     }
 
     let result = '';
@@ -230,7 +269,7 @@ function getItemTablewareInfo(tableware) {
 
 function getItemCostInfo(cost) {
     if (!cost) {
-        return '<div class="tea-param"><b>'+ KEYS_MAP.COST +'</b>: ---</div>';
+        return '<div class="tea-param"><b>' + KEYS_MAP.COST + '</b>: ---</div>';
     }
 
     let result = '';
@@ -245,7 +284,7 @@ function getItemCostInfo(cost) {
 
 function getItemReviewInfo(review) {
     if (!review) {
-        return '<div class="tea-param"><b>'+ KEYS_MAP.REVIEW +'</b>: ---</div>';
+        return '<div class="tea-param"><b>' + KEYS_MAP.REVIEW + '</b>: ---</div>';
     }
 
     let result = '';
