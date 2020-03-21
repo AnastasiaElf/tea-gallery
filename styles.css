@@ -1,3 +1,4 @@
+/* TODO: add themes: neo, light, dark and theme switcher */
 html,
 body,
 .container {
@@ -7,6 +8,30 @@ body,
 	font-family: "Roboto";
 	color: #333333;
 	background: #ebecf0;
+}
+
+@font-face {
+	font-family: "icomoon";
+	src: url("fonts/icomoon.eot?sehr7b");
+	src: url("fonts/icomoon.eot?sehr7b#iefix") format("embedded-opentype"),
+		url("fonts/icomoon.ttf?sehr7b") format("truetype"), url("fonts/icomoon.woff?sehr7b") format("woff"),
+		url("fonts/icomoon.svg?sehr7b#icomoon") format("svg");
+	font-weight: normal;
+	font-style: normal;
+	font-display: block;
+}
+
+.icon-leaf,
+.icon-star {
+	font-family: "icomoon" !important;
+}
+
+.icon-leaf:before {
+	content: "\6c";
+}
+
+.icon-star:before {
+	content: "\73";
 }
 
 .table-container {
@@ -30,19 +55,19 @@ body,
 }
 
 .tea-card {
-	padding: 10px;
-	border: 2px solid #729c55;
-	border-radius: 10px;
+	padding: 30px;
 	margin: 10px;
 	margin-top: 20px;
 	background: #ffffff;
 	max-width: 300px;
 	width: 100%;
 	position: relative;
-}
-
-.tea-card.with-rating {
-	padding-top: 30px;
+	border-radius: 10px;
+	background-color: #ebecf0;
+	text-shadow: 1px 1px 0 #fff;
+	color: #61677c;
+	box-shadow: -5px -5px 20px #fff, 5px 5px 20px #babecc;
+	transition: all 0.2s ease-in-out;
 }
 
 .tea-name {
@@ -59,34 +84,18 @@ body,
 	justify-content: center;
 }
 
-.tea-category-icon-container {
-	background: white;
-	border: 2px solid #729c55;
-	border-radius: 50%;
-	width: 35px;
-	height: 35px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
 .tea-card .tea-category-icon-container {
 	position: absolute;
-	top: -14px;
-	right: -12px;
-}
-
-.tea-category-icon-container.filled {
-	background: #729c55;
+	top: 10px;
+	right: 10px;
 }
 
 .tea-category-icon {
-	width: 20px;
+	font-size: 26px;
 }
 
 /* TODO: refactor styles by parent category class */
-.tea-card.tea-category-green,
-.tea-card.tea-category-green .rating-icon-wrapper {
+.tea-card.tea-category-green {
 	border-color: #009245;
 }
 
@@ -94,16 +103,11 @@ body,
 	border-color: #009245;
 }
 
-.tea-category-icon-container.filled.tea-category-green {
-	background: #009245;
-}
-
 .tea-category-icon-container.tea-category-green .tea-category-icon {
-	fill: #009245;
+	color: #009245;
 }
 
-.tea-card.tea-card.tea-category-red,
-.tea-card.tea-card.tea-category-red .rating-icon-wrapper {
+.tea-card.tea-card.tea-category-red {
 	border-color: #e0421b;
 }
 
@@ -111,16 +115,11 @@ body,
 	border-color: #e0421b;
 }
 
-.tea-category-icon-container.filled.tea-category-red {
-	background: #e0421b;
-}
-
 .tea-category-icon-container.tea-category-red .tea-category-icon {
-	fill: #e0421b;
+	color: #e0421b;
 }
 
-.tea-card.tea-category-white,
-.tea-card.tea-category-white .rating-icon-wrapper {
+.tea-card.tea-category-white {
 	border-color: #cccccc;
 }
 
@@ -128,16 +127,11 @@ body,
 	border-color: #cccccc;
 }
 
-.tea-category-icon-container.filled.tea-category-white {
-	background: #cccccc;
-}
-
 .tea-category-icon-container.tea-category-white .tea-category-icon {
-	fill: #cccccc;
+	color: #cccccc;
 }
 
-.tea-card.tea-category-japanese,
-.tea-card.tea-category-japanese .rating-icon-wrapper {
+.tea-card.tea-category-japanese {
 	border-color: #709200;
 }
 
@@ -145,16 +139,11 @@ body,
 	border-color: #709200;
 }
 
-.tea-category-icon-container.filled.tea-category-japanese {
-	background: #709200;
-}
-
 .tea-category-icon-container.tea-category-japanese .tea-category-icon {
-	fill: #709200;
+	color: #709200;
 }
 
-.tea-card.tea-category-shu,
-.tea-card.tea-category-shu .rating-icon-wrapper {
+.tea-card.tea-category-shu {
 	border-color: #925c00;
 }
 
@@ -162,16 +151,11 @@ body,
 	border-color: #925c00;
 }
 
-.tea-category-icon-container.filled.tea-category-shu {
-	background: #925c00;
-}
-
 .tea-category-icon-container.tea-category-shu .tea-category-icon {
-	fill: #925c00;
+	color: #925c00;
 }
 
-.tea-card.tea-category-shen,
-.tea-card.tea-category-shen .rating-icon-wrapper {
+.tea-card.tea-category-shen {
 	border-color: #436b26;
 }
 
@@ -179,16 +163,11 @@ body,
 	border-color: #436b26;
 }
 
-.tea-category-icon-container.filled.tea-category-shen {
-	background: #436b26;
-}
-
 .tea-category-icon-container.tea-category-shen .tea-category-icon {
-	fill: #436b26;
+	color: #436b26;
 }
 
-.tea-card.tea-category-oolong,
-.tea-card.tea-category-oolong .rating-icon-wrapper {
+.tea-card.tea-category-oolong {
 	border-color: #00b3ad;
 }
 
@@ -196,16 +175,11 @@ body,
 	border-color: #00b3ad;
 }
 
-.tea-category-icon-container.filled.tea-category-oolong {
-	background: #00b3ad;
-}
-
 .tea-category-icon-container.tea-category-oolong .tea-category-icon {
-	fill: #00b3ad;
+	color: #00b3ad;
 }
 
-.tea-card.tea-category-others,
-.tea-card.tea-category-others .rating-icon-wrapper {
+.tea-card.tea-category-others {
 	border-color: #80559c;
 }
 
@@ -213,26 +187,26 @@ body,
 	border-color: #80559c;
 }
 
-.tea-category-icon-container.filled.tea-category-others {
-	background: #80559c;
-}
-
 .tea-category-icon-container.tea-category-others .tea-category-icon {
-	fill: #80559c;
-}
-
-.tea-category-icon-container .tea-category-icon.filled {
-	fill: #ffffff;
+	color: #80559c;
 }
 
 .tea-tableware-container {
 	display: flex;
 	align-items: center;
-	height: 40px;
+	padding: 10px 0;
 }
 
-.tableware-icon {
-	margin: 0 5px;
+.tea-tableware-icon-container {
+	margin-right: 10px;
+    border-radius: 5px;
+    box-shadow: inset 1px 1px 2px #babecc, inset -1px -1px 2px #fff;
+    padding: 5px;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
 }
 
 .tableware-icon.clay {
@@ -255,7 +229,8 @@ body,
 	position: absolute;
 	justify-content: center;
 	width: 100%;
-	top: -14px;
+	margin-bottom: 5px;
+	top: 8px;
 	left: 0;
 }
 
@@ -267,14 +242,11 @@ body,
 }
 
 .rating-icon {
-	height: 26px;
-	width: 26px;
-	margin-right: 3px;
-	fill: none;
+	color: #c7c7c7;
 }
 
 .rating-icon.filled {
-	fill: #ffc107;
+	color: #61677c;
 }
 
 .tea-temperature-container {
@@ -286,29 +258,15 @@ body,
 	height: 20px;
 	border-radius: 12px;
 	width: 100%;
-	background: linear-gradient(to left, #ff0909, #f3481a 20%, #faba2c 50%, #00bcf2 100%);
-	border: 1px solid #989898;
 	position: relative;
 	overflow: hidden;
+	box-shadow: inset 1px 1px 2px #babecc, inset -1px -1px 2px #fff;
 }
 
 .temperature-bar-overlap {
 	height: 20px;
+	background: #61677c;
 	border-radius: 12px;
-	width: 40%;
-	position: absolute;
-	top: 0;
-	right: 0;
-	overflow: hidden;
-}
-
-.temperature-bar-overlap:before {
-	content: "";
-	position: absolute;
-	margin: -1px;
-	padding: 11px;
-	border-radius: 50%;
-	box-shadow: 0 0 0 300px #ffffff;
 }
 
 .temperature-value {
@@ -317,7 +275,9 @@ body,
 	position: absolute;
 	width: 100%;
 	left: 0;
-	top: 2px;
+	top: 1px;
+	color: #b3b3b3;
+	text-shadow: none;
 }
 
 .tea-brewing-time-container {
@@ -329,14 +289,14 @@ body,
 	height: 20px;
 	border-radius: 12px;
 	width: 100%;
-	border: 1px solid #989898;
 	position: relative;
 	overflow: hidden;
+	box-shadow: inset 1px 1px 2px #babecc, inset -1px -1px 2px #fff;
 }
 
 .time-bar-overlap {
 	height: 20px;
-	background: #9bdaff;
+	background: #61677c;
 	border-radius: 12px;
 }
 
@@ -346,7 +306,9 @@ body,
 	position: absolute;
 	width: 100%;
 	left: 0;
-	top: 2px;
+	top: 1px;
+	color: #b3b3b3;
+	text-shadow: none;
 }
 
 .tea-categories-container {

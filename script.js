@@ -81,7 +81,8 @@ function updateList() {
         let teasArray = value.all();
 
         teasArray.forEach(teaData => {
-            output += `<div class="tea-card tea-category-${CATEGORIES_CLASSNAMES_MAP[category]} ${teaData[KEYS_MAP.RATING] ? "with-rating" : ""}">`;
+            output += `<div class="tea-card tea-category-${CATEGORIES_CLASSNAMES_MAP[category]}">`;
+            output += getItemRatingInfo(teaData[KEYS_MAP.RATING]);
             output += '<h6 class="tea-name">';
             output += teaData[KEYS_MAP.NAME];
             output += '</h6>';
@@ -90,7 +91,6 @@ function updateList() {
             output += getItemTablewareInfo(teaData[KEYS_MAP.TABLEWARE]);
             output += getItemCostInfo(teaData[KEYS_MAP.COST]);
             output += getItemReviewInfo(teaData[KEYS_MAP.REVIEW]);
-            output += getItemRatingInfo(teaData[KEYS_MAP.RATING]);
             output += getCardCategoryIcon(category);
             output += '</div>';
         });
@@ -102,15 +102,13 @@ function updateList() {
 }
 
 function renderCategoriesFilter() {
-    // TODO: add collapse/expant of categories filter
+    // TODO: add collapse/expand of categories filter
     let output = '<div class="tea-categories-container">';
 
     categoriesData.forEach((category) => {
         output += '<div class="tea-category-container tea-category-' + CATEGORIES_CLASSNAMES_MAP[category] + ' ' + (category === categoryFilter ? "selected" : "") + '"' + 'onclick="handleChangeCategory(this)" data-category="' + category + '">';
         output += '<div class="tea-category-icon-container tea-category-' + CATEGORIES_CLASSNAMES_MAP[category] + ' ' + (category === categoryFilter ? "filled" : "") + '" >';
-        output += '<svg class="tea-category-icon ' + (category === categoryFilter ? "filled" : "") + '" viewBox="0 0 72.51 96.47">';
-        output += '<path d="M53,0s8.52,20.85-28,34.85C5.19,42.46-10.06,62,8.15,92.08c1.5-13.46,8-43.15,35.76-49.92,0,0-25.87,9.67-28.15,53.46,13.29,1.86,44.46,3.12,53.72-23.94C81.7,35.94,53,0,53,0"/>';
-        output += '</svg>';
+        output += `<span class="tea-category-icon icon-leaf"></span>`;
         output += '</div>';
         output += '<div class="tea-category-name">';
         output += category;
@@ -181,15 +179,14 @@ function getItemTemperatureInfo(temperature) {
         return '<div class="tea-param"><b>' + KEYS_MAP.TEMPERATURE + '</b>: ---</div>';
     }
 
+    let temperatureArray = temperature.split("-").map(elem => parseInt(elem)).sort((a, b) => b - a);
+
     let result = '';
     result += '<div class="tea-param">';
     result += "<b>" + KEYS_MAP.TEMPERATURE + "</b>: ";
     result += '<div class="tea-temperature-container">';
     result += '<div class="temperature-bar">';
-
-    let temperatureArray = temperature.split("-").map(elem => parseInt(elem)).sort((a, b) => b - a);
-
-    result += `<div class="temperature-bar-overlap" style="width: calc(${100 - temperatureArray[0]}% + 21px);"></div>`;
+    result += `<div class="temperature-bar-overlap" style="width: ${temperatureArray[0]}%;"></div>`;
     result += '</div>';
     result += '<div class="temperature-value">';
     result += temperature + "°C";
@@ -202,9 +199,7 @@ function getItemTemperatureInfo(temperature) {
 function getCardCategoryIcon(category) {
     let result = '';
     result += '<div class="tea-category-icon-container tea-category-' + CATEGORIES_CLASSNAMES_MAP[category] + '">';
-    result += '<svg class="tea-category-icon" viewBox="0 0 72.51 96.47">';
-    result += '<path d="M53,0s8.52,20.85-28,34.85C5.19,42.46-10.06,62,8.15,92.08c1.5-13.46,8-43.15,35.76-49.92,0,0-25.87,9.67-28.15,53.46,13.29,1.86,44.46,3.12,53.72-23.94C81.7,35.94,53,0,53,0"/>';
-    result += '</svg>';
+    result += `<span class="tea-category-icon icon-leaf"></span>`;
     result += '</div>';
     return result;
 }
@@ -222,6 +217,7 @@ function getItemTablewareInfo(tableware) {
     let tablewareArray = tableware.split(",").map(elem => elem.trim()).sort();
 
     tablewareArray.forEach((elem) => {
+        result += '<div class="tea-tableware-icon-container">';
         switch (elem) {
             case TABLEWARE.CLAY:
                 result += `<svg viewBox="0 0 512 512" class="tableware-icon clay">
@@ -265,6 +261,7 @@ function getItemTablewareInfo(tableware) {
             default:
                 break;
         }
+        result += '</div>';
     })
 
     result += '</div>';
@@ -309,15 +306,12 @@ function getItemRatingInfo(rating) {
 
     let result = '';
     result += '<div class="tea-rating-container">';
-    result += '<div class="rating-icon-wrapper">';
 
     for (let i = 0; i < 5; i++) {
-        result += `<svg viewBox="0 0 512 512" class="rating-icon ${parseInt(rating) > i ? "filled" : ""}">
-                <path style="stroke:#000000;stroke-width:30;stroke-miterlimit:10;" d="M479,188.9l-144.8-22.1L269.3,28.6c-4.8-10.3-21.8-10.3-26.6,0l-64.9,138.2L33,188.9 c-11.9,1.8-16.6,16.3-8.3,24.8l105.2,107.8L105,474c-2,12.1,11,21.2,21.6,15.2L256,417.8l129.3,71.5c10.6,5.9,23.6-3,21.6-15.2 l-24.9-152.4l105.2-107.8C495.6,205.2,490.9,190.8,479,188.9L479,188.9z"/>
-            </svg>`;
+        result += `<span class="icon-star rating-icon ${parseInt(rating) > i ? "filled" : ""}"></span>`;
+
     }
 
-    result += '</div>';
     result += '</div>';
     return result;
 }
