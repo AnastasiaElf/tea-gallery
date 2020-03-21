@@ -102,13 +102,19 @@ function updateList() {
 }
 
 function renderCategoriesFilter() {
+    // TODO: add collapse/expant of categories filter
     let output = '<div class="tea-categories-container">';
 
     categoriesData.forEach((category) => {
-        output += '<div class="tea-category-icon-container tea-category-' + CATEGORIES_CLASSNAMES_MAP[category] + ' ' + (category === categoryFilter ? "filled" : "") + '" onclick="handleChangeCategory(this)" data-category="' + category + '" >';
+        output += '<div class="tea-category-container tea-category-' + CATEGORIES_CLASSNAMES_MAP[category] + ' ' + (category === categoryFilter ? "selected" : "") + '"' + 'onclick="handleChangeCategory(this)" data-category="' + category + '">';
+        output += '<div class="tea-category-icon-container tea-category-' + CATEGORIES_CLASSNAMES_MAP[category] + ' ' + (category === categoryFilter ? "filled" : "") + '" >';
         output += '<svg class="tea-category-icon ' + (category === categoryFilter ? "filled" : "") + '" viewBox="0 0 72.51 96.47">';
         output += '<path d="M53,0s8.52,20.85-28,34.85C5.19,42.46-10.06,62,8.15,92.08c1.5-13.46,8-43.15,35.76-49.92,0,0-25.87,9.67-28.15,53.46,13.29,1.86,44.46,3.12,53.72-23.94C81.7,35.94,53,0,53,0"/>';
         output += '</svg>';
+        output += '</div>';
+        output += '<div class="tea-category-name">';
+        output += category;
+        output += '</div>';
         output += '</div>';
     });
 
@@ -118,7 +124,6 @@ function renderCategoriesFilter() {
 }
 
 function handleChangeCategory(target) {
-    console.log("FFF", target.getAttribute('data-category'));
     let newCategoryFilter = target.getAttribute('data-category');
     if (newCategoryFilter !== categoryFilter) {
         categoryFilter = newCategoryFilter;
