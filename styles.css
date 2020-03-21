@@ -2,7 +2,7 @@
 html,
 body,
 .container {
-	height: 100%;
+	min-height: 100%;
 	width: 100%;
 	margin: 0;
 	font-family: "Roboto";
@@ -34,17 +34,14 @@ body,
 	content: "\73";
 }
 
-.table-container {
-	border-bottom: 2px solid #9e9e9e;
-	padding: 20px;
-}
-
-.table-container:first-child {
-	border-top: 2px solid #9e9e9e;
+.table-divider {
+    height: 10px;
+    box-shadow: 0px 6px 6px -3px #babecc;
+    margin: 20px 0;
 }
 
 .table-container:last-child {
-	border-bottom: 0;
+	margin-bottom: 20px;
 }
 
 .table-name {
@@ -199,14 +196,14 @@ body,
 
 .tea-tableware-icon-container {
 	margin-right: 10px;
-    border-radius: 5px;
-    box-shadow: inset 1px 1px 2px #babecc, inset -1px -1px 2px #fff;
-    padding: 5px;
-    width: 40px;
-    height: 40px;
-    align-items: center;
-    display: flex;
-    justify-content: center;
+	border-radius: 5px;
+	box-shadow: inset 1px 1px 2px #babecc, inset -1px -1px 2px #fff;
+	padding: 5px;
+	width: 40px;
+	height: 40px;
+	align-items: center;
+	display: flex;
+	justify-content: center;
 }
 
 .tableware-icon.clay {
