@@ -41,10 +41,10 @@ const ELEMENT_ID = {
 }
 
 class TeaGallery {
-    container = null;
-    data = null;
-    categoriesData = null;
-    categoryFilter = null;
+    // container = null;
+    // data = null;
+    // categoriesData = null;
+    // categoryFilter = null;
 
     constructor(containerId, spreadsheetUrl) {
         if (!publicSpreadsheetUrl) {
@@ -74,6 +74,7 @@ class TeaGallery {
     onGetDataFromSpreadsheet = (data) => {
         this.data = data;
         this.categoriesData = Object.values(CATEGORIES_MAP).sort();
+        this.categoryFilter = null;
 
         this.renderContent();
     }
