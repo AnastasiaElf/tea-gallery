@@ -61,6 +61,8 @@ class TeaGallery {
             throw Error("Container is not found");
         }
 
+        this.onGetDataFromSpreadsheet = this.onGetDataFromSpreadsheet.bind(this);
+
         this.getData(spreadsheetUrl);
     }
 
@@ -71,7 +73,7 @@ class TeaGallery {
         })
     }
 
-    onGetDataFromSpreadsheet = (data) => {
+    onGetDataFromSpreadsheet(data) {
         this.data = data;
         this.categoriesData = Object.values(CATEGORIES_MAP).sort();
         this.categoryFilter = null;
@@ -346,16 +348,18 @@ class TeaGallery {
         })
     }
 
-    handleChangeCategory = (categoryCard) => (e) => {
-        let category = categoryCard.getAttribute('data-category');
+    handleChangeCategory(categoryCard) {
+        return (e) => {
+            let category = categoryCard.getAttribute('data-category');
 
-        if (category !== this.categoryFilter) {
-            this.categoryFilter = category;
-        } else {
-            this.categoryFilter = null;
+            if (category !== this.categoryFilter) {
+                this.categoryFilter = category;
+            } else {
+                this.categoryFilter = null;
+            }
+
+            this.renderContent();
         }
-
-        this.renderContent();
     }
 }
 
