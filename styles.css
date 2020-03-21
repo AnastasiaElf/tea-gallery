@@ -10,6 +10,14 @@ body,
 	background: #ebecf0;
 }
 
+@media (prefers-color-scheme: dark) {
+	html,
+	body,
+	.container {
+		background: #393c47;
+	}
+}
+
 @font-face {
 	font-family: "icomoon";
 	src: url("fonts/icomoon.eot?sehr7b");
@@ -35,13 +43,19 @@ body,
 }
 
 .table-divider {
-    height: 10px;
-    box-shadow: 0px 6px 6px -3px #babecc;
-    margin: 20px 0;
+	height: 10px;
+	box-shadow: 0px 6px 6px -3px #babecc;
+	margin: 20px 0;
+}
+
+@media (prefers-color-scheme: dark) {
+	.table-divider {
+		box-shadow: 0px 6px 6px -3px #12141b;
+	}
 }
 
 .table-container:last-child {
-	margin-bottom: 20px;
+	padding-bottom: 20px;
 }
 
 .table-name {
@@ -49,6 +63,14 @@ body,
 	margin-bottom: 10px;
 	font-size: 24px;
 	text-align: center;
+	color: #61677c;
+	text-shadow: 1px 1px 0 #fff;
+}
+@media (prefers-color-scheme: dark) {
+	.table-name {
+		color: #babecc;
+		text-shadow: 1px 1px 0 #262933;
+	}
 }
 
 .tea-card {
@@ -65,6 +87,15 @@ body,
 	color: #61677c;
 	box-shadow: -5px -5px 20px #fff, 5px 5px 20px #babecc;
 	transition: all 0.2s ease-in-out;
+}
+
+@media (prefers-color-scheme: dark) {
+	.tea-card {
+		background-color: #3f424e;
+		text-shadow: 1px 1px 0 #262933;
+		box-shadow: -2px -2px 12px #61677c, 5px 5px 12px #12141b;
+		color: #babecc;
+	}
 }
 
 .tea-name {
@@ -206,6 +237,12 @@ body,
 	justify-content: center;
 }
 
+@media (prefers-color-scheme: dark) {
+	.tea-tableware-icon-container {
+		box-shadow: inset 1px 1px 2px #12141b, inset -1px -1px 2px #61677c;
+	}
+}
+
 .tableware-icon.clay {
 	width: 40px;
 	height: 40px;
@@ -246,6 +283,16 @@ body,
 	color: #61677c;
 }
 
+@media (prefers-color-scheme: dark) {
+	.rating-icon {
+		color: #61677c;
+	}
+
+	.rating-icon.filled {
+		color: #c7c7c7;
+	}
+}
+
 .tea-temperature-container {
 	position: relative;
 	margin: 5px 0;
@@ -258,6 +305,12 @@ body,
 	position: relative;
 	overflow: hidden;
 	box-shadow: inset 1px 1px 2px #babecc, inset -1px -1px 2px #fff;
+}
+
+@media (prefers-color-scheme: dark) {
+	.temperature-bar {
+		box-shadow: inset 1px 1px 2px #12141b, inset -1px -1px 2px #61677c;
+	}
 }
 
 .temperature-bar-overlap {
@@ -291,6 +344,12 @@ body,
 	box-shadow: inset 1px 1px 2px #babecc, inset -1px -1px 2px #fff;
 }
 
+@media (prefers-color-scheme: dark) {
+	.time-bar {
+		box-shadow: inset 1px 1px 2px #12141b, inset -1px -1px 2px #61677c;
+	}
+}
+
 .time-bar-overlap {
 	height: 20px;
 	background: #61677c;
@@ -314,7 +373,8 @@ body,
 	flex-wrap: wrap;
 	width: 100%;
 	max-width: 800px;
-	margin: 10px auto;
+	margin: 0 auto;
+	padding: 10px 0;
 }
 
 .tea-category-container .tea-category-icon-container {
@@ -345,4 +405,22 @@ body,
 .tea-category-container:active,
 .tea-category-container.selected {
 	box-shadow: inset 1px 1px 2px #babecc, inset -1px -1px 2px #fff;
+}
+
+@media (prefers-color-scheme: dark) {
+	.tea-category-container {
+		background-color: #3f424e;
+		text-shadow: 1px 1px 0 #262933;
+		box-shadow: -2px -2px 12px #61677c, 5px 5px 12px #12141b;
+		color: #babecc;
+	}
+
+	.tea-category-container:hover {
+		box-shadow: -2px -2px 5px #61677c, 2px 2px 5px #12141b;
+	}
+
+	.tea-category-container:active,
+	.tea-category-container.selected {
+		box-shadow: inset 1px 1px 2px #12141b, inset -1px -1px 2px #61677c;
+	}
 }
