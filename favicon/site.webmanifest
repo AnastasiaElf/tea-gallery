@@ -1,6 +1,6 @@
 {
-    "name": "",
-    "short_name": "",
+    "name": "Tea Gallery",
+    "short_name": "Tea Gallery",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",
