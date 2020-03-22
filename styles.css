@@ -75,11 +75,8 @@ body,
 
 .tea-card {
 	padding: 30px;
-	margin: 10px;
-	margin-top: 20px;
 	background: #ffffff;
-	max-width: 300px;
-	width: 100%;
+	width: 300px;
 	position: relative;
 	border-radius: 10px;
 	background-color: #ebecf0;
@@ -98,6 +95,12 @@ body,
 	}
 }
 
+@media only screen and (max-width: 400px) {
+	.tea-card {
+		width: auto;
+	}
+}
+
 .tea-name {
 	margin: 0;
 	margin-bottom: 10px;
@@ -107,9 +110,29 @@ body,
 }
 
 .table-data {
-	display: flex;
-	flex-wrap: wrap;
+	display: grid;
+	grid-gap: 20px;
+	grid-template-columns: repeat(3, 360px);
+	padding: 20px;
 	justify-content: center;
+}
+
+@media only screen and (max-width: 1200px) {
+	.table-data {
+		grid-template-columns: repeat(2, 360px);
+	}
+}
+
+@media only screen and (max-width: 800px) {
+	.table-data {
+		grid-template-columns: repeat(1, 360px);
+	}
+}
+
+@media only screen and (max-width: 400px) {
+	.table-data {
+		grid-template-columns: repeat(1, 90%);
+	}
 }
 
 .tea-card .tea-category-icon-container {
@@ -368,13 +391,12 @@ body,
 }
 
 .tea-categories-container {
-	display: flex;
-	justify-content: space-evenly;
-	flex-wrap: wrap;
-	width: 100%;
-	max-width: 800px;
-	margin: 0 auto;
 	padding: 10px 0;
+	display: grid;
+	grid-gap: 20px;
+	grid-template-columns: repeat(auto-fit, 107px);
+	padding: 20px;
+	justify-content: center;
 }
 
 .tea-category-container .tea-category-icon-container {
@@ -394,7 +416,6 @@ body,
 	box-shadow: -5px -5px 20px #fff, 5px 5px 20px #babecc;
 	transition: all 0.2s ease-in-out;
 	cursor: pointer;
-	margin: 10px;
 	width: 85px;
 }
 
