@@ -122,8 +122,6 @@ class TeaGallery {
         let result = '';
 
         this.categoriesData.filter((category) => !this.categoryFilter || category === this.categoryFilter).forEach((category) => {
-            let value = this.data[category];
-
             result += '<div class="table-container">';
             result += '<div class="table-divider"></div>';
             result += '<h5 class="table-name">';
@@ -131,7 +129,9 @@ class TeaGallery {
             result += '</h5>';
             result += '<div class="table-data">';
 
-            let teasArray = value.all();
+            let teasArray = this.data[category].all();
+
+            teasArray.sort((a, b) => (a[KEYS_MAP.NAME] > b[KEYS_MAP.NAME]) ? 1 : -1);
 
             teasArray.forEach(teaData => {
                 result += `<div class="tea-card tea-category-${CATEGORIES_CLASSNAMES_MAP[category]}">`;
