@@ -445,3 +445,78 @@ body,
 		box-shadow: inset 1px 1px 2px #12141b, inset -1px -1px 2px #61677c;
 	}
 }
+
+.tea-search-container {
+	text-align: center;
+	padding: 20px;
+}
+
+.tea-search-clear-button {
+	margin-left: 20px;
+}
+
+.tea-input {
+	height: 24px;
+	border-radius: 17px;
+	box-shadow: inset 1px 1px 2px #babecc, inset -1px -1px 2px #fff;
+	border: none;
+	background-color: #ebecf0;
+	outline: none;
+	padding: 5px 15px;
+	color: #61677c;
+	text-shadow: 1px 1px 0 #fff;
+	font-size: 16px;
+	margin-bottom: 15px;
+}
+
+.tea-input::placeholder {
+	color: #868a99;
+}
+
+.tea-button {
+	border-radius: 17px;
+	background-color: #ebecf0;
+	text-shadow: 1px 1px 0 #fff;
+	color: #61677c;
+	box-shadow: -5px -5px 20px #fff, 5px 5px 20px #babecc;
+	transition: all 0.2s ease-in-out;
+	border: none;
+	text-decoration: none;
+	outline: none;
+	padding: 5px 15px;
+	font-size: 16px;
+	cursor: pointer;
+	height: 34px;
+}
+
+.tea-button:hover {
+	box-shadow: -2px -2px 5px #ffffff, 2px 2px 5px #babecc;
+}
+
+.tea-button:active {
+	box-shadow: inset 1px 1px 2px #babecc, inset -1px -1px 2px #fff;
+}
+
+@media (prefers-color-scheme: dark) {
+	.tea-input {
+		background-color: #3f424e;
+		box-shadow: inset 1px 1px 2px #12141b, inset -1px -1px 2px #61677c;
+		color: #babecc;
+		text-shadow: 1px 1px 0 #262933;
+	}
+
+	.tea-button {
+		background-color: #3f424e;
+		text-shadow: 1px 1px 0 #262933;
+		box-shadow: -2px -2px 12px #61677c, 5px 5px 12px #12141b;
+		color: #babecc;
+	}
+
+	.tea-button:hover {
+		box-shadow: -2px -2px 5px #61677c, 2px 2px 5px #12141b;
+	}
+
+	.tea-button:active {
+		box-shadow: inset 1px 1px 2px #12141b, inset -1px -1px 2px #61677c;
+	}
+}

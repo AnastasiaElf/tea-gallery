@@ -37,7 +37,10 @@ const TABLEWARE = {
 }
 
 const ELEMENT_ID = {
-    CATEGORIES: "categories"
+    CATEGORIES: "categories",
+    SEARCH_INPUT: "search_input",
+    SEARCH_BUTTON: "search_button",
+    SEARCH_CLEAR_BUTTON: "search_clear_button"
 }
 
 class TeaGallery {
@@ -45,6 +48,8 @@ class TeaGallery {
     // data = null;
     // categoriesData = null;
     // categoryFilter = null;
+    // searchFilter = '';
+    // searchInputValue = '';
 
     constructor(containerId, spreadsheetUrl) {
         if (!publicSpreadsheetUrl) {
@@ -62,6 +67,9 @@ class TeaGallery {
         }
 
         this.onGetDataFromSpreadsheet = this.onGetDataFromSpreadsheet.bind(this);
+        this.handleChangeSearchValue = this.handleChangeSearchValue.bind(this);
+        this.handleChangeSearchFilter = this.handleChangeSearchFilter.bind(this);
+        this.handleClearSearchFilter = this.handleClearSearchFilter.bind(this);
 
         this.getData(spreadsheetUrl);
     }
@@ -77,6 +85,8 @@ class TeaGallery {
         this.data = data;
         this.categoriesData = Object.values(CATEGORIES_MAP).sort();
         this.categoryFilter = null;
+        this.searchFilter = '';
+        this.searchInputValue = '';
 
         this.renderContent();
     }
@@ -85,6 +95,7 @@ class TeaGallery {
         let result = '';
 
         result += this.renderCategories();
+        result += this.renderSearch();
         result += this.renderCards();
 
         this.container.innerHTML = result;
@@ -116,22 +127,34 @@ class TeaGallery {
         return result;
     }
 
-
+    renderSearch() {
+        let result = `<div class="tea-search-container">`;
+        result += `<input id="${ELEMENT_ID.SEARCH_INPUT}" class="tea-input tea-search-input" type="text" placeholder="Найти..." value="${this.searchInputValue}"></input>`
+        result += '<div class="tea-search-buttons-container">';
+        result += `<button id="${ELEMENT_ID.SEARCH_BUTTON}" class="tea-button tea-search-button">Найти</input>`
+        result += `<button id="${ELEMENT_ID.SEARCH_CLEAR_BUTTON}" class="tea-button tea-search-clear-button">Очистить</input>`
+        result += '</div>';
+        result += '</div>';
+        return result;
+    }
 
     renderCards() {
         let result = '';
 
         this.categoriesData.filter((category) => !this.categoryFilter || category === this.categoryFilter).forEach((category) => {
+            let teasArray = this.data[category].all();
+            teasArray = teasArray.filter((elem) => !this.searchFilter || elem[KEYS_MAP.NAME].toLowerCase().includes(this.searchFilter.toLowerCase())).sort((a, b) => (a[KEYS_MAP.NAME] > b[KEYS_MAP.NAME]) ? 1 : -1);
+
+            if (teasArray.length < 1) {
+                return;
+            }
+
             result += '<div class="table-container">';
             result += '<div class="table-divider"></div>';
             result += '<h5 class="table-name">';
             result += category;
             result += '</h5>';
             result += '<div class="table-data">';
-
-            let teasArray = this.data[category].all();
-
-            teasArray.sort((a, b) => (a[KEYS_MAP.NAME] > b[KEYS_MAP.NAME]) ? 1 : -1);
 
             teasArray.forEach(teaData => {
                 result += `<div class="tea-card tea-category-${CATEGORIES_CLASSNAMES_MAP[category]}">`;
@@ -342,10 +365,16 @@ class TeaGallery {
 
     addEventListeners() {
         let categoryCards = container.querySelectorAll(`#${ELEMENT_ID.CATEGORIES} > div`);
-
         categoryCards.forEach((categoryCard) => {
             categoryCard.addEventListener("click", this.handleChangeCategory(categoryCard));
         })
+
+        let searchInput = document.getElementById(ELEMENT_ID.SEARCH_INPUT);
+        searchInput.addEventListener("input", this.handleChangeSearchValue);
+        let searchButton = document.getElementById(ELEMENT_ID.SEARCH_BUTTON);
+        searchButton.addEventListener("click", this.handleChangeSearchFilter);
+        let searchClearButton = document.getElementById(ELEMENT_ID.SEARCH_CLEAR_BUTTON);
+        searchClearButton.addEventListener("click", this.handleClearSearchFilter);
     }
 
     handleChangeCategory(categoryCard) {
@@ -360,6 +389,20 @@ class TeaGallery {
 
             this.renderContent();
         }
+    }
+
+    handleChangeSearchValue(e) {
+        this.searchInputValue = e.target.value;
+    }
+
+    handleChangeSearchFilter() {
+        this.searchFilter = this.searchInputValue;
+        this.renderContent();
+    }
+
+    handleClearSearchFilter() {
+        this.searchFilter = this.searchInputValue = "";
+        this.renderContent();
     }
 }
 
