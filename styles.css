@@ -280,6 +280,14 @@ body,
 	height: 28px;
 }
 
+.tableware-icon.teapot {
+	height: 34px;
+}
+
+.tableware-icon.thermos {
+	height: 34px;
+}
+
 .tea-rating-container {
 	display: flex;
 	align-items: center;
