@@ -242,6 +242,18 @@ body,
 	color: #80559c;
 }
 
+.tea-card.tea-category-mati {
+	border-color: #93e22b;
+}
+
+.tea-category-icon-container.tea-category-mati {
+	border-color: #93e22b;
+}
+
+.tea-category-icon-container.tea-category-mati .tea-category-icon {
+	color: #93e22b;
+}
+
 .tea-tableware-container {
 	display: flex;
 	align-items: center;
