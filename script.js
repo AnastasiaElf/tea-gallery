@@ -633,6 +633,12 @@ class TeaGallery {
             this.randomizerCategories = [];
             this.randomizerTags = [];
         } else {
+            if (this.categoryFilter) {
+                this.randomizerCategories = [this.categoryFilter];
+            }
+            if (this.tagsFilterArray && this.tagsFilterArray.length > 0) {
+                this.randomizerTags = this.tagsFilterArray;
+            }
             this.randomTeaInfo = this.getRandomTea();
         }
         this.isRandomizerEnabled = !this.isRandomizerEnabled;
