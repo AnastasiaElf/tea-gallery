@@ -30,6 +30,7 @@ const KEYS_MAP = {
     RATING: "Оценка",
     REVIEW: "Отзыв",
     COST: "Цена за 50г",
+    TAGS: "Теги",
 }
 
 const TABLEWARE = {
@@ -40,11 +41,18 @@ const TABLEWARE = {
     THERMOS: "Термос"
 }
 
+const TAGS = {
+    MORNING: "Утренний",
+    EVENING: "Вечерний",
+    SPECIAL: "Особый"
+}
+
 const ELEMENT_ID = {
     CATEGORIES: "categories",
     SEARCH_INPUT: "search_input",
     SEARCH_BUTTON: "search_button",
-    SEARCH_CLEAR_BUTTON: "search_clear_button"
+    SEARCH_CLEAR_BUTTON: "search_clear_button",
+    TAGS: "tags",
 }
 
 class TeaGallery {
@@ -54,6 +62,11 @@ class TeaGallery {
     // categoryFilter = null;
     // searchFilter = '';
     // searchInputValue = '';
+    // tagsData = null;
+    // tagsFilterArray = [];
+    // TODO:
+    // randomizerCategories = null;
+    // randomizerTags = null;
 
     constructor(containerId, spreadsheetUrl) {
         if (!publicSpreadsheetUrl) {
@@ -91,6 +104,8 @@ class TeaGallery {
         this.categoryFilter = null;
         this.searchFilter = '';
         this.searchInputValue = '';
+        this.tagsData = Object.values(TAGS).sort();
+        this.tagsFilterArray = [];
 
         this.renderContent();
     }
@@ -99,6 +114,7 @@ class TeaGallery {
         let result = '';
 
         result += this.renderCategories();
+        result += this.renderTags();
         result += this.renderSearch();
         result += this.renderCards();
 
@@ -142,11 +158,34 @@ class TeaGallery {
         return result;
     }
 
+    renderTags() {
+        let result = `<div  id="${ELEMENT_ID.TAGS}" class="tea-tags-container">`;
+        this.tagsData.forEach((tag) => {
+            result += `
+                <div 
+                    class="tea-tag ${this.tagsFilterArray.includes(tag) ? "selected" : ""}"
+                    data-tag="${tag}"
+                >
+                    ${tag}
+                </div>
+            `
+        })
+        result += '</div>';
+        return result;
+    }
+
     renderCards() {
         let result = '';
 
         this.categoriesData.filter((category) => !this.categoryFilter || category === this.categoryFilter).forEach((category) => {
             let teasArray = this.data[category].all();
+            if (this.tagsFilterArray.length > 0) {
+                teasArray = teasArray.filter((elem) => {
+                    let teaTags = elem[KEYS_MAP.TAGS].split(",").map(elem => elem.trim());
+                    let tagsDiff = this.tagsFilterArray.filter(tag => !teaTags.includes(tag));
+                    return tagsDiff.length === 0;
+                });
+            }
             teasArray = teasArray.filter((elem) => !this.searchFilter || elem[KEYS_MAP.NAME].toLowerCase().includes(this.searchFilter.toLowerCase())).sort((a, b) => (a[KEYS_MAP.NAME] > b[KEYS_MAP.NAME]) ? 1 : -1);
 
             if (teasArray.length < 1) {
@@ -417,6 +456,11 @@ class TeaGallery {
         searchButton.addEventListener("click", this.handleChangeSearchFilter);
         let searchClearButton = document.getElementById(ELEMENT_ID.SEARCH_CLEAR_BUTTON);
         searchClearButton.addEventListener("click", this.handleClearSearchFilter);
+
+        let tagsButtons = container.querySelectorAll(`#${ELEMENT_ID.TAGS} > div`);
+        tagsButtons.forEach((tagButton) => {
+            tagButton.addEventListener("click", this.handleSelectTag(tagButton));
+        })
     }
 
     handleChangeCategory(categoryCard) {
@@ -446,6 +490,21 @@ class TeaGallery {
         this.searchFilter = this.searchInputValue = "";
         this.renderContent();
     }
+
+    handleSelectTag(tagButton) {
+        return (e) => {
+            let tag = tagButton.getAttribute('data-tag');
+
+            if (!this.tagsFilterArray.includes(tag)) {
+                this.tagsFilterArray.push(tag);
+            } else {
+                this.tagsFilterArray = this.tagsFilterArray.filter((elem) => elem !== tag);
+            }
+
+            this.renderContent();
+        }
+    }
+
 }
 
 const publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/13gZJCXrIJ7dBWW-TaZ0c_CDD0pYNnZhVdrQD98VDcQE/edit?usp=sharing';
