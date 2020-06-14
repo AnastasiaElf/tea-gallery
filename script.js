@@ -53,6 +53,8 @@ const ELEMENT_ID = {
     SEARCH_BUTTON: "search_button",
     SEARCH_CLEAR_BUTTON: "search_clear_button",
     TAGS: "tags",
+    RANDOMIZER_TOGGLER: "randomizer_toggler",
+    RANDOMIZER_SUBMIT: "randomizer_submit",
 }
 
 class TeaGallery {
@@ -64,9 +66,10 @@ class TeaGallery {
     // searchInputValue = '';
     // tagsData = null;
     // tagsFilterArray = [];
-    // TODO:
+    // isRandomizerEnabled = false;
     // randomizerCategories = null;
     // randomizerTags = null;
+    // randomTeaInfo = null;
 
     constructor(containerId, spreadsheetUrl) {
         if (!publicSpreadsheetUrl) {
@@ -87,7 +90,8 @@ class TeaGallery {
         this.handleChangeSearchValue = this.handleChangeSearchValue.bind(this);
         this.handleChangeSearchFilter = this.handleChangeSearchFilter.bind(this);
         this.handleClearSearchFilter = this.handleClearSearchFilter.bind(this);
-
+        this.handleToggleRandomizer = this.handleToggleRandomizer.bind(this);
+        this.handleSubmitRandomizer = this.handleSubmitRandomizer.bind(this);
         this.getData(spreadsheetUrl);
     }
 
@@ -99,13 +103,20 @@ class TeaGallery {
     }
 
     onGetDataFromSpreadsheet(data) {
-        this.data = data;
+        this.data = {};
+        Object.values(CATEGORIES_MAP).forEach((category) => {
+            this.data[category] = data[category].all();
+        });
         this.categoriesData = Object.values(CATEGORIES_MAP).sort();
         this.categoryFilter = null;
         this.searchFilter = '';
         this.searchInputValue = '';
         this.tagsData = Object.values(TAGS).sort();
         this.tagsFilterArray = [];
+        this.isRandomizerEnabled = false;
+        this.randomizerCategories = [];
+        this.randomizerTags = [];
+        this.randomTeaInfo = null;
 
         this.renderContent();
     }
@@ -115,6 +126,7 @@ class TeaGallery {
 
         result += this.renderCategories();
         result += this.renderTags();
+        result += this.renderRandomizerControls();
         result += this.renderSearch();
         result += this.renderCards();
 
@@ -128,12 +140,13 @@ class TeaGallery {
 
         // TODO: remove category type duplication
         this.categoriesData.forEach((category) => {
+            let isSelected = this.isRandomizerEnabled ? this.randomizerCategories.includes(category) : this.categoryFilter === category;
             result += `
                 <div 
-                    class="tea-category-container tea-category-${CATEGORIES_CLASSNAMES_MAP[category]} ${category === this.categoryFilter ? "selected" : ""}"
+                    class="tea-category-container tea-category-${CATEGORIES_CLASSNAMES_MAP[category]} ${isSelected ? "selected" : ""}"
                     data-category="${category}"
                 >
-                    <div class="tea-category-icon-container tea-category-${CATEGORIES_CLASSNAMES_MAP[category]} ${category === this.categoryFilter ? "selected" : ""}">
+                    <div class="tea-category-icon-container tea-category-${CATEGORIES_CLASSNAMES_MAP[category]} ${isSelected ? "selected" : ""}">
                         <span class="tea-category-icon icon-leaf"></span>
                     </div>
                     <div class="tea-category-name">
@@ -148,28 +161,45 @@ class TeaGallery {
     }
 
     renderSearch() {
-        let result = `<div class="tea-search-container">`;
-        result += `<input id="${ELEMENT_ID.SEARCH_INPUT}" class="tea-input tea-search-input" type="text" placeholder="Найти..." value="${this.searchInputValue}"></input>`
-        result += '<div class="tea-search-buttons-container">';
-        result += `<button id="${ELEMENT_ID.SEARCH_BUTTON}" class="tea-button tea-search-button">Найти</input>`
-        result += `<button id="${ELEMENT_ID.SEARCH_CLEAR_BUTTON}" class="tea-button tea-search-clear-button">Очистить</input>`
-        result += '</div>';
-        result += '</div>';
-        return result;
+        if (!this.isRandomizerEnabled) {
+            let result = `<div class="tea-search-container">`;
+            result += `<input id="${ELEMENT_ID.SEARCH_INPUT}" class="tea-input tea-search-input" type="text" placeholder="Найти..." value="${this.searchInputValue}"></input>`
+            result += '<div class="tea-search-buttons-container">';
+            result += `<button id="${ELEMENT_ID.SEARCH_BUTTON}" class="tea-button tea-search-button">Найти</button>`
+            result += `<button id="${ELEMENT_ID.SEARCH_CLEAR_BUTTON}" class="tea-button tea-search-clear-button">Очистить</button>`
+            result += '</div>';
+            result += '</div>';
+            return result;
+        } else {
+            return '';
+        }
     }
 
     renderTags() {
-        let result = `<div  id="${ELEMENT_ID.TAGS}" class="tea-tags-container">`;
+        let result = `<div id="${ELEMENT_ID.TAGS}" class="tea-tags-container">`;
         this.tagsData.forEach((tag) => {
+            let isSelected = this.isRandomizerEnabled ? this.randomizerTags.includes(tag) : this.tagsFilterArray.includes(tag);
             result += `
                 <div 
-                    class="tea-tag ${this.tagsFilterArray.includes(tag) ? "selected" : ""}"
+                    class="tea-tag ${isSelected ? "selected" : ""}"
                     data-tag="${tag}"
                 >
                     ${tag}
                 </div>
-            `
+            `;
         })
+        result += '</div>';
+        return result;
+    }
+
+    renderRandomizerControls() {
+        let result = `<div class="tea-randomizer-container">`;
+        if (this.isRandomizerEnabled) {
+            result += `<button id="${ELEMENT_ID.RANDOMIZER_SUBMIT}" class="tea-button tea-search-clear-button">Подобрать чай</button>`;
+            result += `<button id="${ELEMENT_ID.RANDOMIZER_TOGGLER}" class="tea-button tea-search-clear-button">Вернуться ко всем чаям</button>`;
+        } else {
+            result += `<button id="${ELEMENT_ID.RANDOMIZER_TOGGLER}" class="tea-button tea-search-button">Случайный чай</button>`;
+        }
         result += '</div>';
         return result;
     }
@@ -177,18 +207,45 @@ class TeaGallery {
     renderCards() {
         let result = '';
 
-        this.categoriesData.filter((category) => !this.categoryFilter || category === this.categoryFilter).forEach((category) => {
-            let teasArray = this.data[category].all();
-            if (this.tagsFilterArray.length > 0) {
-                teasArray = teasArray.filter((elem) => {
-                    let teaTags = elem[KEYS_MAP.TAGS].split(",").map(elem => elem.trim());
-                    let tagsDiff = this.tagsFilterArray.filter(tag => !teaTags.includes(tag));
-                    return tagsDiff.length === 0;
-                });
-            }
-            teasArray = teasArray.filter((elem) => !this.searchFilter || elem[KEYS_MAP.NAME].toLowerCase().includes(this.searchFilter.toLowerCase())).sort((a, b) => (a[KEYS_MAP.NAME] > b[KEYS_MAP.NAME]) ? 1 : -1);
+        let categories = this.categoriesData;
+        if (this.isRandomizerEnabled) {
+            categories = [this.randomTeaInfo.category];
+        } else if (this.categoryFilter) {
+            categories = categories.filter((category) => category === this.categoryFilter);
+        }
 
-            if (teasArray.length < 1) {
+        if (categories.length === 0) {
+            result += '<div class="table-container">';
+            result += '<div class="table-divider"></div>';
+            result += this.getNotFoundMessage();
+            result += '</div>';
+            return result;
+        }
+
+        categories.forEach((category) => {
+            let teaArray = this.data[category]
+            if (this.isRandomizerEnabled) {
+                teaArray = teaArray ? teaArray.filter((elem) => elem[KEYS_MAP.NAME] === this.randomTeaInfo.name) : [];
+            } else {
+                if (this.tagsFilterArray.length > 0) {
+                    teaArray = teaArray.filter((elem) => {
+                        let teaTags = elem[KEYS_MAP.TAGS].split(",").map(elem => elem.trim());
+                        let tagsDiff = this.tagsFilterArray.filter(tag => !teaTags.includes(tag));
+                        return tagsDiff.length === 0;
+                    });
+                }
+                teaArray = teaArray.filter((elem) => !this.searchFilter || elem[KEYS_MAP.NAME].toLowerCase().includes(this.searchFilter.toLowerCase())).sort((a, b) => (a[KEYS_MAP.NAME] > b[KEYS_MAP.NAME]) ? 1 : -1);
+            }
+
+            if (this.isRandomizerEnabled && teaArray.length < 1) {
+                result += '<div class="table-container">';
+                result += '<div class="table-divider"></div>';
+                result += this.getNotFoundMessage();
+                result += '</div>';
+                return result;
+            }
+
+            if (categories.length > 1 && teaArray.length < 1) {
                 return;
             }
 
@@ -197,9 +254,16 @@ class TeaGallery {
             result += '<h5 class="table-name">';
             result += category;
             result += '</h5>';
+
+            if (categories.length === 1 && teaArray.length < 1) {
+                result += this.getNotFoundMessage();
+                result += '</div>';
+                return result;
+            }
+
             result += '<div class="table-data">';
 
-            teasArray.forEach(teaData => {
+            teaArray.forEach(teaData => {
                 result += `<div class="tea-card tea-category-${CATEGORIES_CLASSNAMES_MAP[category]}">`;
                 result += this.getItemRatingInfo(teaData[KEYS_MAP.RATING]);
                 result += this.getItemNameInfo(teaData[KEYS_MAP.NAME]);
@@ -207,6 +271,7 @@ class TeaGallery {
                 result += this.getItemTemperatureInfo(teaData[KEYS_MAP.TEMPERATURE]);
                 result += this.getItemTablewareInfo(teaData[KEYS_MAP.TABLEWARE]);
                 result += this.getItemCostInfo(teaData[KEYS_MAP.COST]);
+                result += this.getItemTagsInfo(teaData[KEYS_MAP.TAGS]);
                 result += this.getItemReviewInfo(teaData[KEYS_MAP.REVIEW]);
                 result += this.getCardCategoryIcon(category);
                 result += '</div>';
@@ -215,6 +280,14 @@ class TeaGallery {
             result += '</div>';
         });
 
+        return result;
+    }
+
+    getNotFoundMessage() {
+        let result = '';
+        result += '<div class="table-no-tea-message">';
+        result += 'По вашему запросу ничего не найдено';
+        result += '</div>';
         return result;
     }
 
@@ -421,6 +494,26 @@ class TeaGallery {
         return result;
     }
 
+    getItemTagsInfo(tags) {
+        if (!tags) {
+            return '<div class="tea-param"><b>' + KEYS_MAP.TAGS + '</b>: ---</div>';
+        }
+
+        let tagsArray = tags.split(",").map(elem => elem.trim());
+        let result = '';
+        result += '<div class="tea-param">';
+        result += "<b>" + KEYS_MAP.TAGS + "</b>: ";
+        result += '<div class="tea-tags-container">';
+        tagsArray.forEach((tag) => {
+            result += '<div class="tea-tag selected">';
+            result += tag;
+            result += '</div>';
+        })
+        result += '</div>';
+        result += '</div>';
+        return result;
+    }
+
     getItemReviewInfo(review) {
         if (!review) {
             return '<div class="tea-param"><b>' + KEYS_MAP.REVIEW + '</b>: ---</div>';
@@ -428,7 +521,7 @@ class TeaGallery {
 
         let result = '';
         result += '<div class="tea-param">';
-        result += '<div class="tea-cost-container">';
+        result += '<div class="tea-review-container">';
         result += "<b>" + KEYS_MAP.REVIEW + "</b>: ";
         result += review;
         result += '</div>';
@@ -451,26 +544,47 @@ class TeaGallery {
         })
 
         let searchInput = document.getElementById(ELEMENT_ID.SEARCH_INPUT);
-        searchInput.addEventListener("input", this.handleChangeSearchValue);
+        if (searchInput) {
+            searchInput.addEventListener("input", this.handleChangeSearchValue);
+        }
         let searchButton = document.getElementById(ELEMENT_ID.SEARCH_BUTTON);
-        searchButton.addEventListener("click", this.handleChangeSearchFilter);
+        if (searchButton) {
+            searchButton.addEventListener("click", this.handleChangeSearchFilter);
+        }
         let searchClearButton = document.getElementById(ELEMENT_ID.SEARCH_CLEAR_BUTTON);
-        searchClearButton.addEventListener("click", this.handleClearSearchFilter);
+        if (searchClearButton) {
+            searchClearButton.addEventListener("click", this.handleClearSearchFilter);
+        }
 
         let tagsButtons = container.querySelectorAll(`#${ELEMENT_ID.TAGS} > div`);
         tagsButtons.forEach((tagButton) => {
             tagButton.addEventListener("click", this.handleSelectTag(tagButton));
         })
+
+        let randomizeTogglerButton = document.getElementById(ELEMENT_ID.RANDOMIZER_TOGGLER);
+        randomizeTogglerButton.addEventListener("click", this.handleToggleRandomizer);
+        let randomizeSubmitButton = document.getElementById(ELEMENT_ID.RANDOMIZER_SUBMIT);
+        if (randomizeSubmitButton) {
+            randomizeSubmitButton.addEventListener("click", this.handleSubmitRandomizer);
+        }
     }
 
     handleChangeCategory(categoryCard) {
         return (e) => {
             let category = categoryCard.getAttribute('data-category');
 
-            if (category !== this.categoryFilter) {
-                this.categoryFilter = category;
+            if (this.isRandomizerEnabled) {
+                if (!this.randomizerCategories.includes(category)) {
+                    this.randomizerCategories.push(category);
+                } else {
+                    this.randomizerCategories = this.randomizerCategories.filter((elem) => elem !== category);
+                }
             } else {
-                this.categoryFilter = null;
+                if (category !== this.categoryFilter) {
+                    this.categoryFilter = category;
+                } else {
+                    this.categoryFilter = null;
+                }
             }
 
             this.renderContent();
@@ -495,16 +609,67 @@ class TeaGallery {
         return (e) => {
             let tag = tagButton.getAttribute('data-tag');
 
-            if (!this.tagsFilterArray.includes(tag)) {
-                this.tagsFilterArray.push(tag);
+            if (this.isRandomizerEnabled) {
+                if (!this.randomizerTags.includes(tag)) {
+                    this.randomizerTags.push(tag);
+                } else {
+                    this.randomizerTags = this.randomizerTags.filter((elem) => elem !== tag);
+                }
             } else {
-                this.tagsFilterArray = this.tagsFilterArray.filter((elem) => elem !== tag);
+                if (!this.tagsFilterArray.includes(tag)) {
+                    this.tagsFilterArray.push(tag);
+                } else {
+                    this.tagsFilterArray = this.tagsFilterArray.filter((elem) => elem !== tag);
+                }
             }
 
             this.renderContent();
         }
     }
 
+    handleToggleRandomizer() {
+        if (this.isRandomizerEnabled) {
+            this.randomTeaInfo = null;
+            this.randomizerCategories = [];
+            this.randomizerTags = [];
+        } else {
+            this.randomTeaInfo = this.getRandomTea();
+        }
+        this.isRandomizerEnabled = !this.isRandomizerEnabled;
+        this.renderContent();
+    }
+
+    handleSubmitRandomizer() {
+        this.randomTeaInfo = this.getRandomTea();
+        this.renderContent();
+    }
+
+    getRandomTea() {
+        let categories = this.randomizerCategories.length > 0 ? this.randomizerCategories : this.categoriesData;
+        let data = {};
+        Object.values(categories).map((category) => {
+            let teaFiltered = this.data[category].filter((elem) => {
+                let teaTags = elem[KEYS_MAP.TAGS].split(",").map(elem => elem.trim());
+                let tagsDiff = this.randomizerTags.filter(tag => !teaTags.includes(tag));
+                return tagsDiff.length === 0;
+            });
+
+            if (teaFiltered && teaFiltered.length > 0) {
+                data[category] = teaFiltered;
+            }
+        });
+        let categoriesFiltered = Object.keys(data);
+        let category = categoriesFiltered[Math.floor(Math.random() * categoriesFiltered.length)];
+        let teaArray = data[category];
+        let tea = teaArray ? teaArray[Math.floor(Math.random() * teaArray.length)] : null;
+        let teaName = tea ? tea[KEYS_MAP.NAME] : null;
+
+        let teaInfo = {
+            category: category,
+            name: teaName,
+        }
+        return teaInfo
+    }
 }
 
 const publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/13gZJCXrIJ7dBWW-TaZ0c_CDD0pYNnZhVdrQD98VDcQE/edit?usp=sharing';
