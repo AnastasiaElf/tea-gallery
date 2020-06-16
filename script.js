@@ -31,6 +31,7 @@ const KEYS_MAP = {
     REVIEW: "Отзыв",
     COST: "Цена за 50г",
     TAGS: "Теги",
+    IN_STOCK: "В наличии"
 }
 
 const TABLEWARE = {
@@ -55,6 +56,13 @@ const ELEMENT_ID = {
     TAGS: "tags",
     RANDOMIZER_TOGGLER: "randomizer_toggler",
     RANDOMIZER_SUBMIT: "randomizer_submit",
+    STOCK_TYPE: "stock_type",
+}
+
+const STOCK_TYPE = {
+    ALL: "ALL",
+    IN_STOCK: "IN_STOCK",
+    OUT_OF_STOCK: "OUT_OF_STOCK"
 }
 
 class TeaGallery {
@@ -70,6 +78,7 @@ class TeaGallery {
     // randomizerCategories = null;
     // randomizerTags = null;
     // randomTeaInfo = null;
+    // stockType = null;
 
     constructor(containerId, spreadsheetUrl) {
         if (!publicSpreadsheetUrl) {
@@ -117,6 +126,7 @@ class TeaGallery {
         this.randomizerCategories = [];
         this.randomizerTags = [];
         this.randomTeaInfo = null;
+        this.stockType = STOCK_TYPE.ALL;
 
         this.renderContent();
     }
@@ -125,6 +135,7 @@ class TeaGallery {
         let result = '';
 
         result += this.renderCategories();
+        result += this.renderStockType();
         result += this.renderTags();
         result += this.renderRandomizerControls();
         result += this.renderSearch();
@@ -175,6 +186,15 @@ class TeaGallery {
         }
     }
 
+    renderStockType() {
+        let result = `<div id="${ELEMENT_ID.STOCK_TYPE}" class="tea-stock-type-container">`;
+        result += `<div class="tea-stock-type ${this.stockType === STOCK_TYPE.ALL ? "selected" : ""}" data-stock-type="${STOCK_TYPE.ALL}">Все</div>`;
+        result += `<div class="tea-stock-type ${this.stockType === STOCK_TYPE.IN_STOCK ? "selected" : ""}" data-stock-type="${STOCK_TYPE.IN_STOCK}">В наличии</div>`;
+        result += `<div class="tea-stock-type ${this.stockType === STOCK_TYPE.OUT_OF_STOCK ? "selected" : ""}" data-stock-type="${STOCK_TYPE.OUT_OF_STOCK}">Не в наличии</div>`;
+        result += '</div>';
+        return result;
+    }
+
     renderTags() {
         let result = `<div id="${ELEMENT_ID.TAGS}" class="tea-tags-container">`;
         this.tagsData.forEach((tag) => {
@@ -223,10 +243,19 @@ class TeaGallery {
         }
 
         categories.forEach((category) => {
-            let teaArray = this.data[category]
+            let teaArray = this.data[category];
             if (this.isRandomizerEnabled) {
-                teaArray = teaArray ? teaArray.filter((elem) => elem[KEYS_MAP.NAME] === this.randomTeaInfo.name) : [];
+                teaArray = teaArray ? [teaArray.find((elem) => elem[KEYS_MAP.NAME] === this.randomTeaInfo.name)] : [];
             } else {
+                if (this.stockType !== STOCK_TYPE.ALL) {
+                    teaArray = teaArray.filter((elem) => {
+                        if (this.stockType === STOCK_TYPE.IN_STOCK) {
+                            return JSON.parse(elem[KEYS_MAP.IN_STOCK].toLowerCase());
+                        } else {
+                            return !JSON.parse(elem[KEYS_MAP.IN_STOCK].toLowerCase());
+                        }
+                    });
+                }
                 if (this.tagsFilterArray.length > 0) {
                     teaArray = teaArray.filter((elem) => {
                         let teaTags = elem[KEYS_MAP.TAGS].split(",").map(elem => elem.trim());
@@ -561,6 +590,11 @@ class TeaGallery {
             tagButton.addEventListener("click", this.handleSelectTag(tagButton));
         })
 
+        let stockTypeButtons = container.querySelectorAll(`#${ELEMENT_ID.STOCK_TYPE} > div`);
+        stockTypeButtons.forEach((stockTypeButton) => {
+            stockTypeButton.addEventListener("click", this.handleChangeStockType(stockTypeButton));
+        })
+
         let randomizeTogglerButton = document.getElementById(ELEMENT_ID.RANDOMIZER_TOGGLER);
         randomizeTogglerButton.addEventListener("click", this.handleToggleRandomizer);
         let randomizeSubmitButton = document.getElementById(ELEMENT_ID.RANDOMIZER_SUBMIT);
@@ -627,6 +661,14 @@ class TeaGallery {
         }
     }
 
+    handleChangeStockType(stockTypeButton) {
+        return (e) => {
+            let stockType = stockTypeButton.getAttribute('data-stock-type');
+            this.stockType = stockType;
+            this.renderContent();
+        }
+    }
+
     handleToggleRandomizer() {
         if (this.isRandomizerEnabled) {
             this.randomTeaInfo = null;
@@ -659,6 +701,16 @@ class TeaGallery {
                 let tagsDiff = this.randomizerTags.filter(tag => !teaTags.includes(tag));
                 return tagsDiff.length === 0;
             });
+
+            if (this.stockType !== STOCK_TYPE.ALL) {
+                teaFiltered = teaFiltered.filter((elem) => {
+                    if (this.stockType === STOCK_TYPE.IN_STOCK) {
+                        return JSON.parse(elem[KEYS_MAP.IN_STOCK].toLowerCase());
+                    } else {
+                        return !JSON.parse(elem[KEYS_MAP.IN_STOCK].toLowerCase());
+                    }
+                });
+            }
 
             if (teaFiltered && teaFiltered.length > 0) {
                 data[category] = teaFiltered;

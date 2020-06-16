@@ -544,6 +544,56 @@ body,
 	}
 }
 
+/* TODO: refactor duplicated styles */
+
+.tea-stock-type-container {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	padding: 20px;
+}
+
+.tea-stock-type {
+	padding: 6px 14px;
+	border-radius: 20px;
+	background-color: #ebecf0;
+	text-shadow: 1px 1px 0 #fff;
+	color: #61677c;
+	box-shadow: -5px -5px 20px #fff, 5px 5px 20px #babecc;
+	transition: all 0.2s ease-in-out;
+	cursor: pointer;
+	font-size: 14px;
+	margin: 6px;
+}
+
+.tea-stock-type:hover {
+	box-shadow: -2px -2px 5px #ffffff, 2px 2px 5px #babecc;
+}
+
+.tea-stock-type:active,
+.tea-stock-type.selected {
+	box-shadow: inset 1px 1px 2px #babecc, inset -1px -1px 2px #fff;
+}
+
+@media (prefers-color-scheme: dark) {
+	.tea-stock-type {
+		background-color: #3f424e;
+		text-shadow: 1px 1px 0 #262933;
+		box-shadow: -2px -2px 12px #61677c, 5px 5px 12px #12141b;
+		color: #babecc;
+	}
+
+	.tea-stock-type:hover {
+		box-shadow: -2px -2px 5px #61677c, 2px 2px 5px #12141b;
+	}
+
+	.tea-stock-type:active,
+	.tea-stock-type.selected {
+		box-shadow: inset 1px 1px 2px #12141b, inset -1px -1px 2px #61677c;
+	}
+}
+
 .tea-randomizer-container {
 	display: flex;
 	flex-wrap: wrap;
