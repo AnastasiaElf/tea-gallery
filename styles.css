@@ -274,6 +274,19 @@ body,
 	color: #93e22b;
 }
 
+.tea-card.tea-category-black {
+	border-color: #131313;
+}
+
+.tea-category-icon-container.tea-category-black {
+	border-color: #131313;
+}
+
+.tea-category-icon-container.tea-category-black .tea-category-icon {
+	color: #131313;
+}
+
+
 .tea-tableware-container {
 	display: flex;
 	align-items: center;

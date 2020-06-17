@@ -8,6 +8,7 @@ const CATEGORIES_MAP = {
     OOLONG: "Улун",
     OTHERS: "НеЧай",
     MATI: "Мате",
+    BLACK: "Черный",
 }
 
 const CATEGORIES_CLASSNAMES_MAP = {
@@ -20,6 +21,7 @@ const CATEGORIES_CLASSNAMES_MAP = {
     [CATEGORIES_MAP.OOLONG]: "oolong",
     [CATEGORIES_MAP.OTHERS]: "others",
     [CATEGORIES_MAP.MATI]: "mati",
+    [CATEGORIES_MAP.BLACK]: "black",
 }
 
 const KEYS_MAP = {
