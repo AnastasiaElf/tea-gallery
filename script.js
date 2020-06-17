@@ -280,6 +280,8 @@ class TeaGallery {
             result += '<div id="bar-chart-all" class="chart-container"></div>';
             result += '<div id="pie-chart-in-stock" class="chart-container"></div>';
             result += '<div id="bar-chart-in-stock" class="chart-container"></div>';
+            result += '<div id="pie-chart-out-of-stock" class="chart-container"></div>';
+            result += '<div id="bar-chart-out-of-stock" class="chart-container"></div>';
             result += '</div>';
             return result;
         } else {
@@ -948,6 +950,63 @@ class TeaGallery {
             };
             let inStockBarChart = new ApexCharts(document.querySelector("#bar-chart-in-stock"), inStockBarChartOptions);
             inStockBarChart.render();
+
+            let outOfStockPieChartOptions = {
+                title: {
+                    text: "Не в наличии",
+                    align: 'center',
+                    style: {
+                        fontWeight: '500',
+                    },
+                },
+                colors: this.categoriesData.map((category) => CATEGORIES_COLOR[category]),
+                series: this.categoriesData.map((category) => this.data[category].outOfStockAmount),
+                chart: {
+                    width: "100%",
+                    type: 'pie',
+                },
+                labels: this.categoriesData,
+                responsive: [{
+                    breakpoint: 480,
+                    options: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }]
+            };
+            let outOfStockPieChart = new ApexCharts(document.querySelector("#pie-chart-out-of-stock"), outOfStockPieChartOptions);
+            outOfStockPieChart.render();
+
+            let outOfStockBarChartOptions = {
+                title: {
+                    text: "Не в наличии",
+                    align: 'center',
+                    style: {
+                        fontWeight: '500',
+                    },
+                },
+                colors: this.categoriesData.map((category) => CATEGORIES_COLOR[category]),
+                series: [{ data: this.categoriesData.map((category) => this.data[category].outOfStockAmount) }],
+                chart: {
+                    width: "100%",
+                    type: 'bar',
+                    toolbar: {
+                        show: false
+                    }
+                },
+                labels: this.categoriesData,
+                plotOptions: {
+                    bar: {
+                        distributed: true
+                    }
+                },
+                legend: {
+                    show: false
+                }
+            };
+            let outOfStockBarChart = new ApexCharts(document.querySelector("#bar-chart-out-of-stock"), outOfStockBarChartOptions);
+            outOfStockBarChart.render();
         }
     }
 }
