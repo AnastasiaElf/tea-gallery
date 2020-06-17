@@ -875,6 +875,9 @@ class TeaGallery {
                 chart: {
                     width: "100%",
                     type: 'bar',
+                    toolbar: {
+                        show: false
+                    }
                 },
                 labels: this.categoriesData,
                 plotOptions: {
@@ -883,7 +886,7 @@ class TeaGallery {
                     }
                 },
                 legend: {
-                    show: false,
+                    show: false
                 }
             };
             let allBarChart = new ApexCharts(document.querySelector("#bar-chart-all"), allBarChartOptions);
@@ -929,7 +932,9 @@ class TeaGallery {
                 chart: {
                     width: "100%",
                     type: 'bar',
-                    stacked: true,
+                    toolbar: {
+                        show: false
+                    }
                 },
                 labels: this.categoriesData,
                 plotOptions: {
@@ -938,7 +943,7 @@ class TeaGallery {
                     }
                 },
                 legend: {
-                    show: false,
+                    show: false
                 }
             };
             let inStockBarChart = new ApexCharts(document.querySelector("#bar-chart-in-stock"), inStockBarChartOptions);

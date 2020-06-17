@@ -640,12 +640,38 @@ body,
 	flex-wrap: wrap;
 	width: 100%;
 	max-width: 1000px;
-    margin: 0 auto;
+	margin: 0 auto;
 }
 
-.chart-container{
+.chart-container {
 	width: 100%;
 	max-width: 400px;
+}
+
+.chart-container .apexcharts-legend-text {
+	color: #61677c !important;
+	text-shadow: 1px 1px 0 #fff;
+}
+
+.chart-container .apexcharts-title-text,
+.chart-container .apexcharts-text.apexcharts-xaxis-label,
+.chart-container .apexcharts-text.apexcharts-yaxis-label {
+	fill: #61677c;
+	text-shadow: 1px 1px 0 #fff;
+}
+
+@media (prefers-color-scheme: dark) {
+	.chart-container .apexcharts-legend-text {
+		color: #babecc !important;
+		text-shadow: 1px 1px 0 #262933;
+	}
+
+	.chart-container .apexcharts-title-text,
+	.chart-container .apexcharts-text.apexcharts-xaxis-label,
+	.chart-container .apexcharts-text.apexcharts-yaxis-label {
+		fill: #babecc;
+		text-shadow: 1px 1px 0 #262933;
+	}
 }
 
 .tea-param {
