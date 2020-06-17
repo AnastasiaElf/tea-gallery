@@ -114,7 +114,14 @@ class TeaGallery {
     onGetDataFromSpreadsheet(data) {
         this.data = {};
         Object.values(CATEGORIES_MAP).forEach((category) => {
-            this.data[category] = data[category].all();
+            let teaList = data[category].all();
+            this.data[category] = {
+                name: category,
+                teaList: teaList,
+                totalAmount: teaList.length,
+                inStockAmount: teaList.reduce((sum, tea) => JSON.parse(tea[KEYS_MAP.IN_STOCK].toLowerCase())? ++sum : sum, 0),
+                outOfStockAmount: teaList.reduce((sum, tea) => !JSON.parse(tea[KEYS_MAP.IN_STOCK].toLowerCase()) ? ++sum : sum, 0),
+            };
         });
         this.categoriesData = Object.values(CATEGORIES_MAP).sort();
         this.categoryFilter = null;
@@ -243,7 +250,7 @@ class TeaGallery {
         }
 
         categories.forEach((category) => {
-            let teaArray = this.data[category];
+            let teaArray = this.data[category].teaList;
             if (this.isRandomizerEnabled) {
                 teaArray = teaArray ? [teaArray.find((elem) => elem[KEYS_MAP.NAME] === this.randomTeaInfo.name)] : [];
             } else {
@@ -282,6 +289,7 @@ class TeaGallery {
             result += '<div class="table-divider"></div>';
             result += '<h5 class="table-name">';
             result += category;
+            result += ` (${this.data[category].inStockAmount}/${this.data[category].totalAmount})`;
             result += '</h5>';
 
             if (categories.length === 1 && teaArray.length < 1) {
@@ -293,7 +301,7 @@ class TeaGallery {
             result += '<div class="table-data">';
 
             teaArray.forEach(teaData => {
-                result += `<div class="tea-card tea-category-${CATEGORIES_CLASSNAMES_MAP[category]}">`;
+                result += `<div class="tea-card tea-category-${CATEGORIES_CLASSNAMES_MAP[category]} ${JSON.parse(teaData[KEYS_MAP.IN_STOCK].toLowerCase()) ? "" : "out-of-stock"}">`;
                 result += this.getItemRatingInfo(teaData[KEYS_MAP.RATING]);
                 result += this.getItemNameInfo(teaData[KEYS_MAP.NAME]);
                 result += this.getItemBrewingTimeInfo(teaData[KEYS_MAP.BREWING_TIME]);
@@ -696,7 +704,7 @@ class TeaGallery {
         let categories = this.randomizerCategories.length > 0 ? this.randomizerCategories : this.categoriesData;
         let data = {};
         Object.values(categories).map((category) => {
-            let teaFiltered = this.data[category].filter((elem) => {
+            let teaFiltered = this.data[category].teaList.filter((elem) => {
                 let teaTags = elem[KEYS_MAP.TAGS].split(",").map(elem => elem.trim());
                 let tagsDiff = this.randomizerTags.filter(tag => !teaTags.includes(tag));
                 return tagsDiff.length === 0;
