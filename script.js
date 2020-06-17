@@ -24,6 +24,19 @@ const CATEGORIES_CLASSNAMES_MAP = {
     [CATEGORIES_MAP.BLACK]: "black",
 }
 
+const CATEGORIES_COLOR = {
+    [CATEGORIES_MAP.GREEN]: "#009245",
+    [CATEGORIES_MAP.RED]: "#e0421b",
+    [CATEGORIES_MAP.WHITE]: "#cccccc",
+    [CATEGORIES_MAP.JAPANESE]: "#709200",
+    [CATEGORIES_MAP.SHU]: "#925c00",
+    [CATEGORIES_MAP.SHEN]: "#436b26",
+    [CATEGORIES_MAP.OOLONG]: "#00b3ad",
+    [CATEGORIES_MAP.OTHERS]: "#80559c",
+    [CATEGORIES_MAP.MATI]: "#93e22b",
+    [CATEGORIES_MAP.BLACK]: "#131313",
+}
+
 const KEYS_MAP = {
     NAME: "Название",
     BREWING_TIME: "Время заваривания",
@@ -59,6 +72,7 @@ const ELEMENT_ID = {
     RANDOMIZER_TOGGLER: "randomizer_toggler",
     RANDOMIZER_SUBMIT: "randomizer_submit",
     STOCK_TYPE: "stock_type",
+    STATISTICS_TOGGLER: "statistics_toggler",
 }
 
 const STOCK_TYPE = {
@@ -81,6 +95,7 @@ class TeaGallery {
     // randomizerTags = null;
     // randomTeaInfo = null;
     // stockType = null;
+    // isStatisticsEnabled = false;
 
     constructor(containerId, spreadsheetUrl) {
         if (!publicSpreadsheetUrl) {
@@ -103,6 +118,7 @@ class TeaGallery {
         this.handleClearSearchFilter = this.handleClearSearchFilter.bind(this);
         this.handleToggleRandomizer = this.handleToggleRandomizer.bind(this);
         this.handleSubmitRandomizer = this.handleSubmitRandomizer.bind(this);
+        this.handleToggleStatistics = this.handleToggleStatistics.bind(this);
         this.getData(spreadsheetUrl);
     }
 
@@ -121,7 +137,7 @@ class TeaGallery {
                 name: category,
                 teaList: teaList,
                 totalAmount: teaList.length,
-                inStockAmount: teaList.reduce((sum, tea) => JSON.parse(tea[KEYS_MAP.IN_STOCK].toLowerCase())? ++sum : sum, 0),
+                inStockAmount: teaList.reduce((sum, tea) => JSON.parse(tea[KEYS_MAP.IN_STOCK].toLowerCase()) ? ++sum : sum, 0),
                 outOfStockAmount: teaList.reduce((sum, tea) => !JSON.parse(tea[KEYS_MAP.IN_STOCK].toLowerCase()) ? ++sum : sum, 0),
             };
         });
@@ -136,6 +152,7 @@ class TeaGallery {
         this.randomizerTags = [];
         this.randomTeaInfo = null;
         this.stockType = STOCK_TYPE.ALL;
+        this.isStatisticsEnabled = false;
 
         this.renderContent();
     }
@@ -143,16 +160,21 @@ class TeaGallery {
     renderContent() {
         let result = '';
 
-        result += this.renderCategories();
-        result += this.renderStockType();
-        result += this.renderTags();
-        result += this.renderRandomizerControls();
-        result += this.renderSearch();
-        result += this.renderCards();
+        result += this.renderStatisticsControls();
+        result += this.renderStatisticsInfo();
+        if (!this.isStatisticsEnabled) {
+            result += this.renderCategories();
+            result += this.renderStockType();
+            result += this.renderTags();
+            result += this.renderRandomizerControls();
+            result += this.renderSearch();
+            result += this.renderCards();
+        }
 
         this.container.innerHTML = result;
 
         this.addEventListeners();
+        this.renderCharts();
     }
 
     renderCategories() {
@@ -185,7 +207,7 @@ class TeaGallery {
             let result = `<div class="tea-search-container">`;
             result += `<input id="${ELEMENT_ID.SEARCH_INPUT}" class="tea-input tea-search-input" type="text" placeholder="Найти..." value="${this.searchInputValue}"></input>`
             result += '<div class="tea-search-buttons-container">';
-            result += `<button id="${ELEMENT_ID.SEARCH_BUTTON}" class="tea-button tea-search-button">Найти</button>`
+            result += `<button id="${ELEMENT_ID.SEARCH_BUTTON}" class="tea-button tea-search-button tea-button-margin-right">Найти</button>`
             result += `<button id="${ELEMENT_ID.SEARCH_CLEAR_BUTTON}" class="tea-button tea-search-clear-button">Очистить</button>`
             result += '</div>';
             result += '</div>';
@@ -224,13 +246,45 @@ class TeaGallery {
     renderRandomizerControls() {
         let result = `<div class="tea-randomizer-container">`;
         if (this.isRandomizerEnabled) {
-            result += `<button id="${ELEMENT_ID.RANDOMIZER_SUBMIT}" class="tea-button tea-search-clear-button">Подобрать чай</button>`;
-            result += `<button id="${ELEMENT_ID.RANDOMIZER_TOGGLER}" class="tea-button tea-search-clear-button">Вернуться ко всем чаям</button>`;
+            result += `<button id="${ELEMENT_ID.RANDOMIZER_SUBMIT}" class="tea-button tea-button-margin-right">Подобрать чай</button>`;
+            result += `<button id="${ELEMENT_ID.RANDOMIZER_TOGGLER}" class="tea-button">Вернуться ко всем чаям</button>`;
         } else {
             result += `<button id="${ELEMENT_ID.RANDOMIZER_TOGGLER}" class="tea-button tea-search-button">Случайный чай</button>`;
         }
         result += '</div>';
         return result;
+    }
+
+    renderStatisticsControls() {
+        if (!this.isRandomizerEnabled) {
+            let result = `<div class="tea-statistics-container">`;
+            if (this.isStatisticsEnabled) {
+                result += `<button id="${ELEMENT_ID.STATISTICS_TOGGLER}" class="tea-button">Вернуться ко всем чаям</button>`;
+            } else {
+                result += `<button id="${ELEMENT_ID.STATISTICS_TOGGLER}" class="tea-button">Статистика</button>`;
+            }
+            result += '</div>';
+            return result;
+        } else {
+            return '';
+        }
+    }
+
+    renderStatisticsInfo() {
+        if (this.isStatisticsEnabled) {
+            let result = '<div class="tea-statistics-info-container">';
+            result += '<div id="pie-chart-stock" class="chart-container"></div>';
+            result += '</div>';
+            result += '<div class="tea-statistics-info-container">';
+            result += '<div id="pie-chart-all" class="chart-container"></div>';
+            result += '<div id="bar-chart-all" class="chart-container"></div>';
+            result += '<div id="pie-chart-in-stock" class="chart-container"></div>';
+            result += '<div id="bar-chart-in-stock" class="chart-container"></div>';
+            result += '</div>';
+            return result;
+        } else {
+            return "";
+        }
     }
 
     renderCards() {
@@ -606,11 +660,16 @@ class TeaGallery {
         })
 
         let randomizeTogglerButton = document.getElementById(ELEMENT_ID.RANDOMIZER_TOGGLER);
-        randomizeTogglerButton.addEventListener("click", this.handleToggleRandomizer);
+        if (randomizeTogglerButton) {
+            randomizeTogglerButton.addEventListener("click", this.handleToggleRandomizer);
+        }
         let randomizeSubmitButton = document.getElementById(ELEMENT_ID.RANDOMIZER_SUBMIT);
         if (randomizeSubmitButton) {
             randomizeSubmitButton.addEventListener("click", this.handleSubmitRandomizer);
         }
+
+        let statisticsTogglerButton = document.getElementById(ELEMENT_ID.STATISTICS_TOGGLER);
+        statisticsTogglerButton.addEventListener("click", this.handleToggleStatistics);
     }
 
     handleChangeCategory(categoryCard) {
@@ -737,6 +796,154 @@ class TeaGallery {
             name: teaName,
         }
         return teaInfo
+    }
+
+    handleToggleStatistics() {
+        this.isStatisticsEnabled = !this.isStatisticsEnabled;
+        this.renderContent();
+    }
+
+    renderCharts() {
+        if (this.isStatisticsEnabled) {
+            let stockPieChartOptions = {
+                title: {
+                    text: "Все чаи",
+                    align: 'center',
+                    style: {
+                        fontWeight: '500',
+                    },
+                },
+                colors: ["#009245", "#cccccc"],
+                series: [
+                    this.categoriesData.reduce((sum, category) => sum + this.data[category].inStockAmount, 0),
+                    this.categoriesData.reduce((sum, category) => sum + this.data[category].outOfStockAmount, 0)
+                ],
+                chart: {
+                    width: "100%",
+                    type: 'pie',
+                },
+                labels: ["В наличии", "Не в наличии"],
+                responsive: [{
+                    breakpoint: 480,
+                    options: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }]
+            };
+            let stockPieChart = new ApexCharts(document.querySelector("#pie-chart-stock"), stockPieChartOptions);
+            stockPieChart.render();
+
+            let allPieChartOptions = {
+                title: {
+                    text: "Все чаи",
+                    align: 'center',
+                    style: {
+                        fontWeight: '500',
+                    },
+                },
+                colors: this.categoriesData.map((category) => CATEGORIES_COLOR[category]),
+                series: this.categoriesData.map((category) => this.data[category].totalAmount),
+                chart: {
+                    width: "100%",
+                    type: 'pie',
+                },
+                labels: this.categoriesData,
+                responsive: [{
+                    breakpoint: 480,
+                    options: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }]
+            };
+            let allPieChart = new ApexCharts(document.querySelector("#pie-chart-all"), allPieChartOptions);
+            allPieChart.render();
+
+            let allBarChartOptions = {
+                title: {
+                    text: "Все чаи",
+                    align: 'center',
+                    style: {
+                        fontWeight: '500',
+                    },
+                },
+                colors: this.categoriesData.map((category) => CATEGORIES_COLOR[category]),
+                series: [{ data: this.categoriesData.map((category) => this.data[category].totalAmount) }],
+                chart: {
+                    width: "100%",
+                    type: 'bar',
+                },
+                labels: this.categoriesData,
+                plotOptions: {
+                    bar: {
+                        distributed: true
+                    }
+                },
+                legend: {
+                    show: false,
+                }
+            };
+            let allBarChart = new ApexCharts(document.querySelector("#bar-chart-all"), allBarChartOptions);
+            allBarChart.render();
+
+            let inStockPieChartOptions = {
+                title: {
+                    text: "В наличии",
+                    align: 'center',
+                    style: {
+                        fontWeight: '500',
+                    },
+                },
+                colors: this.categoriesData.map((category) => CATEGORIES_COLOR[category]),
+                series: this.categoriesData.map((category) => this.data[category].inStockAmount),
+                chart: {
+                    width: "100%",
+                    type: 'pie',
+                },
+                labels: this.categoriesData,
+                responsive: [{
+                    breakpoint: 480,
+                    options: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }]
+            };
+            let inStockPieChart = new ApexCharts(document.querySelector("#pie-chart-in-stock"), inStockPieChartOptions);
+            inStockPieChart.render();
+
+            let inStockBarChartOptions = {
+                title: {
+                    text: "В наличии",
+                    align: 'center',
+                    style: {
+                        fontWeight: '500',
+                    },
+                },
+                colors: this.categoriesData.map((category) => CATEGORIES_COLOR[category]),
+                series: [{ data: this.categoriesData.map((category) => this.data[category].inStockAmount) }],
+                chart: {
+                    width: "100%",
+                    type: 'bar',
+                    stacked: true,
+                },
+                labels: this.categoriesData,
+                plotOptions: {
+                    bar: {
+                        distributed: true
+                    }
+                },
+                legend: {
+                    show: false,
+                }
+            };
+            let inStockBarChart = new ApexCharts(document.querySelector("#bar-chart-in-stock"), inStockBarChartOptions);
+            inStockBarChart.render();
+        }
     }
 }
 
