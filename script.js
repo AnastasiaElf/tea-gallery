@@ -38,6 +38,7 @@ const CATEGORIES_COLOR = {
 }
 
 const KEYS_MAP = {
+    CATEGORY: "Вид",
     NAME: "Название",
     BREWING_TIME: "Время заваривания",
     TEMPERATURE: "Температура воды",
@@ -123,16 +124,27 @@ class TeaGallery {
     }
 
     getData(spreadsheetUrl) {
-        Tabletop.init({
-            key: spreadsheetUrl,
-            callback: this.onGetDataFromSpreadsheet
-        })
+        Papa.parse(spreadsheetUrl, {
+            download: true,
+            header: true,
+            complete: this.onGetDataFromSpreadsheet
+          })
     }
 
     onGetDataFromSpreadsheet(data) {
         this.data = {};
+
+        let reducedData = data.data.reduce((result, value) => {
+            let category = value[KEYS_MAP.CATEGORY];
+
+            result[category] = result[category] || [];
+            result[category].push(value);
+
+            return result;
+        }, {})
+
         Object.values(CATEGORIES_MAP).forEach((category) => {
-            let teaList = data[category].all();
+        let teaList = reducedData[category] || [];
             this.data[category] = {
                 name: category,
                 teaList: teaList,
@@ -1011,6 +1023,6 @@ class TeaGallery {
     }
 }
 
-const publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/13gZJCXrIJ7dBWW-TaZ0c_CDD0pYNnZhVdrQD98VDcQE/edit?usp=sharing';
+const publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQpTjrajTJBBVhh--4YMoEigqzpbGXiuz6zvIdgh6YAGnzkVhPyZ4piynKA8GuZ-dIvWqFNZRKvRLux/pub?gid=262473402&single=true&output=csv'
 
 const teaGallery = new TeaGallery("container", publicSpreadsheetUrl);
