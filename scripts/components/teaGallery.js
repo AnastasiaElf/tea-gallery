@@ -1,4 +1,4 @@
-import { CATEGORIES_MAP, KEYS_MAP } from "./../constants.js";
+import { TEA_GROUP_NAME, DATA_KEY } from "./../constants.js";
 
 export class TeaGallery {
     #container;
@@ -55,32 +55,32 @@ export class TeaGallery {
 
     #setData(data) {
         this.#data = {};
+        let groupsData = {};
 
-        let reducedData = data.reduce((result, value) => {
-            let category = value[KEYS_MAP.CATEGORY];
-
-            result[category] = result[category] || [];
-            result[category].push(value);
-
-            return result;
-        }, {});
-
-        Object.values(CATEGORIES_MAP).forEach((category) => {
-            let teaList = reducedData[category] || [];
-            this.#data[category] = {
-                name: category,
-                teaList: teaList,
-                totalAmount: teaList.length,
-                inStockAmount: teaList.reduce(
-                    (sum, tea) => (JSON.parse(tea[KEYS_MAP.IN_STOCK].toLowerCase()) ? ++sum : sum),
-                    0
-                ),
-                outOfStockAmount: teaList.reduce(
-                    (sum, tea) => (!JSON.parse(tea[KEYS_MAP.IN_STOCK].toLowerCase()) ? ++sum : sum),
-                    0
-                ),
-            };
+        Object.values(TEA_GROUP_NAME).forEach((groupName) => {
+            groupsData[groupName] = { items: [] };
         });
+
+        data.forEach((item) => {
+            const groupName = item[DATA_KEY.GROUP];
+
+            groupsData[groupName].items.push({
+                ...item,
+                [DATA_KEY.IN_STOCK]: JSON.parse(item[DATA_KEY.IN_STOCK].toLowerCase()),
+            });
+        });
+
+        Object.keys(groupsData).forEach((groupName) => {
+            let groupData = groupsData[groupName];
+            console.log(groupName);
+
+            groupData.stats = {};
+            groupData.stats.total = groupData.items.length;
+            groupData.stats.inStock = groupData.items.reduce((sum, item) => (item[DATA_KEY.IN_STOCK] ? ++sum : sum), 0);
+            groupData.stats.outOfStock = groupData.stats.total - groupData.stats.inStock;
+        });
+
+        this.#data = groupsData;
     }
 
     #renderToString() {

@@ -9,7 +9,7 @@ export const CATEGORIES_MAP = {
     OTHERS: "НеЧай",
     MATI: "Мате",
     BLACK: "Черный",
-}
+};
 
 export const CATEGORIES_CLASSNAMES_MAP = {
     [CATEGORIES_MAP.GREEN]: "green",
@@ -22,7 +22,7 @@ export const CATEGORIES_CLASSNAMES_MAP = {
     [CATEGORIES_MAP.OTHERS]: "others",
     [CATEGORIES_MAP.MATI]: "mati",
     [CATEGORIES_MAP.BLACK]: "black",
-}
+};
 
 export const CATEGORIES_COLOR = {
     [CATEGORIES_MAP.GREEN]: "#009245",
@@ -35,7 +35,7 @@ export const CATEGORIES_COLOR = {
     [CATEGORIES_MAP.OTHERS]: "#80559c",
     [CATEGORIES_MAP.MATI]: "#93e22b",
     [CATEGORIES_MAP.BLACK]: "#131313",
-}
+};
 
 export const KEYS_MAP = {
     CATEGORY: "Вид",
@@ -47,22 +47,22 @@ export const KEYS_MAP = {
     REVIEW: "Отзыв",
     COST: "Цена за 50г",
     TAGS: "Теги",
-    IN_STOCK: "В наличии"
-}
+    IN_STOCK: "В наличии",
+};
 
 export const TABLEWARE = {
     CLAY: "Глина",
     PORCELAIN: "Фарфор",
     GLASS: "Стекло",
     TEAPOT: "Заварник",
-    THERMOS: "Термос"
-}
+    THERMOS: "Термос",
+};
 
 export const TAGS = {
     MORNING: "Утренний",
     EVENING: "Вечерний",
-    SPECIAL: "Особый"
-}
+    SPECIAL: "Особый",
+};
 
 export const ELEMENT_ID = {
     CATEGORIES: "categories",
@@ -74,10 +74,38 @@ export const ELEMENT_ID = {
     RANDOMIZER_SUBMIT: "randomizer_submit",
     STOCK_TYPE: "stock_type",
     STATISTICS_TOGGLER: "statistics_toggler",
-}
+};
 
 export const STOCK_TYPE = {
     ALL: "ALL",
     IN_STOCK: "IN_STOCK",
-    OUT_OF_STOCK: "OUT_OF_STOCK"
-}
+    OUT_OF_STOCK: "OUT_OF_STOCK",
+};
+
+/* ------------------------------------------------------------- */
+
+export const DATA_KEY = {
+    GROUP: "Вид",
+    NAME: "Название",
+    BREWING_TIME: "Время заваривания",
+    TEMPERATURE: "Температура воды",
+    TABLEWARE: "Посуда",
+    RATING: "Оценка",
+    REVIEW: "Отзыв",
+    COST: "Цена за 50г",
+    TAGS: "Теги",
+    IN_STOCK: "В наличии",
+};
+
+export const TEA_GROUP_NAME = {
+    GREEN: "Зеленый",
+    RED: "Красный",
+    WHITE: "Белый",
+    JAPANESE: "Японский",
+    SHU: "Шу",
+    SHEN: "Шен",
+    OOLONG: "Улун",
+    OTHERS: "НеЧай",
+    MATI: "Мате",
+    BLACK: "Черный",
+};
