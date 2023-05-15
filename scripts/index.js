@@ -1,3 +1,4 @@
+import { TeaGallery } from "./components/teaGallery.js";
 import {
     CATEGORIES_MAP,
     CATEGORIES_CLASSNAMES_MAP,
@@ -10,8 +11,7 @@ import {
 } from "./constants.js";
 import { ClayIcon, GlassIcon, PorcelainIcon, TeapotIcon, ThermosIcon } from "./icons.js";
 
-class TeaGallery {
-    // TODO: remove this or add clean details about all class fileds (how to do this better?)
+class TeaGallerOld {
     // container = null;
     // data = null;
     // categoriesData = null;
@@ -952,4 +952,13 @@ class TeaGallery {
 const publicSpreadsheetUrl =
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vQpTjrajTJBBVhh--4YMoEigqzpbGXiuz6zvIdgh6YAGnzkVhPyZ4piynKA8GuZ-dIvWqFNZRKvRLux/pub?gid=262473402&single=true&output=csv";
 
-const teaGallery = new TeaGallery("container", publicSpreadsheetUrl);
+const teaGalleryOld = new TeaGallerOld("container", publicSpreadsheetUrl);
+
+/* ------------------------------------------------------------- */
+
+const dataUrl =
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vQpTjrajTJBBVhh--4YMoEigqzpbGXiuz6zvIdgh6YAGnzkVhPyZ4piynKA8GuZ-dIvWqFNZRKvRLux/pub?gid=262473402&single=true&output=csv";
+
+const teaGallery = new TeaGallery("root", dataUrl);
+
+teaGallery.render();
