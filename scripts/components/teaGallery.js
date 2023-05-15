@@ -1,64 +1,38 @@
 import { TEA_GROUP_NAME, DATA_KEY } from "./../constants.js";
+import { CardGroup } from "./cardGroup.js";
 
 export class TeaGallery {
     #container;
-    #dataURL;
-    #data = {};
+    #data = [];
+    #groups = [];
 
-    /**
-     * Init
-     * @param {string} containerId - Container ID.
-     * @param {string} dataURL - Data URL.
-     */
-    constructor(containerId, dataURL) {
-        if (!dataURL) {
-            throw Error("Constructor param dataURL is missing");
+    constructor(container, data) {
+        if (!data) {
+            throw Error("Constructor param data is missing");
         }
 
-        if (!containerId) {
-            throw Error("Constructor param containerId is missing");
+        if (!container) {
+            throw Error("Constructor param container is missing");
         }
 
-        this.#container = document.getElementById(containerId);
-
-        if (!this.#container) {
-            throw Error("Container is not found");
-        }
-
-        this.#dataURL = dataURL;
+        this.#container = container;
+        this.#setData(data);
     }
 
-    /**
-     * Render component
-     */
     render() {
-        this.#fetchData().then((data) => {
-            this.#setData(data);
-            this.#container.innerHTML = this.#renderToString();
-        });
-    }
-
-    #fetchData() {
-        return new Promise((resolve, reject) => {
-            Papa.parse(this.#dataURL, {
-                download: true,
-                header: true,
-                complete(results) {
-                    resolve(results.data);
-                },
-                error(err) {
-                    reject(err);
-                },
-            });
+        this.#data.forEach((groupData) => {
+            let group = new CardGroup(this.#container, groupData);
+            this.#groups.push(group);
+            group.render();
         });
     }
 
     #setData(data) {
-        this.#data = {};
+        this.#data = [];
         let groupsData = {};
 
         Object.values(TEA_GROUP_NAME).forEach((groupName) => {
-            groupsData[groupName] = { items: [] };
+            groupsData[groupName] = { name: groupName, items: [] };
         });
 
         data.forEach((item) => {
@@ -70,21 +44,20 @@ export class TeaGallery {
             });
         });
 
-        Object.keys(groupsData).forEach((groupName) => {
-            let groupData = groupsData[groupName];
-            console.log(groupName);
+        Object.keys(groupsData)
+            .sort()
+            .forEach((groupName) => {
+                let groupData = groupsData[groupName];
 
-            groupData.stats = {};
-            groupData.stats.total = groupData.items.length;
-            groupData.stats.inStock = groupData.items.reduce((sum, item) => (item[DATA_KEY.IN_STOCK] ? ++sum : sum), 0);
-            groupData.stats.outOfStock = groupData.stats.total - groupData.stats.inStock;
-        });
+                groupData.stats = {};
+                groupData.stats.total = groupData.items.length;
+                groupData.stats.inStock = groupData.items.reduce(
+                    (sum, item) => (item[DATA_KEY.IN_STOCK] ? ++sum : sum),
+                    0
+                );
+                groupData.stats.outOfStock = groupData.stats.total - groupData.stats.inStock;
 
-        this.#data = groupsData;
-    }
-
-    #renderToString() {
-        let result = "<div>HTML HERE</div>";
-        return result;
+                this.#data.push(groupData);
+            });
     }
 }
