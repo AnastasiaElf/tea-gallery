@@ -92,7 +92,7 @@ export const DATA_KEY = {
     TABLEWARE: "Посуда",
     RATING: "Оценка",
     REVIEW: "Отзыв",
-    COST: "Цена за 50г",
+    PRICE: "Цена за 50г",
     TAGS: "Теги",
     IN_STOCK: "В наличии",
 };
@@ -108,4 +108,17 @@ export const TEA_GROUP_NAME = {
     OTHERS: "НеЧай",
     MATI: "Мате",
     BLACK: "Черный",
+};
+
+export const TEA_GROUP_CLASS_NAME = {
+    [CATEGORIES_MAP.GREEN]: "green",
+    [CATEGORIES_MAP.RED]: "red",
+    [CATEGORIES_MAP.WHITE]: "white",
+    [CATEGORIES_MAP.JAPANESE]: "japanese",
+    [CATEGORIES_MAP.SHU]: "shu",
+    [CATEGORIES_MAP.SHEN]: "shen",
+    [CATEGORIES_MAP.OOLONG]: "oolong",
+    [CATEGORIES_MAP.OTHERS]: "others",
+    [CATEGORIES_MAP.MATI]: "mati",
+    [CATEGORIES_MAP.BLACK]: "black",
 };
