@@ -122,3 +122,27 @@ export const TEA_GROUP_CLASS_NAME = {
     [CATEGORIES_MAP.MATI]: "mati",
     [CATEGORIES_MAP.BLACK]: "black",
 };
+
+export const IN_STOCK_OPTIONS = {
+    ALL: "ALL",
+    IN_STOCK: "IN_STOCK",
+    OUT_OF_STOCK: "OUT_OF_STOCK",
+};
+
+export const IN_STOCK_LABELS = {
+    [IN_STOCK_OPTIONS.ALL]: "All",
+    [IN_STOCK_OPTIONS.IN_STOCK]: "In stock",
+    [IN_STOCK_OPTIONS.OUT_OF_STOCK]: "Out of stock",
+};
+
+export const TAG_LABELS = {
+    MORNING: "Morning",
+    EVENING: "Evening",
+    SPECIAL: "Special",
+};
+
+export const DOM_ELEMENT_ID = {
+    GROUPS: "groups",
+    IN_STOCK_OPTIONS: "in-stock_options",
+    TAG_LIST: "tag-list",
+};

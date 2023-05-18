@@ -1,10 +1,17 @@
-import { TEA_GROUP_NAME, DATA_KEY } from "./../constants.js";
+import { TEA_GROUP_NAME, DATA_KEY, IN_STOCK_OPTIONS, TAGS } from "./../constants.js";
 import { CardGroup } from "./cardGroup.js";
+import { Settings } from "./settings.js";
 
 export class TeaGallery {
     #container;
     #data = [];
     #groups = [];
+    #settings = {
+        inStock: IN_STOCK_OPTIONS.ALL,
+        tags: [],
+        randomEnabled: false,
+        searchValue: null,
+    };
 
     constructor(container, data) {
         if (!data) {
@@ -20,6 +27,9 @@ export class TeaGallery {
     }
 
     render() {
+        let settings = new Settings(this.#container, this.#settings);
+        settings.render();
+
         this.#data.forEach((groupData) => {
             let group = new CardGroup(this.#container, groupData);
             this.#groups.push(group);
