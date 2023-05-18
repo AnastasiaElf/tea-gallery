@@ -1,7 +1,16 @@
-import { DOM_ELEMENT_ID, IN_STOCK_OPTIONS, IN_STOCK_LABELS, TAGS, TAG_LABELS } from "./../constants.js";
+import {
+    DOM_ELEMENT_ID,
+    IN_STOCK_OPTIONS,
+    IN_STOCK_LABELS,
+    TAGS,
+    TAG_LABELS,
+    TEA_GROUP_CLASS_NAME,
+    CATEGORIES_MAP,
+} from "./../constants.js";
 
 const IN_STOCK_OPTIONS_LIST = [IN_STOCK_OPTIONS.ALL, IN_STOCK_OPTIONS.IN_STOCK, IN_STOCK_OPTIONS.OUT_OF_STOCK];
 const TAG_LIST = Object.keys(TAGS);
+const GROUP_LIST = Object.values(CATEGORIES_MAP).sort();
 
 export class Settings {
     #container;
@@ -26,11 +35,32 @@ export class Settings {
         this.#domElem.classList.add("settings");
 
         let content = "";
+        content += this.#getGroups();
         content += this.#getInStockOptions();
         content += this.#getTagList();
 
         this.#domElem.innerHTML = content;
         this.#container.appendChild(this.#domElem);
+    }
+
+    #getGroups() {
+        let selectedGroup = this.#data.group;
+        let result = `<div id=TAGS"${DOM_ELEMENT_ID.GROUPS}" class="tea-categories-container">`;
+
+        GROUP_LIST.forEach((group) => {
+            let isSelected = selectedGroup === group;
+            result += `<div class="tea-category-container tea-category-${TEA_GROUP_CLASS_NAME[group]} ${
+                isSelected ? "selected" : ""
+            }" data-group="${group}">`;
+            result += `<div class="tea-category-icon-container tea-category-${TEA_GROUP_CLASS_NAME[group]}">
+                <span class="tea-category-icon icon-leaf"></span>
+            </div>`;
+            result += ` <div class="tea-category-name">${group}</div>`;
+            result += "</div>";
+        });
+
+        result += "</div>";
+        return result;
     }
 
     #getInStockOptions() {

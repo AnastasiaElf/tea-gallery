@@ -1,4 +1,4 @@
-import { TEA_GROUP_NAME, DATA_KEY, IN_STOCK_OPTIONS, TAGS } from "./../constants.js";
+import { TEA_GROUP_NAME, DATA_KEY, IN_STOCK_OPTIONS } from "./../constants.js";
 import { CardGroup } from "./cardGroup.js";
 import { Settings } from "./settings.js";
 
@@ -7,6 +7,7 @@ export class TeaGallery {
     #data = [];
     #groups = [];
     #settings = {
+        group: null,
         inStock: IN_STOCK_OPTIONS.ALL,
         tags: [],
         randomEnabled: false,
