@@ -45,4 +45,16 @@ export class CardGroup {
     getCards() {
         return this.#cards;
     }
+
+    getName() {
+        return this.#data.name;
+    }
+
+    hide() {
+        this.#domElem.classList.add("undisplayed");
+    }
+
+    show() {
+        this.#domElem.classList.remove("undisplayed");
+    }
 }

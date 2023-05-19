@@ -155,18 +155,6 @@ export const TAG_LABELS = {
 };
 
 export const DOM_ELEMENT_ID = {
-    CONTENT_TOGGLE: "content-toggle",
-    GROUPS: "groups",
-    IN_STOCK_OPTIONS: "in-stock_options",
-    TAG_LIST: "tag-list",
-    RANDOM_AND_SEARCH: "random-and-search",
-    RANDOM_ENABLE: "random-enable",
-    RANDOM_SUBMIT: "random-submit",
-    RANDOM_RETURN: "random-return",
-    SEARCH_ENABLE: "search-enable",
-    SEARCH_SUBMIT: "search-submit",
-    SEARCH_RETURN: "search-return",
-    SEARCH_INPUT: "search-input",
     PIE_CHART_STOCK: "pie-chart-stock",
     PIE_CHART_ALL: "pie-chart-all",
     BAR_CHART_ALL: "bar-chart-all",
@@ -176,7 +164,15 @@ export const DOM_ELEMENT_ID = {
     BAR_CHART_OUT_OF_STOCK: "bar-chart-out-of-stock",
 };
 
-export const CONTENT_TYPE = {
+export const PAGE = {
     TEA_GALLERY: "tea-gallery",
     STATISTICS: "statistics",
+};
+
+export const UPDATE_TYPE = {
+    GROUP: "group",
+    STOCK: "stock",
+    TAG: "tag",
+    RANDOM: "random",
+    SEARCH: "search",
 };

@@ -1,11 +1,11 @@
 import {
-    DOM_ELEMENT_ID,
     IN_STOCK_OPTIONS,
     IN_STOCK_LABELS,
     TAGS,
     TAG_LABELS,
     TEA_GROUP_CLASS_NAME,
     CATEGORIES_MAP,
+    UPDATE_TYPE,
 } from "./../constants.js";
 import { RandomAndSearch } from "./randomAndSearch.js";
 
@@ -17,8 +17,14 @@ export class Settings {
     #container;
     #domElem;
     #data;
+    #handleUpdate;
+    #elements = {
+        groups: [],
+        stock: [],
+        tags: [],
+    };
 
-    constructor(container, data) {
+    constructor(container, data, handleUpdate) {
         if (!data) {
             throw Error("Constructor param data is missing");
         }
@@ -27,70 +33,139 @@ export class Settings {
             throw Error("Constructor param container is missing");
         }
 
+        if (!handleUpdate) {
+            throw Error("Constructor handleUpdate container is missing");
+        }
+
         this.#data = data;
         this.#container = container;
+        this.#handleUpdate = handleUpdate;
     }
 
     render() {
         this.#domElem = document.createElement("div");
         this.#domElem.classList.add("settings");
 
-        let content = "";
-        content += this.#getGroups();
-        content += this.#getInStockOptions();
-        content += this.#getTagList();
+        this.#domElem.appendChild(this.#getGroups());
+        this.#domElem.appendChild(this.#getStockOptions());
+        this.#domElem.appendChild(this.#getTagList());
 
-        this.#domElem.innerHTML = content;
-        let randomAndSearch = new RandomAndSearch(this.#domElem, this.#data);
+        let randomAndSearch = new RandomAndSearch(
+            this.#domElem,
+            this.#data,
+            this.#handleRandomUpdate,
+            this.#handleSearchUpdate
+        );
         randomAndSearch.render();
+
         this.#container.appendChild(this.#domElem);
     }
 
     #getGroups() {
-        let selectedGroup = this.#data.group;
-        let result = `<div id=TAGS"${DOM_ELEMENT_ID.GROUPS}" class="tea-categories-container">`;
+        const container = document.createElement("div");
+        container.classList.add("tea-categories-container");
 
         GROUP_LIST.forEach((group) => {
-            let isSelected = selectedGroup === group;
-            result += `<div class="tea-category-container tea-category-${TEA_GROUP_CLASS_NAME[group]} ${
-                isSelected ? "selected" : ""
-            }" data-group="${group}">`;
-            result += `<div class="tea-category-icon-container tea-category-${TEA_GROUP_CLASS_NAME[group]}">
+            const element = document.createElement("div");
+            element.classList.add("tea-category-container", `tea-category-${TEA_GROUP_CLASS_NAME[group]}`);
+            element.dataset.group = group;
+            element.addEventListener("click", this.#handleGroupChange(group));
+
+            let content = "";
+            content += `<div class="tea-category-icon-container tea-category-${TEA_GROUP_CLASS_NAME[group]}">
                 <span class="tea-category-icon icon-leaf"></span>
             </div>`;
-            result += ` <div class="tea-category-name">${group}</div>`;
-            result += "</div>";
+            content += ` <div class="tea-category-name">${group}</div>`;
+
+            element.innerHTML = content;
+
+            this.#elements.groups.push(element);
+            container.appendChild(element);
         });
 
-        result += "</div>";
-        return result;
+        return container;
     }
 
-    #getInStockOptions() {
-        let selectedOption = this.#data.inStock;
-        let result = `<div id="${DOM_ELEMENT_ID.IN_STOCK_OPTIONS}" class="tea-stock-type-container">`;
+    #getStockOptions() {
+        const container = document.createElement("div");
+        container.classList.add("tea-stock-type-container");
 
         IN_STOCK_OPTIONS_LIST.forEach((option) => {
-            result += `<div class="tea-stock-type ${
-                selectedOption === option ? "selected" : ""
-            }" data-in-stock-option="${option}">${IN_STOCK_LABELS[option]}</div>`;
+            const element = document.createElement("div");
+            element.classList.add("tea-stock-type");
+            element.dataset.stock = option;
+            element.innerHTML = IN_STOCK_LABELS[option];
+            element.addEventListener("click", this.#handleStockChange(option));
+
+            if (this.#data.inStock === option) {
+                element.classList.add("selected");
+            }
+
+            this.#elements.stock.push(element);
+            container.appendChild(element);
         });
 
-        result += "</div>";
-        return result;
+        return container;
     }
 
     #getTagList() {
-        let selectedTags = this.#data.tags;
-        let result = `<div id="${DOM_ELEMENT_ID.TAG_LIST}" class="tea-tags-container">`;
+        const container = document.createElement("div");
+        container.classList.add("tea-tags-container");
 
         TAG_LIST.forEach((tag) => {
-            let isSelected = selectedTags.includes(TAGS[tag]);
+            const element = document.createElement("div");
+            element.classList.add("tea-tag");
+            element.dataset.tag = tag;
+            element.innerHTML = TAG_LABELS[tag];
+            element.addEventListener("click", this.#handleTagChange(tag));
 
-            result += `<div class="tea-tag ${isSelected ? "selected" : ""}" data-tag="${tag}">${TAG_LABELS[tag]}</div>`;
+            this.#elements.tags.push(element);
+            container.appendChild(element);
         });
 
-        result += "</div>";
-        return result;
+        return container;
     }
+
+    #handleGroupChange = (selectedGroup) => () => {
+        this.#elements.groups.forEach((elem) => {
+            const name = elem.dataset.group;
+
+            if (name !== selectedGroup) {
+                elem.classList.remove("selected");
+            } else {
+                elem.classList.add("selected");
+            }
+        });
+
+        this.#handleUpdate(UPDATE_TYPE.GROUP, selectedGroup);
+    };
+
+    #handleStockChange = (selectedOption) => () => {
+        this.#elements.stock.forEach((elem) => {
+            const option = elem.dataset.stock;
+
+            if (option !== selectedOption) {
+                elem.classList.remove("selected");
+            } else {
+                elem.classList.add("selected");
+            }
+        });
+
+        this.#handleUpdate(UPDATE_TYPE.STOCK, selectedOption);
+    };
+
+    #handleTagChange = (selectedTag) => (e) => {
+        const elem = this.#elements.tags.find((elem) => selectedTag === elem.dataset.tag);
+        elem.classList.toggle("selected");
+
+        this.#handleUpdate(UPDATE_TYPE.TAG, selectedTag);
+    };
+
+    #handleRandomUpdate = () => {
+        this.#handleUpdate(UPDATE_TYPE.RANDOM);
+    };
+
+    #handleSearchUpdate = (value) => {
+        this.#handleUpdate(UPDATE_TYPE.SEARCH, value);
+    };
 }

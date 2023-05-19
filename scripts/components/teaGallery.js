@@ -1,4 +1,4 @@
-import { TEA_GROUP_NAME, DATA_KEY, IN_STOCK_OPTIONS, DOM_ELEMENT_ID, PAGE } from "./../constants.js";
+import { TEA_GROUP_NAME, DATA_KEY, IN_STOCK_OPTIONS, PAGE, UPDATE_TYPE } from "./../constants.js";
 import { CardGroup } from "./cardGroup.js";
 import { Settings } from "./settings.js";
 import { Statistics } from "./statistics.js";
@@ -53,7 +53,11 @@ export class TeaGallery {
         this.#elements.teaGalleryPage.classList.add("page-content-container");
         this.#container.appendChild(this.#elements.teaGalleryPage);
 
-        this.#objects.settings = new Settings(this.#elements.teaGalleryPage, this.#settings);
+        this.#objects.settings = new Settings(
+            this.#elements.teaGalleryPage,
+            this.#settings,
+            this.#handleSettingsUpdate
+        );
         this.#objects.settings.render();
 
         this.#data.forEach((groupData) => {
@@ -103,7 +107,6 @@ export class TeaGallery {
 
         this.#elements.contentToggle = document.createElement("button");
         this.#elements.contentToggle.classList.add("tea-button");
-        this.#elements.contentToggle.setAttribute("id", DOM_ELEMENT_ID.CONTENT_TOGGLE);
         this.#elements.contentToggle.addEventListener("click", this.#handleToggleContent);
         this.#elements.contentToggle.innerHTML = "Statistics";
 
@@ -128,6 +131,40 @@ export class TeaGallery {
                 this.#elements.statisticsPage.classList.remove("hidden");
                 this.#elements.teaGalleryPage.classList.add("hidden");
 
+                break;
+
+            default:
+                break;
+        }
+    };
+
+    #handleSettingsUpdate = (type, data) => {
+        switch (type) {
+            case UPDATE_TYPE.GROUP:
+                this.#objects.groups.forEach((group) => {
+                    const name = group.getName();
+                    if (name !== data) {
+                        group.hide();
+                    } else {
+                        group.show();
+                    }
+                });
+                break;
+
+            case UPDATE_TYPE.STOCK:
+                // TODO: add logic
+                break;
+
+            case UPDATE_TYPE.TAG:
+                // TODO: add logic
+                break;
+
+            case UPDATE_TYPE.RANDOM:
+                // TODO: add logic
+                break;
+
+            case UPDATE_TYPE.SEARCH:
+                // TODO: add logic
                 break;
 
             default:

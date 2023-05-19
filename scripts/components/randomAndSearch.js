@@ -1,13 +1,16 @@
-import { DOM_ELEMENT_ID } from "./../constants.js";
-
 export class RandomAndSearch {
     #container;
     #data;
-    #mainElem;
-    #searchParamsElem;
-    #randomParamsElem;
+    #handleRandomUpdate;
+    #handleSearchUpdate;
+    #elements = {
+        main: null,
+        random: null,
+        search: null,
+        searchInput: null,
+    };
 
-    constructor(container, data) {
+    constructor(container, data, handleRandomUpdate, handleSearchUpdate) {
         if (!data) {
             throw Error("Constructor param data is missing");
         }
@@ -16,8 +19,18 @@ export class RandomAndSearch {
             throw Error("Constructor param container is missing");
         }
 
+        if (!handleRandomUpdate) {
+            throw Error("Constructor handleRandomUpdate container is missing");
+        }
+
+        if (!handleSearchUpdate) {
+            throw Error("Constructor handleSearchUpdate container is missing");
+        }
+
         this.#data = data;
         this.#container = container;
+        this.#handleRandomUpdate = handleRandomUpdate;
+        this.#handleSearchUpdate = handleSearchUpdate;
     }
 
     render() {
@@ -27,44 +40,104 @@ export class RandomAndSearch {
     }
 
     #getRandomAndSearch() {
-        this.#mainElem = document.createElement("div");
-        this.#mainElem.classList.add("tea-randomizer-container");
+        this.#elements.main = document.createElement("div");
+        this.#elements.main.classList.add("tea-randomizer-container");
 
-        let content = `<button id="${DOM_ELEMENT_ID.RANDOM_ENABLE}" class="tea-button tea-button tea-button-margin-right">Random tea</button>`;
-        content += `<button id="${DOM_ELEMENT_ID.SEARCH_ENABLE}" class="tea-button">Search</button>`;
+        const randomButton = document.createElement("button");
+        randomButton.classList.add("tea-button", "tea-button-margin-right");
+        randomButton.innerHTML = "Random tea";
+        randomButton.addEventListener("click", this.#enableRandom);
 
-        this.#mainElem.innerHTML = content;
+        const searchButton = document.createElement("button");
+        searchButton.classList.add("tea-button");
+        searchButton.innerHTML = "Search";
+        searchButton.addEventListener("click", this.#enableSearch);
 
-        return this.#mainElem;
+        this.#elements.main.appendChild(randomButton);
+        this.#elements.main.appendChild(searchButton);
+
+        return this.#elements.main;
     }
 
     #getRandomParams() {
-        this.#randomParamsElem = document.createElement("div");
-        this.#randomParamsElem.classList.add("tea-randomizer-container");
+        this.#elements.random = document.createElement("div");
+        this.#elements.random.classList.add("tea-randomizer-container");
+        this.#elements.random.classList.add("undisplayed");
 
-        let content = `<button id="${DOM_ELEMENT_ID.RANDOM_SUBMIT}" class="tea-button tea-button tea-button-margin-right">Random tea</button>`;
-        content += `<button id="${DOM_ELEMENT_ID.RANDOM_RETURN}" class="tea-button">Back</button>`;
+        const randomButton = document.createElement("button");
+        randomButton.classList.add("tea-button", "tea-button-margin-right");
+        randomButton.innerHTML = "Randomize";
+        randomButton.addEventListener("click", this.#handleRandomSubmit);
 
-        this.#randomParamsElem.innerHTML = content;
+        const backButton = document.createElement("button");
+        backButton.classList.add("tea-button");
+        backButton.innerHTML = "Back";
+        backButton.addEventListener("click", this.#disableRandom);
 
-        return this.#randomParamsElem;
+        this.#elements.random.appendChild(randomButton);
+        this.#elements.random.appendChild(backButton);
+
+        return this.#elements.random;
     }
 
     #getSearchParams() {
-        this.#searchParamsElem = document.createElement("div");
-        this.#searchParamsElem.classList.add("tea-search-container");
+        this.#elements.search = document.createElement("div");
+        this.#elements.search.classList.add("tea-search-container");
+        this.#elements.search.classList.add("undisplayed");
 
-        let content = `<input id="${
-            DOM_ELEMENT_ID.SEARCH_INPUT
-        }" class="tea-input tea-search-input" type="text" placeholder="Type text here..." value="${
-            this.#data.searchValue
-        }"></input>`;
-        content += '<div class="tea-search-buttons-container">';
-        content += `<button id="${DOM_ELEMENT_ID.SEARCH_SUBMIT}" class="tea-button tea-search-button tea-button-margin-right">Search</button>`;
-        content += `<button id="${DOM_ELEMENT_ID.SEARCH_RETURN}" class="tea-button tea-search-clear-button">Back</button>`;
+        this.#elements.searchInput = document.createElement("input");
+        this.#elements.searchInput.classList.add("tea-input", "tea-search-input");
+        this.#elements.searchInput.type = "text";
+        this.#elements.searchInput.placeholder = "Type text here...";
+        this.#elements.searchInput.value = this.#data.searchValue;
 
-        this.#searchParamsElem.innerHTML = content;
+        const buttonsContainer = document.createElement("div");
+        buttonsContainer.classList.add("tea-search-buttons-container");
 
-        return this.#searchParamsElem;
+        const searchButton = document.createElement("button");
+        searchButton.classList.add("tea-button", "tea-button-margin-right");
+        searchButton.innerHTML = "Search";
+        searchButton.addEventListener("click", this.#handleSearchSubmit);
+
+        const backButton = document.createElement("button");
+        backButton.classList.add("tea-button");
+        backButton.innerHTML = "Back";
+        backButton.addEventListener("click", this.#disableSearch);
+
+        buttonsContainer.appendChild(searchButton);
+        buttonsContainer.appendChild(backButton);
+
+        this.#elements.search.appendChild(this.#elements.searchInput);
+        this.#elements.search.appendChild(buttonsContainer);
+
+        return this.#elements.search;
     }
+
+    #enableRandom = () => {
+        this.#elements.main.classList.add("undisplayed");
+        this.#elements.random.classList.remove("undisplayed");
+    };
+
+    #disableRandom = () => {
+        this.#elements.main.classList.remove("undisplayed");
+        this.#elements.random.classList.add("undisplayed");
+    };
+
+    #enableSearch = () => {
+        this.#elements.main.classList.add("undisplayed");
+        this.#elements.search.classList.remove("undisplayed");
+    };
+
+    #disableSearch = () => {
+        this.#elements.main.classList.remove("undisplayed");
+        this.#elements.search.classList.add("undisplayed");
+    };
+
+    #handleRandomSubmit = () => {
+        this.#handleRandomUpdate();
+    };
+
+    #handleSearchSubmit = () => {
+        this.#handleSearchUpdate(this.#elements.searchInput.value);
+    };
 }
