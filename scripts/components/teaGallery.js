@@ -1,6 +1,7 @@
-import { TEA_GROUP_NAME, DATA_KEY, IN_STOCK_OPTIONS } from "./../constants.js";
+import { TEA_GROUP_NAME, DATA_KEY, IN_STOCK_OPTIONS, DOM_ELEMENT_ID, CONTENT_TYPE } from "./../constants.js";
 import { CardGroup } from "./cardGroup.js";
 import { Settings } from "./settings.js";
+import { Statistics } from "./statistics.js";
 
 export class TeaGallery {
     #container;
@@ -13,6 +14,9 @@ export class TeaGallery {
         randomEnabled: false,
         searchValue: "",
     };
+    #settingsObj;
+    #statisticsObj;
+    #currentContent = CONTENT_TYPE.TEA_GALLERY;
 
     constructor(container, data) {
         if (!data) {
@@ -28,8 +32,13 @@ export class TeaGallery {
     }
 
     render() {
-        let settings = new Settings(this.#container, this.#settings);
-        settings.render();
+        this.#container.appendChild(this.#renderContentControls());
+        
+        this.#statisticsObj = new Statistics(this.#container, this.#data);
+        this.#statisticsObj.render();
+
+        this.#settingsObj = new Settings(this.#container, this.#settings);
+        this.#settingsObj.render();
 
         this.#data.forEach((groupData) => {
             let group = new CardGroup(this.#container, groupData);
@@ -70,5 +79,17 @@ export class TeaGallery {
 
                 this.#data.push(groupData);
             });
+    }
+
+    #renderContentControls() {
+        let controlsElem = document.createElement("div");
+        controlsElem.classList.add("tea-statistics-container");
+
+        // TODO: change text on click
+        let content = `<button id="${DOM_ELEMENT_ID.CONTENT_TOGGLE}" class="tea-button">Statistics</button>`;
+
+        controlsElem.innerHTML = content;
+
+        return controlsElem;
     }
 }
