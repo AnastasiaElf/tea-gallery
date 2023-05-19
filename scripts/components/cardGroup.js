@@ -50,6 +50,10 @@ export class CardGroup {
         return this.#data.name;
     }
 
+    getCardsAmount() {
+        return this.#data.stats.total;
+    }
+
     hide() {
         this.#domElem.classList.add("undisplayed");
     }

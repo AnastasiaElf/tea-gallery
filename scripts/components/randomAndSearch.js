@@ -121,6 +121,7 @@ export class RandomAndSearch {
     #disableRandom = () => {
         this.#elements.main.classList.remove("undisplayed");
         this.#elements.random.classList.add("undisplayed");
+        this.#handleRandomUpdate(false);
     };
 
     #enableSearch = () => {
@@ -131,10 +132,12 @@ export class RandomAndSearch {
     #disableSearch = () => {
         this.#elements.main.classList.remove("undisplayed");
         this.#elements.search.classList.add("undisplayed");
+        this.#elements.searchInput.value = "";
+        this.#handleSearchUpdate(this.#elements.searchInput.value);
     };
 
     #handleRandomSubmit = () => {
-        this.#handleRandomUpdate();
+        this.#handleRandomUpdate(true);
     };
 
     #handleSearchSubmit = () => {

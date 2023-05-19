@@ -44,6 +44,18 @@ export class Card {
         this.#container.appendChild(this.#domElem);
     }
 
+    getId() {
+        return this.#data.id;
+    }
+
+    hide() {
+        this.#domElem.classList.add("undisplayed");
+    }
+
+    show() {
+        this.#domElem.classList.remove("undisplayed");
+    }
+
     #getRating(rating) {
         if (!rating) {
             return "";
@@ -139,12 +151,11 @@ export class Card {
     }
 
     #getTags(tags) {
-        if (tags) {
+        if (tags.length > 0) {
             let content = "";
             content += '<div class="tea-tags-container">';
 
-            let tagsArray = tags.split(",").map((elem) => elem.trim());
-            tagsArray.forEach((tag) => {
+            tags.forEach((tag) => {
                 // TODO: Replace with tag component (without hover and cursor pointer)
                 content += '<div class="tea-tag selected disabled">';
                 content += tag;

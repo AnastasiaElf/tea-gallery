@@ -10,7 +10,7 @@ import {
 import { RandomAndSearch } from "./randomAndSearch.js";
 
 const IN_STOCK_OPTIONS_LIST = [IN_STOCK_OPTIONS.ALL, IN_STOCK_OPTIONS.IN_STOCK, IN_STOCK_OPTIONS.OUT_OF_STOCK];
-const TAG_LIST = Object.keys(TAGS);
+const TAG_LIST = Object.values(TAGS).sort();
 const GROUP_LIST = Object.values(CATEGORIES_MAP).sort();
 
 export class Settings {
@@ -116,7 +116,7 @@ export class Settings {
             const element = document.createElement("div");
             element.classList.add("tea-tag");
             element.dataset.tag = tag;
-            element.innerHTML = TAG_LABELS[tag];
+            element.innerHTML = tag;
             element.addEventListener("click", this.#handleTagChange(tag));
 
             this.#elements.tags.push(element);
@@ -130,7 +130,7 @@ export class Settings {
         this.#elements.groups.forEach((elem) => {
             const name = elem.dataset.group;
 
-            if (name !== selectedGroup) {
+            if (name !== selectedGroup || this.#data.group === name) {
                 elem.classList.remove("selected");
             } else {
                 elem.classList.add("selected");
@@ -141,17 +141,19 @@ export class Settings {
     };
 
     #handleStockChange = (selectedOption) => () => {
-        this.#elements.stock.forEach((elem) => {
-            const option = elem.dataset.stock;
+        if (selectedOption !== this.#data.inStock) {
+            this.#elements.stock.forEach((elem) => {
+                const option = elem.dataset.stock;
 
-            if (option !== selectedOption) {
-                elem.classList.remove("selected");
-            } else {
-                elem.classList.add("selected");
-            }
-        });
+                if (option !== selectedOption) {
+                    elem.classList.remove("selected");
+                } else {
+                    elem.classList.add("selected");
+                }
+            });
 
-        this.#handleUpdate(UPDATE_TYPE.STOCK, selectedOption);
+            this.#handleUpdate(UPDATE_TYPE.STOCK, selectedOption);
+        }
     };
 
     #handleTagChange = (selectedTag) => (e) => {
@@ -161,8 +163,8 @@ export class Settings {
         this.#handleUpdate(UPDATE_TYPE.TAG, selectedTag);
     };
 
-    #handleRandomUpdate = () => {
-        this.#handleUpdate(UPDATE_TYPE.RANDOM);
+    #handleRandomUpdate = (value) => {
+        this.#handleUpdate(UPDATE_TYPE.RANDOM, value);
     };
 
     #handleSearchUpdate = (value) => {

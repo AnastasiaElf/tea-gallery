@@ -1,4 +1,5 @@
 import { TeaGallery } from "./components/teaGallery.js";
+import { DATA_KEY } from "./constants.js";
 
 function fetchData(url) {
     return new Promise((resolve, reject) => {
@@ -21,7 +22,18 @@ const dataUrl =
 fetchData(dataUrl)
     .then((data) => {
         const container = document.getElementById("root");
-        const teaGallery = new TeaGallery(container, data);
+        const updatedData = data.map((item, index) => ({
+            ...item,
+            id: "tea-" + index,
+            [DATA_KEY.TAGS]: item[DATA_KEY.TAGS]
+                .split(",")
+                .map((elem) => elem.trim())
+                .filter((elem) => elem !== "")
+                .sort(),
+            [DATA_KEY.IN_STOCK]: JSON.parse(item[DATA_KEY.IN_STOCK].toLowerCase()),
+        }));
+
+        const teaGallery = new TeaGallery(container, updatedData);
         teaGallery.render();
     })
     .catch((error) => {
