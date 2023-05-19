@@ -1,4 +1,4 @@
-import { TEA_GROUP_NAME, DATA_KEY, IN_STOCK_OPTIONS, DOM_ELEMENT_ID, CONTENT_TYPE } from "./../constants.js";
+import { TEA_GROUP_NAME, DATA_KEY, IN_STOCK_OPTIONS, DOM_ELEMENT_ID, PAGE } from "./../constants.js";
 import { CardGroup } from "./cardGroup.js";
 import { Settings } from "./settings.js";
 import { Statistics } from "./statistics.js";
@@ -6,7 +6,6 @@ import { Statistics } from "./statistics.js";
 export class TeaGallery {
     #container;
     #data = [];
-    #groups = [];
     #settings = {
         group: null,
         inStock: IN_STOCK_OPTIONS.ALL,
@@ -14,9 +13,17 @@ export class TeaGallery {
         randomEnabled: false,
         searchValue: "",
     };
-    #settingsObj;
-    #statisticsObj;
-    #currentContent = CONTENT_TYPE.TEA_GALLERY;
+    #currentPage = PAGE.TEA_GALLERY;
+    #elements = {
+        contentToggle: null,
+        statisticsPage: null,
+        teaGalleryPage: null,
+    };
+    #objects = {
+        statistics: null,
+        settings: null,
+        groups: [],
+    };
 
     constructor(container, data) {
         if (!data) {
@@ -32,17 +39,26 @@ export class TeaGallery {
     }
 
     render() {
-        this.#container.appendChild(this.#renderContentControls());
-        
-        this.#statisticsObj = new Statistics(this.#container, this.#data);
-        this.#statisticsObj.render();
+        this.#container.appendChild(this.#getControls());
 
-        this.#settingsObj = new Settings(this.#container, this.#settings);
-        this.#settingsObj.render();
+        this.#elements.statisticsPage = document.createElement("div");
+        this.#elements.statisticsPage.classList.add("page-content-container");
+        this.#container.appendChild(this.#elements.statisticsPage);
+        this.#elements.statisticsPage.classList.add("hidden");
+
+        this.#objects.statistics = new Statistics(this.#elements.statisticsPage, this.#data);
+        this.#objects.statistics.render();
+
+        this.#elements.teaGalleryPage = document.createElement("div");
+        this.#elements.teaGalleryPage.classList.add("page-content-container");
+        this.#container.appendChild(this.#elements.teaGalleryPage);
+
+        this.#objects.settings = new Settings(this.#elements.teaGalleryPage, this.#settings);
+        this.#objects.settings.render();
 
         this.#data.forEach((groupData) => {
-            let group = new CardGroup(this.#container, groupData);
-            this.#groups.push(group);
+            const group = new CardGroup(this.#elements.teaGalleryPage, groupData);
+            this.#objects.groups.push(group);
             group.render();
         });
     }
@@ -81,15 +97,41 @@ export class TeaGallery {
             });
     }
 
-    #renderContentControls() {
-        let controlsElem = document.createElement("div");
-        controlsElem.classList.add("tea-statistics-container");
+    #getControls() {
+        const container = document.createElement("div");
+        container.classList.add("tea-statistics-container");
 
-        // TODO: change text on click
-        let content = `<button id="${DOM_ELEMENT_ID.CONTENT_TOGGLE}" class="tea-button">Statistics</button>`;
+        this.#elements.contentToggle = document.createElement("button");
+        this.#elements.contentToggle.classList.add("tea-button");
+        this.#elements.contentToggle.setAttribute("id", DOM_ELEMENT_ID.CONTENT_TOGGLE);
+        this.#elements.contentToggle.addEventListener("click", this.#handleToggleContent);
+        this.#elements.contentToggle.innerHTML = "Statistics";
 
-        controlsElem.innerHTML = content;
+        container.appendChild(this.#elements.contentToggle);
 
-        return controlsElem;
+        return container;
     }
+
+    #handleToggleContent = () => {
+        switch (this.#currentPage) {
+            case PAGE.STATISTICS:
+                this.#currentPage = PAGE.TEA_GALLERY;
+                this.#elements.contentToggle.innerHTML = "Statistics";
+                this.#elements.statisticsPage.classList.add("hidden");
+                this.#elements.teaGalleryPage.classList.remove("hidden");
+
+                break;
+
+            case PAGE.TEA_GALLERY:
+                this.#currentPage = PAGE.STATISTICS;
+                this.#elements.contentToggle.innerHTML = "Tea Gallery";
+                this.#elements.statisticsPage.classList.remove("hidden");
+                this.#elements.teaGalleryPage.classList.add("hidden");
+
+                break;
+
+            default:
+                break;
+        }
+    };
 }

@@ -62,6 +62,9 @@ export class Statistics {
             chart: {
                 width: "100%",
                 type: "pie",
+                animations: {
+                    enabled: false,
+                },
             },
             labels: ["In stock", "Out of stock"],
             responsive: [
@@ -93,6 +96,7 @@ export class Statistics {
             chart: {
                 width: "100%",
                 type: "pie",
+                animations: { enabled: false },
             },
             labels: this.#data.map((group) => group.name),
             responsive: [
@@ -127,6 +131,7 @@ export class Statistics {
                 toolbar: {
                     show: false,
                 },
+                animations: { enabled: false },
             },
             labels: this.#data.map((group) => group.name),
             plotOptions: {

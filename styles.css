@@ -735,3 +735,10 @@ body * {
 .tea-button-margin-right {
 	margin-right: 20px;
 }
+
+.hidden {
+	visibility: hidden;
+	height: 0;
+	opacity: 0;
+	user-select: none;
+}

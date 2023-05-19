@@ -28,7 +28,7 @@ export class CardGroup {
         content += '<h5 class="table-name">';
         content += `${this.#data.name} (${this.#data.stats.inStock}/${this.#data.stats.total})`;
         content += "</h5>";
-        let cardsContainer = document.createElement("div");
+        const cardsContainer = document.createElement("div");
         cardsContainer.classList.add("table-data");
 
         this.#domElem.innerHTML = content;
