@@ -145,4 +145,12 @@ export const DOM_ELEMENT_ID = {
     GROUPS: "groups",
     IN_STOCK_OPTIONS: "in-stock_options",
     TAG_LIST: "tag-list",
+    RANDOM_AND_SEARCH: "random-and-search",
+    RANDOM_ENABLE: "random-enable",
+    RANDOM_SUBMIT: "random-submit",
+    RANDOM_RETURN: "random-return",
+    SEARCH_ENABLE: "search-enable",
+    SEARCH_SUBMIT: "search-submit",
+    SEARCH_RETURN: "search-return",
+    SEARCH_INPUT: "search-input",
 };

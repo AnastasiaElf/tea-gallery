@@ -7,6 +7,7 @@ import {
     TEA_GROUP_CLASS_NAME,
     CATEGORIES_MAP,
 } from "./../constants.js";
+import { RandomAndSearch } from "./randomAndSearch.js";
 
 const IN_STOCK_OPTIONS_LIST = [IN_STOCK_OPTIONS.ALL, IN_STOCK_OPTIONS.IN_STOCK, IN_STOCK_OPTIONS.OUT_OF_STOCK];
 const TAG_LIST = Object.keys(TAGS);
@@ -40,6 +41,8 @@ export class Settings {
         content += this.#getTagList();
 
         this.#domElem.innerHTML = content;
+        let randomAndSearch = new RandomAndSearch(this.#domElem, this.#data);
+        randomAndSearch.render();
         this.#container.appendChild(this.#domElem);
     }
 

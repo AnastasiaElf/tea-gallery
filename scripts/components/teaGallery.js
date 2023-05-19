@@ -11,7 +11,7 @@ export class TeaGallery {
         inStock: IN_STOCK_OPTIONS.ALL,
         tags: [],
         randomEnabled: false,
-        searchValue: null,
+        searchValue: "",
     };
 
     constructor(container, data) {
