@@ -37,16 +37,16 @@ export class Statistics {
         this.#domElem.innerHTML = content;
         this.#container.appendChild(this.#domElem);
         this.#renderStockPieChart();
-        this.#renderAllPieChart();
-        this.#renderAllBarChart();
-        this.#renderInStockPieChart();
-        this.#renderInStockBarChart();
-        this.#renderOutOfStockPieChart();
-        this.#renderOutOfStockBarChart();
+        this.#renderPieChart(DOM_ELEMENT_ID.PIE_CHART_ALL, "All teas", "total");
+        this.#renderBarChart(DOM_ELEMENT_ID.BAR_CHART_ALL, "All teas", "total");
+        this.#renderPieChart(DOM_ELEMENT_ID.PIE_CHART_IN_STOCK, "In stock", "inStock");
+        this.#renderBarChart(DOM_ELEMENT_ID.BAR_CHART_IN_STOCK, "In stock", "inStock");
+        this.#renderPieChart(DOM_ELEMENT_ID.PIE_CHART_OUT_OF_STOCK, "Out of stock", "outOfStock");
+        this.#renderBarChart(DOM_ELEMENT_ID.BAR_CHART_OUT_OF_STOCK, "Out of stock", "outOfStock");
     }
 
     #renderStockPieChart() {
-        const stockPieChartOptions = {
+        const options = {
             title: {
                 text: "All teas",
                 align: "center",
@@ -75,21 +75,21 @@ export class Statistics {
                 },
             ],
         };
-        const stockPieChart = new ApexCharts(document.querySelector("#pie-chart-stock"), stockPieChartOptions);
+        const stockPieChart = new ApexCharts(document.querySelector("#" + DOM_ELEMENT_ID.PIE_CHART_STOCK), options);
         stockPieChart.render();
     }
 
-    #renderAllPieChart() {
-        const allPieChartOptions = {
+    #renderPieChart(containerId, label, statType) {
+        const options = {
             title: {
-                text: "All teas",
+                text: label,
                 align: "center",
                 style: {
                     fontWeight: "500",
                 },
             },
             colors: this.#data.map((group) => TEA_GROUP_COLOR[group.name]),
-            series: this.#data.map((group) => group.stats.total),
+            series: this.#data.map((group) => group.stats[statType]),
             chart: {
                 width: "100%",
                 type: "pie",
@@ -106,21 +106,21 @@ export class Statistics {
                 },
             ],
         };
-        const allPieChart = new ApexCharts(document.querySelector("#pie-chart-all"), allPieChartOptions);
+        const allPieChart = new ApexCharts(document.querySelector("#" + containerId), options);
         allPieChart.render();
     }
 
-    #renderAllBarChart() {
-        const allBarChartOptions = {
+    #renderBarChart(containerId, label, statType) {
+        const options = {
             title: {
-                text: "All teas",
+                text: label,
                 align: "center",
                 style: {
                     fontWeight: "500",
                 },
             },
             colors: this.#data.map((group) => TEA_GROUP_COLOR[group.name]),
-            series: [{ data: this.#data.map((group) => group.stats.total), name: "Amount" }],
+            series: [{ data: this.#data.map((group) => group.stats[statType]), name: "Amount" }],
             chart: {
                 width: "100%",
                 type: "bar",
@@ -138,139 +138,7 @@ export class Statistics {
                 show: false,
             },
         };
-        const allBarChart = new ApexCharts(document.querySelector("#bar-chart-all"), allBarChartOptions);
+        const allBarChart = new ApexCharts(document.querySelector("#" + containerId), options);
         allBarChart.render();
-    }
-
-    #renderInStockPieChart() {
-        const inStockPieChartOptions = {
-            title: {
-                text: "In stock",
-                align: "center",
-                style: {
-                    fontWeight: "500",
-                },
-            },
-            colors: this.#data.map((group) => TEA_GROUP_COLOR[group.name]),
-            series: this.#data.map((group) => group.stats.inStock),
-            chart: {
-                width: "100%",
-                type: "pie",
-            },
-            labels: this.#data.map((group) => group.name),
-            responsive: [
-                {
-                    breakpoint: 480,
-                    options: {
-                        legend: {
-                            position: "bottom",
-                        },
-                    },
-                },
-            ],
-        };
-        const inStockPieChart = new ApexCharts(document.querySelector("#pie-chart-in-stock"), inStockPieChartOptions);
-        inStockPieChart.render();
-    }
-
-    #renderInStockBarChart() {
-        const inStockBarChartOptions = {
-            title: {
-                text: "In stock",
-                align: "center",
-                style: {
-                    fontWeight: "500",
-                },
-            },
-            colors: this.#data.map((group) => TEA_GROUP_COLOR[group.name]),
-            series: [{ data: this.#data.map((group) => group.stats.inStock), name: "Amount" }],
-            chart: {
-                width: "100%",
-                type: "bar",
-                toolbar: {
-                    show: false,
-                },
-            },
-            labels: this.#data.map((group) => group.name),
-            plotOptions: {
-                bar: {
-                    distributed: true,
-                },
-            },
-            legend: {
-                show: false,
-            },
-        };
-        const inStockBarChart = new ApexCharts(document.querySelector("#bar-chart-in-stock"), inStockBarChartOptions);
-        inStockBarChart.render();
-    }
-
-    #renderOutOfStockPieChart() {
-        const outOfStockPieChartOptions = {
-            title: {
-                text: "Out of stock",
-                align: "center",
-                style: {
-                    fontWeight: "500",
-                },
-            },
-            colors: this.#data.map((group) => TEA_GROUP_COLOR[group.name]),
-            series: this.#data.map((group) => group.stats.outOfStock),
-            chart: {
-                width: "100%",
-                type: "pie",
-            },
-            labels: this.#data.map((group) => group.name),
-            responsive: [
-                {
-                    breakpoint: 480,
-                    options: {
-                        legend: {
-                            position: "bottom",
-                        },
-                    },
-                },
-            ],
-        };
-        const outOfStockPieChart = new ApexCharts(
-            document.querySelector("#pie-chart-out-of-stock"),
-            outOfStockPieChartOptions
-        );
-        outOfStockPieChart.render();
-    }
-
-    #renderOutOfStockBarChart() {
-        const outOfStockBarChartOptions = {
-            title: {
-                text: "Out of stock",
-                align: "center",
-                style: {
-                    fontWeight: "500",
-                },
-            },
-            colors: this.#data.map((group) => TEA_GROUP_COLOR[group.name]),
-            series: [{ data: this.#data.map((group) => group.stats.outOfStock), name: "Amount" }],
-            chart: {
-                width: "100%",
-                type: "bar",
-                toolbar: {
-                    show: false,
-                },
-            },
-            labels: this.#data.map((group) => group.name),
-            plotOptions: {
-                bar: {
-                    distributed: true,
-                },
-            },
-            legend: {
-                show: false,
-            },
-        };
-        const outOfStockBarChart = new ApexCharts(
-            document.querySelector("#bar-chart-out-of-stock"),
-            outOfStockBarChartOptions
-        );
-        outOfStockBarChart.render();
     }
 }
