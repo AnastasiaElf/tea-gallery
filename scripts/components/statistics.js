@@ -1,4 +1,14 @@
-import { DOM_ELEMENT_ID, TEA_GROUP_COLOR } from "./../constants.js";
+import { TEA_GROUP_COLOR, TEA_GROUP_LABEL } from "./../constants.js";
+
+const DOM_ELEMENT_ID = {
+    PIE_CHART_STOCK: "pie-chart-stock",
+    PIE_CHART_ALL: "pie-chart-all",
+    BAR_CHART_ALL: "bar-chart-all",
+    PIE_CHART_IN_STOCK: "pie-chart-in-stock",
+    BAR_CHART_IN_STOCK: "bar-chart-in-stock",
+    PIE_CHART_OUT_OF_STOCK: "pie-chart-out-of-stock",
+    BAR_CHART_OUT_OF_STOCK: "bar-chart-out-of-stock",
+};
 
 export class Statistics {
     #container;
@@ -91,14 +101,14 @@ export class Statistics {
                     fontWeight: "500",
                 },
             },
-            colors: this.#data.map((group) => TEA_GROUP_COLOR[group.name]),
+            colors: this.#data.map((group) => TEA_GROUP_COLOR[group.id]),
             series: this.#data.map((group) => group.stats[statType]),
             chart: {
                 width: "100%",
                 type: "pie",
                 animations: { enabled: false },
             },
-            labels: this.#data.map((group) => group.name),
+            labels: this.#data.map((group) => TEA_GROUP_LABEL[group.id]),
             responsive: [
                 {
                     breakpoint: 480,
@@ -123,7 +133,7 @@ export class Statistics {
                     fontWeight: "500",
                 },
             },
-            colors: this.#data.map((group) => TEA_GROUP_COLOR[group.name]),
+            colors: this.#data.map((group) => TEA_GROUP_COLOR[group.id]),
             series: [{ data: this.#data.map((group) => group.stats[statType]), name: "Amount" }],
             chart: {
                 width: "100%",
@@ -133,7 +143,7 @@ export class Statistics {
                 },
                 animations: { enabled: false },
             },
-            labels: this.#data.map((group) => group.name),
+            labels: this.#data.map((group) => TEA_GROUP_LABEL[group.id]),
             plotOptions: {
                 bar: {
                     distributed: true,

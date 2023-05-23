@@ -1,4 +1,4 @@
-import { DATA_KEY, KEYS_MAP, TABLEWARE, TEA_GROUP_CLASS_NAME } from "../constants.js";
+import { TABLEWARE } from "../constants.js";
 import { ClayIcon, GlassIcon, PorcelainIcon, TeapotIcon, ThermosIcon } from "../icons.js";
 import { TemperatureBar } from "./temperatureBar.js";
 import { TimeBar } from "./timeBar.js";
@@ -24,21 +24,21 @@ export class Card {
     render() {
         this.#domElem = document.createElement("div");
         this.#domElem.classList.add("tea-card");
-        this.#domElem.classList.add(`tea-category-${TEA_GROUP_CLASS_NAME[this.#data[DATA_KEY.GROUP]]}`);
-        if (!this.#data[KEYS_MAP.IN_STOCK]) {
+        this.#domElem.classList.add(`tea-category-${this.#data.group}`);
+        if (!this.#data.inStock) {
             this.#domElem.classList.add("out-of-stock");
         }
 
         let content = "";
-        content += this.#getGroup(this.#data[DATA_KEY.GROUP]);
-        content += this.#getRating(this.#data[KEYS_MAP.RATING]);
-        content += `<h6 class="tea-name">${this.#data[DATA_KEY.NAME]}</h6>`;
-        content += this.#getBrewingTime(this.#data[DATA_KEY.BREWING_TIME]);
-        content += this.#getTemperature(this.#data[DATA_KEY.TEMPERATURE]);
-        content += this.#getTableware(this.#data[DATA_KEY.TABLEWARE]);
-        content += this.#getPrice(this.#data[DATA_KEY.PRICE]);
-        content += this.#getTags(this.#data[DATA_KEY.TAGS]);
-        content += this.#getReview(this.#data[DATA_KEY.REVIEW]);
+        content += this.#getGroup(this.#data.group);
+        content += this.#getRating(this.#data.rating);
+        content += `<h6 class="tea-name">${this.#data.name}</h6>`;
+        content += this.#getBrewingTime(this.#data.brewingTime);
+        content += this.#getTemperature(this.#data.temperature);
+        content += this.#getTableware(this.#data.tableware);
+        content += this.#getPrice(this.#data.price);
+        content += this.#getTags(this.#data.tags);
+        content += this.#getReview(this.#data.review);
 
         this.#domElem.innerHTML = content;
         this.#container.appendChild(this.#domElem);
@@ -74,29 +74,32 @@ export class Card {
 
     #getGroup(group) {
         let result = "";
-        result += '<div class="tea-category-icon-container tea-category-' + TEA_GROUP_CLASS_NAME[group] + '">';
+        result += '<div class="tea-category-icon-container tea-category-' + group + '">';
         result += `<span class="tea-category-icon icon-leaf"></span>`;
         result += "</div>";
         return result;
     }
 
     #getBrewingTime(time) {
+        const label = "Brewing time";
         if (time) {
-            return this.#getParam(DATA_KEY.BREWING_TIME, new TimeBar(time).renderToString());
+            return this.#getParam(label, new TimeBar(time).renderToString());
         } else {
-            return this.#getEmptyParam(DATA_KEY.BREWING_TIME);
+            return this.#getEmptyParam(label);
         }
     }
 
     #getTemperature(temperature) {
+        const label = "Temperature";
         if (temperature) {
-            return this.#getParam(DATA_KEY.TEMPERATURE, new TemperatureBar(temperature).renderToString());
+            return this.#getParam(label, new TemperatureBar(temperature).renderToString());
         } else {
-            return this.#getEmptyParam(DATA_KEY.TEMPERATURE);
+            return this.#getEmptyParam(label);
         }
     }
 
     #getTableware(tableware) {
+        const label = "Tableware";
         if (tableware) {
             let content = "";
             content += '<div class="tea-tableware-container">';
@@ -109,23 +112,23 @@ export class Card {
             tablewareArray.forEach((elem) => {
                 content += '<div class="tea-tableware-icon-container">';
                 switch (elem) {
-                    case TABLEWARE.CLAY:
+                    case TABLEWARE.clay:
                         content += ClayIcon;
                         break;
 
-                    case TABLEWARE.PORCELAIN:
+                    case TABLEWARE.porcelain:
                         content += PorcelainIcon;
                         break;
 
-                    case TABLEWARE.TEAPOT:
+                    case TABLEWARE.teapot:
                         content += TeapotIcon;
                         break;
 
-                    case TABLEWARE.GLASS:
+                    case TABLEWARE.glass:
                         content += GlassIcon;
                         break;
 
-                    case TABLEWARE.THERMOS:
+                    case TABLEWARE.thermos:
                         content += ThermosIcon;
                         break;
 
@@ -136,21 +139,23 @@ export class Card {
             });
             content += "</div>";
 
-            return this.#getParam(DATA_KEY.TEMPERATURE, content);
+            return this.#getParam(label, content);
         } else {
-            return this.#getEmptyParam(DATA_KEY.TABLEWARE);
+            return this.#getEmptyParam(label);
         }
     }
 
     #getPrice(price) {
+        const label = "Price";
         if (price) {
-            return this.#getParam(DATA_KEY.PRICE, price + "$");
+            return this.#getParam(label, price + "$");
         } else {
-            return this.#getEmptyParam(DATA_KEY.PRICE);
+            return this.#getEmptyParam(label);
         }
     }
 
     #getTags(tags) {
+        const label = "Tags";
         if (tags.length > 0) {
             let content = "";
             content += '<div class="tea-tags-container">';
@@ -164,17 +169,18 @@ export class Card {
 
             content += "</div>";
 
-            return this.#getParam(DATA_KEY.TAGS, content);
+            return this.#getParam(label, content);
         } else {
-            return this.#getEmptyParam(DATA_KEY.TAGS);
+            return this.#getEmptyParam(label);
         }
     }
 
     #getReview(review) {
+        const label = "Review";
         if (review) {
-            return this.#getParam(DATA_KEY.REVIEW, review);
+            return this.#getParam(label, review);
         } else {
-            return this.#getEmptyParam(DATA_KEY.REVIEW);
+            return this.#getEmptyParam(label);
         }
     }
 

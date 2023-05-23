@@ -1,17 +1,9 @@
-import {
-    IN_STOCK_OPTIONS,
-    IN_STOCK_LABELS,
-    TAGS,
-    TAG_LABELS,
-    TEA_GROUP_CLASS_NAME,
-    CATEGORIES_MAP,
-    UPDATE_TYPE,
-} from "./../constants.js";
+import { TAG, UPDATE_TYPE, STOCK, TEA_GROUP, STOCK_LABEL, TEA_GROUP_LABEL, TAG_LABEL } from "./../constants.js";
 import { RandomAndSearch } from "./randomAndSearch.js";
 
-const IN_STOCK_OPTIONS_LIST = [IN_STOCK_OPTIONS.ALL, IN_STOCK_OPTIONS.IN_STOCK, IN_STOCK_OPTIONS.OUT_OF_STOCK];
-const TAG_LIST = Object.values(TAGS).sort();
-const GROUP_LIST = Object.values(CATEGORIES_MAP).sort();
+const STOCK_OPTIONS_LIST = [STOCK.all, STOCK.inStock, STOCK.outOfStock];
+const TAG_LIST = Object.values(TAG).sort();
+const GROUP_LIST = Object.values(TEA_GROUP).sort();
 
 export class Settings {
     #container;
@@ -65,17 +57,17 @@ export class Settings {
         const container = document.createElement("div");
         container.classList.add("tea-categories-container");
 
-        GROUP_LIST.forEach((group) => {
+        GROUP_LIST.forEach((groupId) => {
             const element = document.createElement("div");
-            element.classList.add("tea-category-container", `tea-category-${TEA_GROUP_CLASS_NAME[group]}`);
-            element.dataset.group = group;
-            element.addEventListener("click", this.#handleGroupChange(group));
+            element.classList.add("tea-category-container", `tea-category-${groupId}`);
+            element.dataset.group = groupId;
+            element.addEventListener("click", this.#handleGroupChange(groupId));
 
             let content = "";
-            content += `<div class="tea-category-icon-container tea-category-${TEA_GROUP_CLASS_NAME[group]}">
+            content += `<div class="tea-category-icon-container tea-category-${groupId}">
                 <span class="tea-category-icon icon-leaf"></span>
             </div>`;
-            content += ` <div class="tea-category-name">${group}</div>`;
+            content += ` <div class="tea-category-name">${TEA_GROUP_LABEL[groupId]}</div>`;
 
             element.innerHTML = content;
 
@@ -90,14 +82,14 @@ export class Settings {
         const container = document.createElement("div");
         container.classList.add("tea-stock-type-container");
 
-        IN_STOCK_OPTIONS_LIST.forEach((option) => {
+        STOCK_OPTIONS_LIST.forEach((option) => {
             const element = document.createElement("div");
             element.classList.add("tea-stock-type");
             element.dataset.stock = option;
-            element.innerHTML = IN_STOCK_LABELS[option];
+            element.innerHTML = STOCK_LABEL[option];
             element.addEventListener("click", this.#handleStockChange(option));
 
-            if (this.#data.inStock === option) {
+            if (this.#data.stock === option) {
                 element.classList.add("selected");
             }
 
@@ -116,7 +108,7 @@ export class Settings {
             const element = document.createElement("div");
             element.classList.add("tea-tag");
             element.dataset.tag = tag;
-            element.innerHTML = tag;
+            element.innerHTML = TAG_LABEL[tag];
             element.addEventListener("click", this.#handleTagChange(tag));
 
             this.#elements.tags.push(element);
@@ -128,20 +120,20 @@ export class Settings {
 
     #handleGroupChange = (selectedGroup) => () => {
         this.#elements.groups.forEach((elem) => {
-            const name = elem.dataset.group;
+            const groupId = elem.dataset.group;
 
-            if (name !== selectedGroup || this.#data.group === name) {
+            if (groupId !== selectedGroup || this.#data.group === groupId) {
                 elem.classList.remove("selected");
             } else {
                 elem.classList.add("selected");
             }
         });
 
-        this.#handleUpdate(UPDATE_TYPE.GROUP, selectedGroup);
+        this.#handleUpdate(UPDATE_TYPE.group, selectedGroup);
     };
 
     #handleStockChange = (selectedOption) => () => {
-        if (selectedOption !== this.#data.inStock) {
+        if (selectedOption !== this.#data.stock) {
             this.#elements.stock.forEach((elem) => {
                 const option = elem.dataset.stock;
 
@@ -152,7 +144,7 @@ export class Settings {
                 }
             });
 
-            this.#handleUpdate(UPDATE_TYPE.STOCK, selectedOption);
+            this.#handleUpdate(UPDATE_TYPE.stock, selectedOption);
         }
     };
 
@@ -160,14 +152,14 @@ export class Settings {
         const elem = this.#elements.tags.find((elem) => selectedTag === elem.dataset.tag);
         elem.classList.toggle("selected");
 
-        this.#handleUpdate(UPDATE_TYPE.TAG, selectedTag);
+        this.#handleUpdate(UPDATE_TYPE.tag, selectedTag);
     };
 
     #handleRandomUpdate = (value) => {
-        this.#handleUpdate(UPDATE_TYPE.RANDOM, value);
+        this.#handleUpdate(UPDATE_TYPE.random, value);
     };
 
     #handleSearchUpdate = (value) => {
-        this.#handleUpdate(UPDATE_TYPE.SEARCH, value);
+        this.#handleUpdate(UPDATE_TYPE.search, value);
     };
 }

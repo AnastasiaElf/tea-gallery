@@ -1,4 +1,4 @@
-import { TEA_GROUP_NAME, DATA_KEY, IN_STOCK_OPTIONS, PAGE, UPDATE_TYPE } from "./../constants.js";
+import { PAGE, UPDATE_TYPE, TEA_GROUP, STOCK } from "./../constants.js";
 import { CardGroup } from "./cardGroup.js";
 import { Settings } from "./settings.js";
 import { Statistics } from "./statistics.js";
@@ -8,12 +8,12 @@ export class TeaGallery {
     #data = [];
     #settings = {
         group: null,
-        inStock: IN_STOCK_OPTIONS.ALL,
+        stock: STOCK.all,
         tags: [],
         randomEnabled: false,
         searchValue: "",
     };
-    #currentPage = PAGE.TEA_GALLERY;
+    #currentPage = PAGE.teaGallery;
     #elements = {
         contentToggle: null,
         statisticsPage: null,
@@ -73,26 +73,23 @@ export class TeaGallery {
         let groupsData = [];
         let groupsObject = {};
 
-        Object.values(TEA_GROUP_NAME).forEach((groupName) => {
-            groupsObject[groupName] = { name: groupName, items: [] };
+        Object.values(TEA_GROUP).forEach((groupId) => {
+            groupsObject[groupId] = { id: groupId, items: [] };
         });
 
         this.#data.forEach((item) => {
-            const groupName = item[DATA_KEY.GROUP];
-            groupsObject[groupName].items.push(item);
+            const groupId = item.group;
+            groupsObject[groupId].items.push(item);
         });
 
         Object.keys(groupsObject)
             .sort()
-            .forEach((groupName) => {
-                let groupData = groupsObject[groupName];
+            .forEach((group) => {
+                let groupData = groupsObject[group];
 
                 groupData.stats = {};
                 groupData.stats.total = groupData.items.length;
-                groupData.stats.inStock = groupData.items.reduce(
-                    (sum, item) => (item[DATA_KEY.IN_STOCK] ? ++sum : sum),
-                    0
-                );
+                groupData.stats.inStock = groupData.items.reduce((sum, item) => (item.inStock ? ++sum : sum), 0);
                 groupData.stats.outOfStock = groupData.stats.total - groupData.stats.inStock;
 
                 groupsData.push(groupData);
@@ -117,16 +114,16 @@ export class TeaGallery {
 
     #handleToggleContent = () => {
         switch (this.#currentPage) {
-            case PAGE.STATISTICS:
-                this.#currentPage = PAGE.TEA_GALLERY;
+            case PAGE.statistics:
+                this.#currentPage = PAGE.teaGallery;
                 this.#elements.contentToggle.innerHTML = "Statistics";
                 this.#elements.statisticsPage.classList.add("hidden");
                 this.#elements.teaGalleryPage.classList.remove("hidden");
 
                 break;
 
-            case PAGE.TEA_GALLERY:
-                this.#currentPage = PAGE.STATISTICS;
+            case PAGE.teaGallery:
+                this.#currentPage = PAGE.statistics;
                 this.#elements.contentToggle.innerHTML = "Tea Gallery";
                 this.#elements.statisticsPage.classList.remove("hidden");
                 this.#elements.teaGalleryPage.classList.add("hidden");
@@ -140,7 +137,7 @@ export class TeaGallery {
 
     #handleSettingsUpdate = (type, data) => {
         switch (type) {
-            case UPDATE_TYPE.GROUP:
+            case UPDATE_TYPE.group:
                 if (this.#settings.group === data) {
                     this.#settings.group = null;
                 } else {
@@ -148,11 +145,11 @@ export class TeaGallery {
                 }
                 break;
 
-            case UPDATE_TYPE.STOCK:
-                this.#settings.inStock = data;
+            case UPDATE_TYPE.stock:
+                this.#settings.stock = data;
                 break;
 
-            case UPDATE_TYPE.TAG:
+            case UPDATE_TYPE.tag:
                 const index = this.#settings.tags.indexOf(data);
                 if (index === -1) {
                     this.#settings.tags.push(data);
@@ -161,11 +158,11 @@ export class TeaGallery {
                 }
                 break;
 
-            case UPDATE_TYPE.RANDOM:
+            case UPDATE_TYPE.random:
                 this.#settings.randomEnabled = data;
                 break;
 
-            case UPDATE_TYPE.SEARCH:
+            case UPDATE_TYPE.search:
                 this.#settings.searchValue = data;
                 break;
 
@@ -178,23 +175,22 @@ export class TeaGallery {
 
     #getVisibleCardIds() {
         let cardIds = [];
-        const { group, inStock, tags, randomEnabled, searchValue } = this.#settings;
+        const { group, stock, tags, randomEnabled, searchValue } = this.#settings;
 
         this.#data.forEach((item) => {
-            const matchSearch =
-                searchValue === "" || item[DATA_KEY.NAME].toLowerCase().includes(searchValue.toLowerCase());
+            const matchSearch = searchValue === "" || item.name.toLowerCase().includes(searchValue.toLowerCase());
 
-            const matchGroup = !group || item[DATA_KEY.GROUP] === group;
-            const matchInStock =
-                inStock === IN_STOCK_OPTIONS.ALL ||
-                (inStock === IN_STOCK_OPTIONS.IN_STOCK && item[DATA_KEY.IN_STOCK]) ||
-                (inStock === IN_STOCK_OPTIONS.OUT_OF_STOCK && !item[DATA_KEY.IN_STOCK]);
+            const matchGroup = !group || item.group === group;
+            const matchStock =
+                stock === STOCK.all ||
+                (stock === STOCK.inStock && item.inStock) ||
+                (stock === STOCK.outOfStock && !item.inStock);
 
-            const itemTags = item[DATA_KEY.TAGS];
+            const itemTags = item.tags;
             const matchTags =
                 tags.length === 0 || (itemTags.length > 0 && tags.every((elem) => itemTags.includes(elem)));
 
-            if (matchGroup && matchInStock && matchTags && matchSearch) {
+            if (matchGroup && matchStock && matchTags && matchSearch) {
                 cardIds.push(item.id);
             }
         });
@@ -211,8 +207,8 @@ export class TeaGallery {
         const { group } = this.#settings;
 
         this.#objects.groups.forEach((groupObj) => {
-            const groupName = groupObj.getName();
-            if (group && groupName !== group) {
+            const groupId = groupObj.getId();
+            if (group && groupId !== group) {
                 groupObj.hide();
             } else {
                 const cards = groupObj.getCards();

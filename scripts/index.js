@@ -1,5 +1,17 @@
 import { TeaGallery } from "./components/teaGallery.js";
-import { DATA_KEY } from "./constants.js";
+
+const RAW_DATA_KEY = {
+    group: "Group",
+    name: "Name",
+    brewingTime: "Brewing time",
+    temperature: "Water temperature",
+    tableware: "Tableware",
+    rating: "Rating",
+    review: "Review",
+    price: "Price for 50g",
+    tags: "Tags",
+    inStock: "In Stock",
+};
 
 function fetchData(url) {
     return new Promise((resolve, reject) => {
@@ -22,16 +34,24 @@ const dataUrl =
 fetchData(dataUrl)
     .then((data) => {
         const container = document.getElementById("root");
-        const updatedData = data.map((item, index) => ({
-            ...item,
-            id: "tea-" + index,
-            [DATA_KEY.TAGS]: item[DATA_KEY.TAGS]
-                .split(",")
-                .map((elem) => elem.trim())
-                .filter((elem) => elem !== "")
-                .sort(),
-            [DATA_KEY.IN_STOCK]: JSON.parse(item[DATA_KEY.IN_STOCK].toLowerCase()),
-        }));
+
+        const updatedData = data.map((rawItem, index) => {
+            let item = {};
+            Object.entries(RAW_DATA_KEY).forEach(([key, rawKey]) => {
+                item[key] = rawItem[rawKey];
+            });
+
+            return {
+                ...item,
+                id: "tea-" + index,
+                tags: item.tags
+                    .split(",")
+                    .map((elem) => elem.trim())
+                    .filter((elem) => elem !== "")
+                    .sort(),
+                inStock: JSON.parse(item.inStock.toLowerCase()),
+            };
+        });
 
         const teaGallery = new TeaGallery(container, updatedData);
         teaGallery.render();

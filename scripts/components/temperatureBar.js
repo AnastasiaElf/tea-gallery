@@ -1,5 +1,3 @@
-import { DATA_KEY } from "../constants.js";
-
 export class TemperatureBar {
     #minTemp;
     #maxTemp;
