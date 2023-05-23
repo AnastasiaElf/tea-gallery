@@ -44,15 +44,15 @@ export class TeaGallery {
         this.#container.appendChild(this.#getControls());
 
         this.#elements.statisticsPage = document.createElement("div");
-        this.#elements.statisticsPage.classList.add("page-content-container");
+        this.#elements.statisticsPage.classList.add("tg-content");
         this.#container.appendChild(this.#elements.statisticsPage);
-        this.#elements.statisticsPage.classList.add("hidden");
+        this.#elements.statisticsPage.classList.add("tg-hidden");
 
         this.#objects.statistics = new Statistics(this.#elements.statisticsPage, data);
         this.#objects.statistics.render();
 
         this.#elements.teaGalleryPage = document.createElement("div");
-        this.#elements.teaGalleryPage.classList.add("page-content-container");
+        this.#elements.teaGalleryPage.classList.add("tg-content");
         this.#container.appendChild(this.#elements.teaGalleryPage);
 
         this.#objects.settings = new Settings(
@@ -100,10 +100,10 @@ export class TeaGallery {
 
     #getControls() {
         const container = document.createElement("div");
-        container.classList.add("tea-statistics-container");
+        container.classList.add("tg-menu");
 
         this.#elements.contentToggle = document.createElement("button");
-        this.#elements.contentToggle.classList.add("tea-button");
+        this.#elements.contentToggle.classList.add("tg-button");
         this.#elements.contentToggle.addEventListener("click", this.#handleToggleContent);
         this.#elements.contentToggle.innerHTML = "Statistics";
 
@@ -117,16 +117,16 @@ export class TeaGallery {
             case PAGE.statistics:
                 this.#currentPage = PAGE.teaGallery;
                 this.#elements.contentToggle.innerHTML = "Statistics";
-                this.#elements.statisticsPage.classList.add("hidden");
-                this.#elements.teaGalleryPage.classList.remove("hidden");
+                this.#elements.statisticsPage.classList.add("tg-hidden");
+                this.#elements.teaGalleryPage.classList.remove("tg-hidden");
 
                 break;
 
             case PAGE.teaGallery:
                 this.#currentPage = PAGE.statistics;
                 this.#elements.contentToggle.innerHTML = "Tea Gallery";
-                this.#elements.statisticsPage.classList.remove("hidden");
-                this.#elements.teaGalleryPage.classList.add("hidden");
+                this.#elements.statisticsPage.classList.remove("tg-hidden");
+                this.#elements.teaGalleryPage.classList.add("tg-hidden");
 
                 break;
 

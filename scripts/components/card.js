@@ -1,4 +1,4 @@
-import { TABLEWARE } from "../constants.js";
+import { TABLEWARE, TAG_LABEL } from "../constants.js";
 import { ClayIcon, GlassIcon, PorcelainIcon, TeapotIcon, ThermosIcon } from "../icons.js";
 import { TemperatureBar } from "./temperatureBar.js";
 import { TimeBar } from "./timeBar.js";
@@ -23,16 +23,16 @@ export class Card {
 
     render() {
         this.#domElem = document.createElement("div");
-        this.#domElem.classList.add("tea-card");
-        this.#domElem.classList.add(`tea-group-${this.#data.group}`);
+        this.#domElem.classList.add("tg-card");
+        this.#domElem.classList.add(`tg-group-${this.#data.group}`);
         if (!this.#data.inStock) {
-            this.#domElem.classList.add("out-of-stock");
+            this.#domElem.classList.add("tg-out-of-stock");
         }
 
         let content = "";
         content += this.#getGroup();
         content += this.#getRating(this.#data.rating);
-        content += `<h6 class="tea-name">${this.#data.name}</h6>`;
+        content += `<h6 class="tg-card-name">${this.#data.name}</h6>`;
         content += this.#getBrewingTime(this.#data.brewingTime);
         content += this.#getTemperature(this.#data.temperature);
         content += this.#getTableware(this.#data.tableware);
@@ -49,11 +49,11 @@ export class Card {
     }
 
     hide() {
-        this.#domElem.classList.add("hidden");
+        this.#domElem.classList.add("tg-hidden");
     }
 
     show() {
-        this.#domElem.classList.remove("hidden");
+        this.#domElem.classList.remove("tg-hidden");
     }
 
     #getRating(rating) {
@@ -62,10 +62,10 @@ export class Card {
         }
 
         let result = "";
-        result += '<div class="tea-rating-container">';
+        result += '<div class="tg-card-rating">';
 
         for (let i = 0; i < 5; i++) {
-            result += `<span class="icon-star rating-icon ${parseInt(rating) > i ? "filled" : ""}"></span>`;
+            result += `<span class="tg-icon-star tg-rating-icon ${rating > i ? "filled" : ""}"></span>`;
         }
 
         result += "</div>";
@@ -74,8 +74,8 @@ export class Card {
 
     #getGroup() {
         let result = "";
-        result += '<div class="tea-group-icon-container">';
-        result += `<span class="tea-group-icon icon-leaf"></span>`;
+        result += '<div class="tg-group-icon-container">';
+        result += `<span class="tg-group-icon tg-icon-leaf"></span>`;
         result += "</div>";
         return result;
     }
@@ -102,7 +102,7 @@ export class Card {
         const label = "Tableware";
         if (tableware) {
             let content = "";
-            content += '<div class="tea-tableware-container">';
+            content += '<div class="tg-tableware-container">';
 
             let tablewareArray = tableware
                 .split(",")
@@ -110,7 +110,7 @@ export class Card {
                 .sort();
 
             tablewareArray.forEach((elem) => {
-                content += '<div class="tea-tableware-icon-container">';
+                content += '<div class="tg-tableware-icon-container">';
                 switch (elem) {
                     case TABLEWARE.clay:
                         content += ClayIcon;
@@ -158,12 +158,11 @@ export class Card {
         const label = "Tags";
         if (tags.length > 0) {
             let content = "";
-            content += '<div class="tea-tags-container">';
+            content += '<div class="tg-tags-container">';
 
             tags.forEach((tag) => {
-                // TODO: Replace with tag component (without hover and cursor pointer)
-                content += '<div class="tea-tag selected disabled">';
-                content += tag;
+                content += '<div class="tg-tag tg-selected tg-disabled">';
+                content += TAG_LABEL[tag];
                 content += "</div>";
             });
 
@@ -186,7 +185,7 @@ export class Card {
 
     #getParam(name, content) {
         let result = "";
-        result += '<div class="tea-param">';
+        result += '<div class="tg-card-param">';
         result += "<b>" + name + "</b>: ";
         result += content;
         result += "</div>";
@@ -194,6 +193,6 @@ export class Card {
     }
 
     #getEmptyParam(name) {
-        return '<div class="tea-param"><b>' + name + "</b>: ---</div>";
+        return '<div class="tg-card-param"><b>' + name + "</b>: ---</div>";
     }
 }

@@ -15,11 +15,11 @@ export class TemperatureBar {
     renderToString() {
         let result = "";
 
-        result += '<div class="tea-temperature-container">';
-        result += '<div class="temperature-bar">';
-        result += `<div class="temperature-bar-overlap" style="width: ${this.#minTemp}%;"></div>`;
+        result += '<div class="tg-progress-bar-container">';
+        result += '<div class="tg-progress-bar">';
+        result += `<div class="tg-progress-bar-overlap" style="width: ${this.#minTemp}%;"></div>`;
         result += "</div>";
-        result += '<div class="temperature-value">';
+        result += '<div class="tg-progress-bar-value">';
         result += `${this.#minTemp} ${this.#maxTemp ? " - " + this.#maxTemp : ""} °C`;
         result += "</div>";
         result += "</div>";

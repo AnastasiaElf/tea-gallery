@@ -35,9 +35,9 @@ export class TimeBar {
     renderToString() {
         let result = "";
 
-        result += '<div class="tea-brewing-time-container">';
-        result += '<div class="time-bar">';
-        result += `<div class="time-bar-overlap" style="width: ${
+        result += '<div class="tg-progress-bar-container">';
+        result += '<div class="tg-progress-bar">';
+        result += `<div class="tg-progress-bar-overlap" style="width: ${
             this.#maxTime
                 ? this.#maxTime < 60
                     ? this.#maxTime
@@ -49,7 +49,7 @@ export class TimeBar {
                 : 0
         }%;"></div>`;
         result += "</div>";
-        result += '<div class="time-value">';
+        result += '<div class="tg-progress-bar-value">';
         result += `${this.#timeFrom.value} `;
 
         if (this.#timeTo) {

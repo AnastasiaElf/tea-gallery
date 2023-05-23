@@ -30,18 +30,18 @@ export class Statistics {
 
     render() {
         this.#domElem = document.createElement("div");
-        this.#domElem.classList.add("tea-statistics-container");
+        this.#domElem.classList.add("tg-statistics");
 
-        let content = '<div class="tea-statistics-info-container">';
-        content += `<div id="${DOM_ELEMENT_ID.PIE_CHART_STOCK}" class="chart-container"></div>`;
+        let content = '<div class="tg-statistics-row">';
+        content += `<div id="${DOM_ELEMENT_ID.PIE_CHART_STOCK}" class="tg-chart"></div>`;
         content += "</div>";
-        content += '<div class="tea-statistics-info-container">';
-        content += `<div id="${DOM_ELEMENT_ID.PIE_CHART_ALL}" class="chart-container"></div>`;
-        content += `<div id="${DOM_ELEMENT_ID.BAR_CHART_ALL}" class="chart-container"></div>`;
-        content += `<div id="${DOM_ELEMENT_ID.PIE_CHART_IN_STOCK}" class="chart-container"></div>`;
-        content += `<div id="${DOM_ELEMENT_ID.BAR_CHART_IN_STOCK}" class="chart-container"></div>`;
-        content += `<div id="${DOM_ELEMENT_ID.PIE_CHART_OUT_OF_STOCK}" class="chart-container"></div>`;
-        content += `<div id="${DOM_ELEMENT_ID.BAR_CHART_OUT_OF_STOCK}" class="chart-container"></div>`;
+        content += '<div class="tg-statistics-row">';
+        content += `<div id="${DOM_ELEMENT_ID.PIE_CHART_ALL}" class="tg-chart"></div>`;
+        content += `<div id="${DOM_ELEMENT_ID.BAR_CHART_ALL}" class="tg-chart"></div>`;
+        content += `<div id="${DOM_ELEMENT_ID.PIE_CHART_IN_STOCK}" class="tg-chart"></div>`;
+        content += `<div id="${DOM_ELEMENT_ID.BAR_CHART_IN_STOCK}" class="tg-chart"></div>`;
+        content += `<div id="${DOM_ELEMENT_ID.PIE_CHART_OUT_OF_STOCK}" class="tg-chart"></div>`;
+        content += `<div id="${DOM_ELEMENT_ID.BAR_CHART_OUT_OF_STOCK}" class="tg-chart"></div>`;
         content += "</div>";
 
         this.#domElem.innerHTML = content;

@@ -50,6 +50,7 @@ fetchData(dataUrl)
                     .filter((elem) => elem !== "")
                     .sort(),
                 inStock: JSON.parse(item.inStock.toLowerCase()),
+                rating: item.rating ? parseInt(item.rating) : null,
             };
         });
 

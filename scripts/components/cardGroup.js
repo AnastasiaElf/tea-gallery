@@ -22,15 +22,15 @@ export class CardGroup {
 
     render() {
         this.#domElem = document.createElement("div");
-        this.#domElem.classList.add("group-container");
+        this.#domElem.classList.add("tg-card-group");
 
         let content = "";
-        content += '<div class="group-divider"></div>';
-        content += '<h5 class="group-name ">';
+        content += '<div class="tg-card-group-divider"></div>';
+        content += '<h5 class="tg-card-group-name">';
         content += `${TEA_GROUP_LABEL[this.#data.id]} (${this.#data.stats.inStock}/${this.#data.stats.total})`;
         content += "</h5>";
         const cardsContainer = document.createElement("div");
-        cardsContainer.classList.add("cards-container");
+        cardsContainer.classList.add("tg-card-group-cards");
 
         this.#domElem.innerHTML = content;
         this.#domElem.appendChild(cardsContainer);
@@ -56,10 +56,10 @@ export class CardGroup {
     }
 
     hide() {
-        this.#domElem.classList.add("hidden");
+        this.#domElem.classList.add("tg-hidden");
     }
 
     show() {
-        this.#domElem.classList.remove("hidden");
+        this.#domElem.classList.remove("tg-hidden");
     }
 }

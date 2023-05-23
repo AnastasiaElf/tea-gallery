@@ -41,15 +41,15 @@ export class RandomAndSearch {
 
     #getRandomAndSearch() {
         this.#elements.main = document.createElement("div");
-        this.#elements.main.classList.add("tea-randomizer-container");
+        this.#elements.main.classList.add("tg-button-group");
 
         const randomButton = document.createElement("button");
-        randomButton.classList.add("tea-button", "tea-button-margin-right");
+        randomButton.classList.add("tg-button");
         randomButton.innerHTML = "Random tea";
         randomButton.addEventListener("click", this.#enableRandom);
 
         const searchButton = document.createElement("button");
-        searchButton.classList.add("tea-button");
+        searchButton.classList.add("tg-button");
         searchButton.innerHTML = "Search";
         searchButton.addEventListener("click", this.#enableSearch);
 
@@ -61,16 +61,16 @@ export class RandomAndSearch {
 
     #getRandomParams() {
         this.#elements.random = document.createElement("div");
-        this.#elements.random.classList.add("tea-randomizer-container");
-        this.#elements.random.classList.add("hidden");
+        this.#elements.random.classList.add("tg-button-group");
+        this.#elements.random.classList.add("tg-hidden");
 
         const randomButton = document.createElement("button");
-        randomButton.classList.add("tea-button", "tea-button-margin-right");
+        randomButton.classList.add("tg-button");
         randomButton.innerHTML = "Randomize";
         randomButton.addEventListener("click", this.#handleRandomSubmit);
 
         const backButton = document.createElement("button");
-        backButton.classList.add("tea-button");
+        backButton.classList.add("tg-button");
         backButton.innerHTML = "Back";
         backButton.addEventListener("click", this.#disableRandom);
 
@@ -82,25 +82,25 @@ export class RandomAndSearch {
 
     #getSearchParams() {
         this.#elements.search = document.createElement("div");
-        this.#elements.search.classList.add("tea-search-container");
-        this.#elements.search.classList.add("hidden");
+        this.#elements.search.classList.add("tg-search-container");
+        this.#elements.search.classList.add("tg-hidden");
 
         this.#elements.searchInput = document.createElement("input");
-        this.#elements.searchInput.classList.add("tea-input", "tea-search-input");
+        this.#elements.searchInput.classList.add("tg-input");
         this.#elements.searchInput.type = "text";
         this.#elements.searchInput.placeholder = "Type text here...";
         this.#elements.searchInput.value = this.#data.searchValue;
 
         const buttonsContainer = document.createElement("div");
-        buttonsContainer.classList.add("tea-search-buttons-container");
+        buttonsContainer.classList.add("tg-button-group");
 
         const searchButton = document.createElement("button");
-        searchButton.classList.add("tea-button", "tea-button-margin-right");
+        searchButton.classList.add("tg-button");
         searchButton.innerHTML = "Search";
         searchButton.addEventListener("click", this.#handleSearchSubmit);
 
         const backButton = document.createElement("button");
-        backButton.classList.add("tea-button");
+        backButton.classList.add("tg-button");
         backButton.innerHTML = "Back";
         backButton.addEventListener("click", this.#disableSearch);
 
@@ -114,24 +114,24 @@ export class RandomAndSearch {
     }
 
     #enableRandom = () => {
-        this.#elements.main.classList.add("hidden");
-        this.#elements.random.classList.remove("hidden");
+        this.#elements.main.classList.add("tg-hidden");
+        this.#elements.random.classList.remove("tg-hidden");
     };
 
     #disableRandom = () => {
-        this.#elements.main.classList.remove("hidden");
-        this.#elements.random.classList.add("hidden");
+        this.#elements.main.classList.remove("tg-hidden");
+        this.#elements.random.classList.add("tg-hidden");
         this.#handleRandomUpdate(false);
     };
 
     #enableSearch = () => {
-        this.#elements.main.classList.add("hidden");
-        this.#elements.search.classList.remove("hidden");
+        this.#elements.main.classList.add("tg-hidden");
+        this.#elements.search.classList.remove("tg-hidden");
     };
 
     #disableSearch = () => {
-        this.#elements.main.classList.remove("hidden");
-        this.#elements.search.classList.add("hidden");
+        this.#elements.main.classList.remove("tg-hidden");
+        this.#elements.search.classList.add("tg-hidden");
         this.#elements.searchInput.value = "";
         this.#handleSearchUpdate(this.#elements.searchInput.value);
     };

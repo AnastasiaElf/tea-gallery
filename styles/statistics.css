@@ -1,0 +1,34 @@
+.tg-statistics {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.tg-statistics-row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.tg-chart {
+    width: 100%;
+    max-width: 400px;
+    text-shadow: none;
+}
+
+.tg-chart .apexcharts-legend-text {
+    color: var(--text-color) !important;
+    text-shadow: var(--text-shadow);
+}
+
+.tg-chart .apexcharts-title-text,
+.tg-chart .apexcharts-text.apexcharts-xaxis-label,
+.tg-chart .apexcharts-text.apexcharts-yaxis-label {
+    fill: var(--text-color);
+    text-shadow: var(--text-shadow);
+}

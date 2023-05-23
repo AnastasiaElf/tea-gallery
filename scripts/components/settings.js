@@ -36,7 +36,7 @@ export class Settings {
 
     render() {
         this.#domElem = document.createElement("div");
-        this.#domElem.classList.add("settings");
+        this.#domElem.classList.add("tg-settings");
 
         this.#domElem.appendChild(this.#getGroups());
         this.#domElem.appendChild(this.#getStockOptions());
@@ -55,19 +55,19 @@ export class Settings {
 
     #getGroups() {
         const container = document.createElement("div");
-        container.classList.add("group-filters-container");
+        container.classList.add("tg-settings-row");
 
         GROUP_LIST.forEach((groupId) => {
             const element = document.createElement("div");
-            element.classList.add("group-filter-container", `tea-group-${groupId}`);
+            element.classList.add("tg-group-button", `tg-group-${groupId}`);
             element.dataset.group = groupId;
             element.addEventListener("click", this.#handleGroupChange(groupId));
 
             let content = "";
-            content += '<div class="tea-group-icon-container">';
-            content += '<span class="tea-group-icon icon-leaf"></span>';
+            content += '<div class="tg-group-icon-container">';
+            content += '<span class="tg-group-icon tg-icon-leaf"></span>';
             content += "</div>";
-            content += `<div class="tea-group-name">${TEA_GROUP_LABEL[groupId]}</div>`;
+            content += `<div class="tg-group-name">${TEA_GROUP_LABEL[groupId]}</div>`;
 
             element.innerHTML = content;
 
@@ -80,17 +80,17 @@ export class Settings {
 
     #getStockOptions() {
         const container = document.createElement("div");
-        container.classList.add("tea-stock-type-container");
+        container.classList.add("tg-settings-row");
 
         STOCK_OPTIONS_LIST.forEach((option) => {
             const element = document.createElement("div");
-            element.classList.add("tea-stock-type");
+            element.classList.add("tg-tag");
             element.dataset.stock = option;
             element.innerHTML = STOCK_LABEL[option];
             element.addEventListener("click", this.#handleStockChange(option));
 
             if (this.#data.stock === option) {
-                element.classList.add("selected");
+                element.classList.add("tg-selected");
             }
 
             this.#elements.stock.push(element);
@@ -102,11 +102,11 @@ export class Settings {
 
     #getTagList() {
         const container = document.createElement("div");
-        container.classList.add("tea-tags-container");
+        container.classList.add("tg-settings-row");
 
         TAG_LIST.forEach((tag) => {
             const element = document.createElement("div");
-            element.classList.add("tea-tag");
+            element.classList.add("tg-tag");
             element.dataset.tag = tag;
             element.innerHTML = TAG_LABEL[tag];
             element.addEventListener("click", this.#handleTagChange(tag));
@@ -123,9 +123,9 @@ export class Settings {
             const groupId = elem.dataset.group;
 
             if (groupId !== selectedGroup || this.#data.group === groupId) {
-                elem.classList.remove("selected");
+                elem.classList.remove("tg-selected");
             } else {
-                elem.classList.add("selected");
+                elem.classList.add("tg-selected");
             }
         });
 
@@ -138,9 +138,9 @@ export class Settings {
                 const option = elem.dataset.stock;
 
                 if (option !== selectedOption) {
-                    elem.classList.remove("selected");
+                    elem.classList.remove("tg-selected");
                 } else {
-                    elem.classList.add("selected");
+                    elem.classList.add("tg-selected");
                 }
             });
 
@@ -150,7 +150,7 @@ export class Settings {
 
     #handleTagChange = (selectedTag) => (e) => {
         const elem = this.#elements.tags.find((elem) => selectedTag === elem.dataset.tag);
-        elem.classList.toggle("selected");
+        elem.classList.toggle("tg-selected");
 
         this.#handleUpdate(UPDATE_TYPE.tag, selectedTag);
     };
