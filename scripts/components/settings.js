@@ -55,19 +55,19 @@ export class Settings {
 
     #getGroups() {
         const container = document.createElement("div");
-        container.classList.add("tea-categories-container");
+        container.classList.add("group-filters-container");
 
         GROUP_LIST.forEach((groupId) => {
             const element = document.createElement("div");
-            element.classList.add("tea-category-container", `tea-category-${groupId}`);
+            element.classList.add("group-filter-container", `tea-group-${groupId}`);
             element.dataset.group = groupId;
             element.addEventListener("click", this.#handleGroupChange(groupId));
 
             let content = "";
-            content += `<div class="tea-category-icon-container tea-category-${groupId}">
-                <span class="tea-category-icon icon-leaf"></span>
-            </div>`;
-            content += ` <div class="tea-category-name">${TEA_GROUP_LABEL[groupId]}</div>`;
+            content += '<div class="tea-group-icon-container">';
+            content += '<span class="tea-group-icon icon-leaf"></span>';
+            content += "</div>";
+            content += `<div class="tea-group-name">${TEA_GROUP_LABEL[groupId]}</div>`;
 
             element.innerHTML = content;
 

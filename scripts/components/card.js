@@ -24,13 +24,13 @@ export class Card {
     render() {
         this.#domElem = document.createElement("div");
         this.#domElem.classList.add("tea-card");
-        this.#domElem.classList.add(`tea-category-${this.#data.group}`);
+        this.#domElem.classList.add(`tea-group-${this.#data.group}`);
         if (!this.#data.inStock) {
             this.#domElem.classList.add("out-of-stock");
         }
 
         let content = "";
-        content += this.#getGroup(this.#data.group);
+        content += this.#getGroup();
         content += this.#getRating(this.#data.rating);
         content += `<h6 class="tea-name">${this.#data.name}</h6>`;
         content += this.#getBrewingTime(this.#data.brewingTime);
@@ -49,11 +49,11 @@ export class Card {
     }
 
     hide() {
-        this.#domElem.classList.add("undisplayed");
+        this.#domElem.classList.add("hidden");
     }
 
     show() {
-        this.#domElem.classList.remove("undisplayed");
+        this.#domElem.classList.remove("hidden");
     }
 
     #getRating(rating) {
@@ -72,10 +72,10 @@ export class Card {
         return result;
     }
 
-    #getGroup(group) {
+    #getGroup() {
         let result = "";
-        result += '<div class="tea-category-icon-container tea-category-' + group + '">';
-        result += `<span class="tea-category-icon icon-leaf"></span>`;
+        result += '<div class="tea-group-icon-container">';
+        result += `<span class="tea-group-icon icon-leaf"></span>`;
         result += "</div>";
         return result;
     }

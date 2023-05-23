@@ -62,7 +62,7 @@ export class RandomAndSearch {
     #getRandomParams() {
         this.#elements.random = document.createElement("div");
         this.#elements.random.classList.add("tea-randomizer-container");
-        this.#elements.random.classList.add("undisplayed");
+        this.#elements.random.classList.add("hidden");
 
         const randomButton = document.createElement("button");
         randomButton.classList.add("tea-button", "tea-button-margin-right");
@@ -83,7 +83,7 @@ export class RandomAndSearch {
     #getSearchParams() {
         this.#elements.search = document.createElement("div");
         this.#elements.search.classList.add("tea-search-container");
-        this.#elements.search.classList.add("undisplayed");
+        this.#elements.search.classList.add("hidden");
 
         this.#elements.searchInput = document.createElement("input");
         this.#elements.searchInput.classList.add("tea-input", "tea-search-input");
@@ -114,24 +114,24 @@ export class RandomAndSearch {
     }
 
     #enableRandom = () => {
-        this.#elements.main.classList.add("undisplayed");
-        this.#elements.random.classList.remove("undisplayed");
+        this.#elements.main.classList.add("hidden");
+        this.#elements.random.classList.remove("hidden");
     };
 
     #disableRandom = () => {
-        this.#elements.main.classList.remove("undisplayed");
-        this.#elements.random.classList.add("undisplayed");
+        this.#elements.main.classList.remove("hidden");
+        this.#elements.random.classList.add("hidden");
         this.#handleRandomUpdate(false);
     };
 
     #enableSearch = () => {
-        this.#elements.main.classList.add("undisplayed");
-        this.#elements.search.classList.remove("undisplayed");
+        this.#elements.main.classList.add("hidden");
+        this.#elements.search.classList.remove("hidden");
     };
 
     #disableSearch = () => {
-        this.#elements.main.classList.remove("undisplayed");
-        this.#elements.search.classList.add("undisplayed");
+        this.#elements.main.classList.remove("hidden");
+        this.#elements.search.classList.add("hidden");
         this.#elements.searchInput.value = "";
         this.#handleSearchUpdate(this.#elements.searchInput.value);
     };
