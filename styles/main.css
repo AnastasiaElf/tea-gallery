@@ -113,6 +113,11 @@ body .tg-hidden {
     cursor: default;
 }
 
+.tg-not-found-message {
+    text-align: center; 
+    padding: 20px;
+}
+
 @media (prefers-color-scheme: dark) {
     body {
         --text-shadow: 1px 1px 0 #262933;

@@ -38,9 +38,9 @@ export class Settings {
         this.#domElem = document.createElement("div");
         this.#domElem.classList.add("tg-settings");
 
-        this.#domElem.appendChild(this.#getGroups());
-        this.#domElem.appendChild(this.#getStockOptions());
-        this.#domElem.appendChild(this.#getTagList());
+        this.#domElem.appendChild(this.#getGroupsElem());
+        this.#domElem.appendChild(this.#getStockOptionsElem());
+        this.#domElem.appendChild(this.#getTagListElem());
 
         let randomAndSearch = new RandomAndSearch(
             this.#domElem,
@@ -53,7 +53,7 @@ export class Settings {
         this.#container.appendChild(this.#domElem);
     }
 
-    #getGroups() {
+    #getGroupsElem() {
         const container = document.createElement("div");
         container.classList.add("tg-settings-row");
 
@@ -78,7 +78,7 @@ export class Settings {
         return container;
     }
 
-    #getStockOptions() {
+    #getStockOptionsElem() {
         const container = document.createElement("div");
         container.classList.add("tg-settings-row");
 
@@ -100,7 +100,7 @@ export class Settings {
         return container;
     }
 
-    #getTagList() {
+    #getTagListElem() {
         const container = document.createElement("div");
         container.classList.add("tg-settings-row");
 

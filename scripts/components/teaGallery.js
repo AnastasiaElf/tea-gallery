@@ -18,6 +18,7 @@ export class TeaGallery {
         contentToggle: null,
         statisticsPage: null,
         teaGalleryPage: null,
+        notFoundMessage: null,
     };
     #objects = {
         statistics: null,
@@ -41,7 +42,7 @@ export class TeaGallery {
     render() {
         const data = this.#getGroupsData();
 
-        this.#container.appendChild(this.#getControls());
+        this.#container.appendChild(this.#getControlsElem());
 
         this.#elements.statisticsPage = document.createElement("div");
         this.#elements.statisticsPage.classList.add("tg-content");
@@ -67,6 +68,11 @@ export class TeaGallery {
             this.#objects.groups.push(group);
             group.render();
         });
+
+        this.#elements.notFoundMessage = document.createElement("div");
+        this.#elements.notFoundMessage.classList.add("tg-not-found-message");
+        this.#elements.notFoundMessage.innerHTML = "Nothing found";
+        this.#elements.teaGalleryPage.appendChild(this.#elements.notFoundMessage);
     }
 
     #getGroupsData() {
@@ -98,7 +104,7 @@ export class TeaGallery {
         return groupsData;
     }
 
-    #getControls() {
+    #getControlsElem() {
         const container = document.createElement("div");
         container.classList.add("tg-menu");
 
@@ -232,5 +238,11 @@ export class TeaGallery {
                 }
             }
         });
+
+        if (cardIds.length === 0) {
+            this.#elements.notFoundMessage.classList.remove("tg-hidden");
+        } else {
+            this.#elements.notFoundMessage.classList.add("tg-hidden");
+        }
     }
 }

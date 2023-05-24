@@ -34,12 +34,12 @@ export class RandomAndSearch {
     }
 
     render() {
-        this.#container.appendChild(this.#getRandomAndSearch());
-        this.#container.appendChild(this.#getRandomParams());
-        this.#container.appendChild(this.#getSearchParams());
+        this.#container.appendChild(this.#getRandomAndSearchElem());
+        this.#container.appendChild(this.#getRandomParamElem());
+        this.#container.appendChild(this.#getSearchParamsElem());
     }
 
-    #getRandomAndSearch() {
+    #getRandomAndSearchElem() {
         this.#elements.main = document.createElement("div");
         this.#elements.main.classList.add("tg-button-group");
 
@@ -59,7 +59,7 @@ export class RandomAndSearch {
         return this.#elements.main;
     }
 
-    #getRandomParams() {
+    #getRandomParamsElem() {
         this.#elements.random = document.createElement("div");
         this.#elements.random.classList.add("tg-button-group");
         this.#elements.random.classList.add("tg-hidden");
@@ -80,7 +80,7 @@ export class RandomAndSearch {
         return this.#elements.random;
     }
 
-    #getSearchParams() {
+    #getSearchParamsElem() {
         this.#elements.search = document.createElement("div");
         this.#elements.search.classList.add("tg-search-container");
         this.#elements.search.classList.add("tg-hidden");

@@ -30,15 +30,15 @@ export class Card {
         }
 
         let content = "";
-        content += this.#getGroup();
-        content += this.#getRating(this.#data.rating);
+        content += this.#renderGroupToString();
+        content += this.#renderRating(this.#data.rating);
         content += `<h6 class="tg-card-name">${this.#data.name}</h6>`;
-        content += this.#getBrewingTime(this.#data.brewingTime);
-        content += this.#getTemperature(this.#data.temperature);
-        content += this.#getTableware(this.#data.tableware);
-        content += this.#getPrice(this.#data.price);
-        content += this.#getTags(this.#data.tags);
-        content += this.#getReview(this.#data.review);
+        content += this.#renderBrewingTimeToString(this.#data.brewingTime);
+        content += this.#renderTemperatureToString(this.#data.temperature);
+        content += this.#renderTablewareToString(this.#data.tableware);
+        content += this.#renderPriceToString(this.#data.price);
+        content += this.#renderTagsToString(this.#data.tags);
+        content += this.#renderReviewToString(this.#data.review);
 
         this.#domElem.innerHTML = content;
         this.#container.appendChild(this.#domElem);
@@ -56,7 +56,7 @@ export class Card {
         this.#domElem.classList.remove("tg-hidden");
     }
 
-    #getRating(rating) {
+    #renderRatingToString(rating) {
         if (!rating) {
             return "";
         }
@@ -72,7 +72,7 @@ export class Card {
         return result;
     }
 
-    #getGroup() {
+    #renderGroupToString() {
         let result = "";
         result += '<div class="tg-group-icon-container">';
         result += `<span class="tg-group-icon tg-icon-leaf"></span>`;
@@ -80,25 +80,25 @@ export class Card {
         return result;
     }
 
-    #getBrewingTime(time) {
+    #renderBrewingTimeToString(time) {
         const label = "Brewing time";
         if (time) {
-            return this.#getParam(label, new TimeBar(time).renderToString());
+            return this.#renderParamToString(label, new TimeBar(time).renderToString());
         } else {
-            return this.#getEmptyParam(label);
+            return this.#renderEmptyParamToString(label);
         }
     }
 
-    #getTemperature(temperature) {
+    #renderTemperatureToString(temperature) {
         const label = "Temperature";
         if (temperature) {
-            return this.#getParam(label, new TemperatureBar(temperature).renderToString());
+            return this.#renderParamToString(label, new TemperatureBar(temperature).renderToString());
         } else {
-            return this.#getEmptyParam(label);
+            return this.#renderEmptyParamToString(label);
         }
     }
 
-    #getTableware(tableware) {
+    #renderTablewareToString(tableware) {
         const label = "Tableware";
         if (tableware) {
             let content = "";
@@ -139,22 +139,22 @@ export class Card {
             });
             content += "</div>";
 
-            return this.#getParam(label, content);
+            return this.#renderParamToString(label, content);
         } else {
-            return this.#getEmptyParam(label);
+            return this.#renderEmptyParamToString(label);
         }
     }
 
-    #getPrice(price) {
+    #renderPriceToString(price) {
         const label = "Price";
         if (price) {
-            return this.#getParam(label, price + "$");
+            return this.#renderParamToString(label, price + "$");
         } else {
-            return this.#getEmptyParam(label);
+            return this.#renderEmptyParamToString(label);
         }
     }
 
-    #getTags(tags) {
+    #renderTagsToString(tags) {
         const label = "Tags";
         if (tags.length > 0) {
             let content = "";
@@ -168,22 +168,22 @@ export class Card {
 
             content += "</div>";
 
-            return this.#getParam(label, content);
+            return this.#renderParamToString(label, content);
         } else {
-            return this.#getEmptyParam(label);
+            return this.#renderEmptyParamToString(label);
         }
     }
 
-    #getReview(review) {
+    #renderReviewToString(review) {
         const label = "Review";
         if (review) {
-            return this.#getParam(label, review);
+            return this.#renderParamToString(label, review);
         } else {
-            return this.#getEmptyParam(label);
+            return this.#renderEmptyParamToString(label);
         }
     }
 
-    #getParam(name, content) {
+    #renderParamToString(name, content) {
         let result = "";
         result += '<div class="tg-card-param">';
         result += "<b>" + name + "</b>: ";
@@ -192,7 +192,7 @@ export class Card {
         return result;
     }
 
-    #getEmptyParam(name) {
+    #renderEmptyParamToString(name) {
         return '<div class="tg-card-param"><b>' + name + "</b>: ---</div>";
     }
 }
