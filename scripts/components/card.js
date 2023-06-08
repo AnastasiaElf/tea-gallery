@@ -1,4 +1,4 @@
-import { TABLEWARE, TAG_LABEL } from "../constants.js";
+import { TABLEWARE, TAGS } from "../constants.js";
 import { ClayIcon, GlassIcon, PorcelainIcon, TeapotIcon, ThermosIcon } from "../icons.js";
 import { TemperatureBar } from "./temperatureBar.js";
 import { TimeBar } from "./timeBar.js";
@@ -110,25 +110,25 @@ export class Card {
                 .sort();
 
             tablewareArray.forEach((elem) => {
-                content += '<div class="tg-tableware-icon-container">';
+                content += `<div class="tg-tableware-icon-container" title="${TABLEWARE[elem].label}">`;
                 switch (elem) {
-                    case TABLEWARE.clay:
+                    case TABLEWARE.clay.id:
                         content += ClayIcon;
                         break;
 
-                    case TABLEWARE.porcelain:
+                    case TABLEWARE.porcelain.id:
                         content += PorcelainIcon;
                         break;
 
-                    case TABLEWARE.teapot:
+                    case TABLEWARE.teapot.id:
                         content += TeapotIcon;
                         break;
 
-                    case TABLEWARE.glass:
+                    case TABLEWARE.glass.id:
                         content += GlassIcon;
                         break;
 
-                    case TABLEWARE.thermos:
+                    case TABLEWARE.thermos.id:
                         content += ThermosIcon;
                         break;
 
@@ -162,7 +162,7 @@ export class Card {
 
             tags.forEach((tag) => {
                 content += '<div class="tg-tag tg-selected tg-disabled">';
-                content += TAG_LABEL[tag];
+                content += TAGS[tag].label;
                 content += "</div>";
             });
 

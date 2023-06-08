@@ -1,4 +1,4 @@
-import { PAGE, UPDATE_TYPE, TEA_GROUP, STOCK } from "./../constants.js";
+import { PAGE, UPDATE_TYPE, TEA_GROUPS, STOCK } from "./../constants.js";
 import { CardGroup } from "./cardGroup.js";
 import { Settings } from "./settings.js";
 import { Statistics } from "./statistics.js";
@@ -79,7 +79,7 @@ export class TeaGallery {
         let groupsData = [];
         let groupsObject = {};
 
-        Object.values(TEA_GROUP).forEach((groupId) => {
+        Object.values(TEA_GROUPS).forEach(({ id: groupId }) => {
             groupsObject[groupId] = { id: groupId, items: [] };
         });
 

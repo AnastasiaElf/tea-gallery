@@ -1,80 +1,74 @@
-export const TEA_GROUP = {
-    green: "green",
-    red: "red",
-    white: "white",
-    japanese: "japanese",
-    shu: "shu",
-    shen: "shen",
-    oolong: "oolong",
-    other: "other",
-    mate: "mate",
-    black: "black",
-};
-
-export const TEA_GROUP_LABEL = {
-    green: "Green",
-    red: "Red",
-    white: "White",
-    japanese: "Japanese",
-    shu: "Shu",
-    shen: "Shen",
-    oolong: "Oolong",
-    other: "Other",
-    mate: "Mate",
-    black: "Black",
-};
-
-export const TEA_GROUP_COLOR = {
-    green: "#009245",
-    red: "#e0421b",
-    white: "#cccccc",
-    japanese: "#709200",
-    shu: "#925c00",
-    shen: "#436b26",
-    oolong: "#00b3ad",
-    other: "#80559c",
-    mate: "#93e22b",
-    black: "#131313",
+export const TEA_GROUPS = {
+    green: {
+        id: "green",
+        label: "Green",
+        color: "#009245",
+    },
+    red: {
+        id: "red",
+        label: "Red",
+        color: "#e0421b",
+    },
+    white: {
+        id: "white",
+        label: "White",
+        color: "#cccccc",
+    },
+    japanese: {
+        id: "japanese",
+        label: "Japanese",
+        color: "#709200",
+    },
+    shu: {
+        id: "shu",
+        label: "Shu",
+        color: "#925c00",
+    },
+    shen: {
+        id: "shen",
+        label: "Shen",
+        color: "#436b26",
+    },
+    oolong: {
+        id: "oolong",
+        label: "Oolong",
+        color: "#00b3ad",
+    },
+    other: {
+        id: "other",
+        label: "Other",
+        color: "#80559c",
+    },
+    mate: {
+        id: "mate",
+        label: "Mate",
+        color: "#93e22b",
+    },
+    black: {
+        id: "black",
+        label: "Black",
+        color: "#131313",
+    },
 };
 
 export const TABLEWARE = {
-    clay: "clay",
-    porcelain: "porcelain",
-    glass: "glass",
-    teapot: "teapot",
-    thermos: "thermos",
+    clay: { id: "clay", label: "Clay" },
+    porcelain: { id: "porcelain", label: "Porcelain" },
+    glass: { id: "glass", label: "Glass" },
+    teapot: { id: "teapot", label: "Teapot" },
+    thermos: { id: "thermos", label: "Thermos" },
 };
 
-export const TABLEWARE_LABEL = {
-    clay: "Clay",
-    porcelain: "Porcelain",
-    glass: "Glass",
-    teapot: "Teapot",
-    thermos: "Thermos",
-};
-
-export const TAG = {
-    morning: "morning",
-    evening: "evening",
-    special: "special",
-};
-
-export const TAG_LABEL = {
-    morning: "Morning",
-    evening: "Evening",
-    special: "Special",
+export const TAGS = {
+    morning: { id: "morning", label: "Morning" },
+    evening: { id: "evening", label: "Evening" },
+    special: { id: "special", label: "Special" },
 };
 
 export const STOCK = {
-    all: "all",
-    inStock: "inStock",
-    outOfStock: "outOfStock",
-};
-
-export const STOCK_LABEL = {
-    all: "All",
-    inStock: "In stock",
-    outOfStock: "Out of stock",
+    all: { id: "all", label: "All" },
+    inStock: { id: "inStock", label: "In stock" },
+    outOfStock: { id: "outOfStock", label: "Out of stock" },
 };
 
 export const PAGE = {

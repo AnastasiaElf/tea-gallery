@@ -1,4 +1,4 @@
-import { TEA_GROUP_COLOR, TEA_GROUP_LABEL } from "./../constants.js";
+import { TEA_GROUPS } from "./../constants.js";
 
 const DOM_ELEMENT_ID = {
     PIE_CHART_STOCK: "pie-chart-stock",
@@ -101,14 +101,14 @@ export class Statistics {
                     fontWeight: "500",
                 },
             },
-            colors: this.#data.map((group) => TEA_GROUP_COLOR[group.id]),
+            colors: this.#data.map((group) => TEA_GROUPS[group.id].color),
             series: this.#data.map((group) => group.stats[statType]),
             chart: {
                 width: "100%",
                 type: "pie",
                 animations: { enabled: false },
             },
-            labels: this.#data.map((group) => TEA_GROUP_LABEL[group.id]),
+            labels: this.#data.map((group) => TEA_GROUPS[group.id].label),
             responsive: [
                 {
                     breakpoint: 480,
@@ -133,7 +133,7 @@ export class Statistics {
                     fontWeight: "500",
                 },
             },
-            colors: this.#data.map((group) => TEA_GROUP_COLOR[group.id]),
+            colors: this.#data.map((group) => TEA_GROUPS[group.id].color),
             series: [{ data: this.#data.map((group) => group.stats[statType]), name: "Amount" }],
             chart: {
                 width: "100%",
@@ -143,7 +143,7 @@ export class Statistics {
                 },
                 animations: { enabled: false },
             },
-            labels: this.#data.map((group) => TEA_GROUP_LABEL[group.id]),
+            labels: this.#data.map((group) => TEA_GROUPS[group.id].label),
             plotOptions: {
                 bar: {
                     distributed: true,

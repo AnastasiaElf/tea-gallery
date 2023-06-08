@@ -1,4 +1,4 @@
-import { TEA_GROUP_LABEL } from "../constants.js";
+import { TEA_GROUPS } from "../constants.js";
 import { Card } from "./card.js";
 
 export class CardGroup {
@@ -27,7 +27,7 @@ export class CardGroup {
         let content = "";
         content += '<div class="tg-card-group-divider"></div>';
         content += '<h5 class="tg-card-group-name">';
-        content += `${TEA_GROUP_LABEL[this.#data.id]} (${this.#data.stats.inStock}/${this.#data.stats.total})`;
+        content += `${TEA_GROUPS[this.#data.id].label} (${this.#data.stats.inStock}/${this.#data.stats.total})`;
         content += "</h5>";
         const cardsContainer = document.createElement("div");
         cardsContainer.classList.add("tg-card-group-cards");

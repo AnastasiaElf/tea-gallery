@@ -1,9 +1,9 @@
-import { TAG, UPDATE_TYPE, STOCK, TEA_GROUP, STOCK_LABEL, TEA_GROUP_LABEL, TAG_LABEL } from "./../constants.js";
+import { TAGS, UPDATE_TYPE, STOCK, TEA_GROUPS } from "./../constants.js";
 import { RandomAndSearch } from "./randomAndSearch.js";
 
-const STOCK_OPTIONS_LIST = [STOCK.all, STOCK.inStock, STOCK.outOfStock];
-const TAG_LIST = Object.values(TAG).sort();
-const GROUP_LIST = Object.values(TEA_GROUP).sort();
+const STOCK_OPTIONS_LIST = [STOCK.all.id, STOCK.inStock.id, STOCK.outOfStock.id];
+const TAG_LIST = Object.keys(TAGS).sort();
+const GROUP_LIST = Object.keys(TEA_GROUPS).sort();
 
 export class Settings {
     #container;
@@ -67,7 +67,7 @@ export class Settings {
             content += '<div class="tg-group-icon-container">';
             content += '<span class="tg-group-icon tg-icon-leaf"></span>';
             content += "</div>";
-            content += `<div class="tg-group-name">${TEA_GROUP_LABEL[groupId]}</div>`;
+            content += `<div class="tg-group-name">${TEA_GROUPS[groupId].label}</div>`;
 
             element.innerHTML = content;
 
@@ -82,14 +82,14 @@ export class Settings {
         const container = document.createElement("div");
         container.classList.add("tg-settings-row");
 
-        STOCK_OPTIONS_LIST.forEach((option) => {
+        STOCK_OPTIONS_LIST.forEach((optionId) => {
             const element = document.createElement("div");
             element.classList.add("tg-tag");
-            element.dataset.stock = option;
-            element.innerHTML = STOCK_LABEL[option];
-            element.addEventListener("click", this.#handleStockChange(option));
+            element.dataset.stock = optionId;
+            element.innerHTML = STOCK[optionId].label;
+            element.addEventListener("click", this.#handleStockChange(optionId));
 
-            if (this.#data.stock === option) {
+            if (this.#data.stock === optionId) {
                 element.classList.add("tg-selected");
             }
 
@@ -108,7 +108,7 @@ export class Settings {
             const element = document.createElement("div");
             element.classList.add("tg-tag");
             element.dataset.tag = tag;
-            element.innerHTML = TAG_LABEL[tag];
+            element.innerHTML = TAGS[tag].label;
             element.addEventListener("click", this.#handleTagChange(tag));
 
             this.#elements.tags.push(element);
