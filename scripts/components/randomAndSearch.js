@@ -35,7 +35,7 @@ export class RandomAndSearch {
 
     render() {
         this.#container.appendChild(this.#getRandomAndSearchElem());
-        this.#container.appendChild(this.#getRandomParamElem());
+        this.#container.appendChild(this.#getRandomParamsElem());
         this.#container.appendChild(this.#getSearchParamsElem());
     }
 

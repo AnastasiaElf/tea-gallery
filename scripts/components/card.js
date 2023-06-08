@@ -31,7 +31,7 @@ export class Card {
 
         let content = "";
         content += this.#renderGroupToString();
-        content += this.#renderRating(this.#data.rating);
+        content += this.#renderRatingToString(this.#data.rating);
         content += `<h6 class="tg-card-name">${this.#data.name}</h6>`;
         content += this.#renderBrewingTimeToString(this.#data.brewingTime);
         content += this.#renderTemperatureToString(this.#data.temperature);

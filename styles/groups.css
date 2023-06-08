@@ -168,7 +168,7 @@
 
 .tg-icon-leaf,
 .tg-icon-star {
-    font-family: "icomoon" !important;
+    font-family: "icomoon";
 }
 
 .tg-icon-leaf:before {
@@ -181,44 +181,45 @@
 
 .tg-group-icon {
     font-size: 26px;
+    color: var(--group-color);
 }
 
-.tg-group-green .tg-group-icon {
-    color: var(--group-color-green);
+.tg-group-green {
+    --group-color: var(--group-color-green);
 }
 
 .tg-group-red .tg-group-icon {
-    color: var(--group-color-red);
+    --group-color: var(--group-color-red);
 }
 
 .tg-group-white .tg-group-icon {
-    color: var(--group-color-white);
+    --group-color: var(--group-color-white);
 }
 
 .tg-group-japanese .tg-group-icon {
-    color: var(--group-color-japanese);
+    --group-color: var(--group-color-japanese);
 }
 
 .tg-group-shu .tg-group-icon {
-    color: var(--group-color-shu);
+    --group-color: var(--group-color-shu);
 }
 
 .tg-group-shen .tg-group-icon {
-    color: var(--group-color-shen);
+    --group-color: var(--group-color-shen);
 }
 
 .tg-group-oolong .tg-group-icon {
-    color: var(--group-color-oolong);
+    --group-color: var(--group-color-oolong);
 }
 
 .tg-group-other .tg-group-icon {
-    color: var(--group-color-other);
+    --group-color: var(--group-color-other);
 }
 
 .tg-group-mate .tg-group-icon {
-    color: var(--group-color-mate);
+    --group-color: var(--group-color-mate);
 }
 
 .tg-group-black .tg-group-icon {
-    color: var(--group-color-black);
+    --group-color: var(--group-color-black);
 }

@@ -37,6 +37,17 @@ body {
     text-shadow: var(--text-shadow);
 }
 
+@font-face {
+    font-family: "icomoon";
+    src: url("fonts/icomoon.eot?sehr7b");
+    src: url("fonts/icomoon.eot?sehr7b#iefix") format("embedded-opentype"),
+        url("fonts/icomoon.ttf?sehr7b") format("truetype"), url("fonts/icomoon.woff?sehr7b") format("woff"),
+        url("fonts/icomoon.svg?sehr7b#icomoon") format("svg");
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
 body .tg-hidden {
     display: none;
 }
@@ -114,7 +125,7 @@ body .tg-hidden {
 }
 
 .tg-not-found-message {
-    text-align: center; 
+    text-align: center;
     padding: 20px;
 }
 
