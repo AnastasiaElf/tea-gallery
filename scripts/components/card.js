@@ -81,83 +81,89 @@ export class Card {
 
     #renderBrewingTimeToString(time) {
         const label = "Brewing time";
-        if (time) {
-            return this.#renderParamToString(label, new TimeBar(time).renderToString());
-        } else {
+
+        if (!time) {
             return this.#renderEmptyParamToString(label);
         }
+
+        return this.#renderParamToString(label, new TimeBar(time).renderToString());
     }
 
     #renderTemperatureToString(temperature) {
         const label = "Temperature";
-        if (temperature) {
-            return this.#renderParamToString(label, new TemperatureBar(temperature).renderToString());
-        } else {
+
+        if (!temperature) {
             return this.#renderEmptyParamToString(label);
         }
+
+        return this.#renderParamToString(label, new TemperatureBar(temperature).renderToString());
     }
 
     #renderTablewareToString(tableware) {
         const label = "Tableware";
-        if (tableware) {
-            let content = "";
-            content += '<div class="tg-tableware-container">';
 
-            let tablewareArray = tableware
-                .split(",")
-                .map((elem) => elem.trim())
-                .sort();
-
-            tablewareArray.forEach((elem) => {
-                const tablewareData = TABLEWARE[elem];
-                content += `<div class="tg-tableware-icon-container" title="${tablewareData.label}">`;
-                content += tablewareData.icon;
-                content += "</div>";
-            });
-            content += "</div>";
-
-            return this.#renderParamToString(label, content);
-        } else {
+        if (!tableware) {
             return this.#renderEmptyParamToString(label);
         }
+
+        let content = "";
+        content += '<div class="tg-tableware-container">';
+
+        let tablewareArray = tableware
+            .split(",")
+            .map((elem) => elem.trim())
+            .sort();
+
+        tablewareArray.forEach((elem) => {
+            const tablewareData = TABLEWARE[elem];
+            content += `<div class="tg-tableware-icon-container" title="${tablewareData.label}">`;
+            content += tablewareData.icon;
+            content += "</div>";
+        });
+        content += "</div>";
+
+        return this.#renderParamToString(label, content);
     }
 
     #renderPriceToString(price) {
         const label = "Price";
-        if (price) {
-            return this.#renderParamToString(label, price + "$");
-        } else {
+
+        if (!price) {
             return this.#renderEmptyParamToString(label);
         }
+
+        return this.#renderParamToString(label, price + "$");
     }
 
     #renderTagsToString(tags) {
         const label = "Tags";
-        if (tags.length > 0) {
-            let content = "";
-            content += '<div class="tg-tags-container">';
 
-            tags.forEach((tag) => {
-                content += '<div class="tg-tag tg-selected tg-disabled">';
-                content += TAGS[tag].label;
-                content += "</div>";
-            });
-
-            content += "</div>";
-
-            return this.#renderParamToString(label, content);
-        } else {
+        if (!tags || tags.length === 0) {
             return this.#renderEmptyParamToString(label);
         }
+
+        let content = "";
+        content += '<div class="tg-tags-container">';
+
+        tags.forEach((tag) => {
+            content += '<div class="tg-tag tg-selected tg-disabled">';
+            content += TAGS[tag].label;
+            content += "</div>";
+        });
+
+        content += "</div>";
+
+        return this.#renderParamToString(label, content);
     }
 
     #renderReviewToString(review) {
         const label = "Review";
-        if (review) {
-            return this.#renderParamToString(label, review);
-        } else {
+
+        if (!review) {
             return this.#renderEmptyParamToString(label);
         }
+
+        return this.#renderParamToString(label, review);
     }
 
     #renderParamToString(name, content) {
