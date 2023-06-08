@@ -1,3 +1,5 @@
+import { ClayIcon, GlassIcon, PorcelainIcon, TeapotIcon, ThermosIcon } from "./icons.js";
+
 export const TEA_GROUPS = {
     green: {
         id: "green",
@@ -52,11 +54,11 @@ export const TEA_GROUPS = {
 };
 
 export const TABLEWARE = {
-    clay: { id: "clay", label: "Clay" },
-    porcelain: { id: "porcelain", label: "Porcelain" },
-    glass: { id: "glass", label: "Glass" },
-    teapot: { id: "teapot", label: "Teapot" },
-    thermos: { id: "thermos", label: "Thermos" },
+    clay: { id: "clay", label: "Clay", icon: ClayIcon },
+    porcelain: { id: "porcelain", label: "Porcelain", icon: PorcelainIcon },
+    glass: { id: "glass", label: "Glass", icon: GlassIcon },
+    teapot: { id: "teapot", label: "Teapot", icon: TeapotIcon },
+    thermos: { id: "thermos", label: "Thermos", icon: ThermosIcon },
 };
 
 export const TAGS = {

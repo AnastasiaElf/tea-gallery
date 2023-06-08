@@ -37,23 +37,13 @@ export class TimeBar {
 
         result += '<div class="tg-progress-bar-container">';
         result += '<div class="tg-progress-bar">';
-        result += `<div class="tg-progress-bar-overlap" style="width: ${
-            this.#maxTime
-                ? this.#maxTime < 60
-                    ? this.#maxTime
-                    : 100
-                : this.#minTime
-                ? this.#minTime < 60
-                    ? this.#minTime
-                    : 100
-                : 0
-        }%;"></div>`;
+        result += `<div class="tg-progress-bar-overlap" style="width: ${this.#getBarWidth()}%;"></div>`;
         result += "</div>";
         result += '<div class="tg-progress-bar-value">';
         result += `${this.#timeFrom.value} `;
 
         if (this.#timeTo) {
-            result += this.#timeFrom.unit !== ` ${this.#timeTo.unit}` ? this.#timeFrom.unit : "";
+            result += this.#timeFrom.unit !== this.#timeTo.unit ? this.#timeFrom.unit : "";
             result += " - ";
             result += `${this.#timeTo.value} ${this.#timeTo.unit}`;
         } else {
@@ -64,5 +54,14 @@ export class TimeBar {
         result += "</div>";
 
         return result;
+    }
+
+    #getBarWidth() {
+        const maxTime = 60;
+        const maxWidth = 100;
+        const time = this.#maxTime || this.#minTime;
+        const currentWidth = (time * 100) / maxTime;
+
+        return Math.min(currentWidth, maxWidth);
     }
 }

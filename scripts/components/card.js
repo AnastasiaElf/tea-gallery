@@ -1,5 +1,4 @@
 import { TABLEWARE, TAGS } from "../constants.js";
-import { ClayIcon, GlassIcon, PorcelainIcon, TeapotIcon, ThermosIcon } from "../icons.js";
 import { TemperatureBar } from "./temperatureBar.js";
 import { TimeBar } from "./timeBar.js";
 
@@ -110,31 +109,9 @@ export class Card {
                 .sort();
 
             tablewareArray.forEach((elem) => {
-                content += `<div class="tg-tableware-icon-container" title="${TABLEWARE[elem].label}">`;
-                switch (elem) {
-                    case TABLEWARE.clay.id:
-                        content += ClayIcon;
-                        break;
-
-                    case TABLEWARE.porcelain.id:
-                        content += PorcelainIcon;
-                        break;
-
-                    case TABLEWARE.teapot.id:
-                        content += TeapotIcon;
-                        break;
-
-                    case TABLEWARE.glass.id:
-                        content += GlassIcon;
-                        break;
-
-                    case TABLEWARE.thermos.id:
-                        content += ThermosIcon;
-                        break;
-
-                    default:
-                        break;
-                }
+                const tablewareData = TABLEWARE[elem];
+                content += `<div class="tg-tableware-icon-container" title="${tablewareData.label}">`;
+                content += tablewareData.icon;
                 content += "</div>";
             });
             content += "</div>";
