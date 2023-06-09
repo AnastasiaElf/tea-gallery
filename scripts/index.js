@@ -1,4 +1,5 @@
 import { TeaGallery } from "./components/teaGallery.js";
+import { stringToArray } from "./utils.js";
 
 const RAW_DATA_KEY = {
     group: "Group",
@@ -44,11 +45,8 @@ fetchData(dataUrl)
             return {
                 ...item,
                 id: "tea-" + index,
-                tags: item.tags
-                    .split(",")
-                    .map((elem) => elem.trim())
-                    .filter((elem) => elem !== "")
-                    .sort(),
+                tags: stringToArray(item.tags),
+                tableware: stringToArray(item.tableware),
                 inStock: JSON.parse(item.inStock.toLowerCase()),
                 rating: item.rating ? parseInt(item.rating) : null,
             };

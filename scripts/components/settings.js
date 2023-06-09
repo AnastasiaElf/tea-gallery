@@ -42,7 +42,7 @@ export class Settings {
         this.#domElem.appendChild(this.#getStockOptionsElem());
         this.#domElem.appendChild(this.#getTagListElem());
 
-        let randomAndSearch = new RandomAndSearch(
+        const randomAndSearch = new RandomAndSearch(
             this.#domElem,
             this.#data,
             this.#handleRandomUpdate,
@@ -63,13 +63,10 @@ export class Settings {
             element.dataset.group = groupId;
             element.addEventListener("click", this.#handleGroupChange(groupId));
 
-            let content = "";
-            content += '<div class="tg-group-icon-container">';
-            content += '<span class="tg-group-icon tg-icon-leaf"></span>';
-            content += "</div>";
-            content += `<div class="tg-group-name">${TEA_GROUPS[groupId].label}</div>`;
-
-            element.innerHTML = content;
+            element.innerHTML = `<div class="tg-group-icon-container">
+                <span class="tg-group-icon tg-icon-leaf"></span>
+            </div>
+            <div class="tg-group-name">${TEA_GROUPS[groupId].label}</div>`;
 
             this.#elements.groups.push(element);
             container.appendChild(element);

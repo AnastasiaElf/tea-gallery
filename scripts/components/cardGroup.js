@@ -24,20 +24,19 @@ export class CardGroup {
         this.#domElem = document.createElement("div");
         this.#domElem.classList.add("tg-card-group");
 
-        let content = "";
-        content += '<div class="tg-card-group-divider"></div>';
-        content += '<h5 class="tg-card-group-name">';
-        content += `${TEA_GROUPS[this.#data.id].label} (${this.#data.stats.inStock}/${this.#data.stats.total})`;
-        content += "</h5>";
+        this.#domElem.innerHTML = `<div class="tg-card-group-divider"></div>
+        <h5 class="tg-card-group-name">
+            ${TEA_GROUPS[this.#data.id].label} (${this.#data.stats.inStock}/${this.#data.stats.total})
+        </h5>`;
+
         const cardsContainer = document.createElement("div");
         cardsContainer.classList.add("tg-card-group-cards");
 
-        this.#domElem.innerHTML = content;
         this.#domElem.appendChild(cardsContainer);
         this.#container.appendChild(this.#domElem);
 
         this.#data.items.forEach((item) => {
-            let card = new Card(cardsContainer, item);
+            const card = new Card(cardsContainer, item);
             this.#cards.push(card);
             card.render();
         });

@@ -9,13 +9,13 @@ export class TimeBar {
             throw Error("Constructor param time is missing");
         }
 
-        let timeArray = time.split("-").map((elem) => parseInt(elem));
+        const timeArray = time.split("-").map((elem) => parseInt(elem));
         this.#minTime = timeArray[0];
         this.#maxTime = timeArray[1];
 
         if (this.#maxTime) {
             if (this.#maxTime >= 60) {
-                let minutesTo =
+                const minutesTo =
                     this.#maxTime % 60 === 0 ? (this.#maxTime / 60).toFixed(0) : (this.#maxTime / 60).toFixed(1);
                 this.#timeTo = { value: minutesTo, unit: "min" };
             } else {
@@ -24,7 +24,7 @@ export class TimeBar {
         }
 
         if (this.#minTime >= 60) {
-            let minutesFrom =
+            const minutesFrom =
                 this.#minTime % 60 === 0 ? (this.#minTime / 60).toFixed(0) : (this.#minTime / 60).toFixed(1);
             this.#timeFrom = { value: minutesFrom, unit: "min" };
         } else {
@@ -33,27 +33,31 @@ export class TimeBar {
     }
 
     renderToString() {
-        let result = "";
+        return `<div class="tg-progress-bar-container">
+            <div class="tg-progress-bar">
+                <div class="tg-progress-bar-overlap" style="width: ${this.#getBarWidth()}%;"></div>
+            </div>
+            <div class="tg-progress-bar-value">
+                ${this.#getBarLabel()}
+            </div>
+        </div>
+        `;
+    }
 
-        result += '<div class="tg-progress-bar-container">';
-        result += '<div class="tg-progress-bar">';
-        result += `<div class="tg-progress-bar-overlap" style="width: ${this.#getBarWidth()}%;"></div>`;
-        result += "</div>";
-        result += '<div class="tg-progress-bar-value">';
-        result += `${this.#timeFrom.value} `;
+    #getBarLabel() {
+        const labelFrom = `${this.#timeFrom.value} ${this.#timeFrom.unit}`;
 
-        if (this.#timeTo) {
-            result += this.#timeFrom.unit !== this.#timeTo.unit ? this.#timeFrom.unit : "";
-            result += " - ";
-            result += `${this.#timeTo.value} ${this.#timeTo.unit}`;
-        } else {
-            result += this.#timeFrom.unit;
+        if (!this.#timeTo) {
+            return labelFrom;
         }
 
-        result += "</div>";
-        result += "</div>";
+        const labelTo = `${this.#timeTo.value} ${this.#timeTo.unit}`;
 
-        return result;
+        if (this.#timeFrom.unit !== this.#timeTo.unit) {
+            return `${labelFrom} - ${labelTo}`;
+        } else {
+            return `${this.#timeFrom.value} - ${labelTo}`;
+        }
     }
 
     #getBarWidth() {
