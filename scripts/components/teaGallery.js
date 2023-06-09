@@ -8,7 +8,7 @@ export class TeaGallery {
     #data = [];
     #settings = {
         group: null,
-        stock: STOCK.all,
+        stock: STOCK.all.id,
         tags: [],
         randomEnabled: false,
         searchValue: "",
@@ -188,9 +188,9 @@ export class TeaGallery {
 
             const matchGroup = !group || item.group === group;
             const matchStock =
-                stock === STOCK.all ||
-                (stock === STOCK.inStock && item.inStock) ||
-                (stock === STOCK.outOfStock && !item.inStock);
+                stock === STOCK.all.id ||
+                (stock === STOCK.inStock.id && item.inStock) ||
+                (stock === STOCK.outOfStock.id && !item.inStock);
 
             const itemTags = item.tags;
             const matchTags =
