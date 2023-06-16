@@ -1,0 +1,45 @@
+.tg-settings {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    gap: 30px;
+}
+
+.tg-settings-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.tg-button-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.tg-group-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 14px 10px;
+    border-radius: 10px;
+    box-shadow: var(--item-shadow);
+    transition: var(--item-transition);
+    cursor: pointer;
+    width: 105px;
+    gap: 10px;
+}
+
+.tg-group-button:hover {
+    box-shadow: var(--item-shadow-hover);
+}
+
+.tg-group-button:active,
+.tg-group-button.tg-selected {
+    box-shadow: var(--item-shadow-selected);
+}

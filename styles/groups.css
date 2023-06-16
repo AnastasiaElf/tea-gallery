@@ -1,0 +1,225 @@
+.tg-card-group-divider {
+    height: 10px;
+    box-shadow: 0px 6px 6px -3px #babecc;
+    margin: 20px 0;
+}
+
+.tg-card-group-name {
+    margin: 0;
+    margin-bottom: 10px;
+    font-size: 24px;
+    text-align: center;
+}
+
+.tg-card-group-cards {
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: repeat(3, 360px);
+    padding: 20px;
+    justify-content: center;
+}
+
+.tg-card {
+    padding: 30px;
+    width: 360px;
+    position: relative;
+    border-radius: 10px;
+    box-shadow: var(--item-shadow);
+    transition: var(--item-transition);
+}
+
+.tg-card.tg-out-of-stock {
+    box-shadow: var(--item-shadow-selected);
+}
+
+.tg-card .tg-group-icon-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.tg-card-rating {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 5px;
+    top: 8px;
+    left: 0;
+}
+
+.tg-rating-icon {
+    color: #c7c7c7;
+}
+
+.tg-rating-icon.filled {
+    color: #61677c;
+}
+
+.tg-card-name {
+    margin: 0;
+    margin-bottom: 10px;
+    font-size: 20px;
+    color: #729c55;
+    text-align: center;
+}
+
+.tg-card-param {
+    margin-bottom: 5px;
+}
+
+.tg-progress-bar-container {
+    position: relative;
+    margin: 5px 0;
+}
+
+.tg-progress-bar {
+    height: 20px;
+    border-radius: 12px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--item-shadow-selected);
+}
+
+.tg-progress-bar-overlap {
+    height: 20px;
+    background: #61677c;
+    border-radius: 12px;
+}
+
+.tg-progress-bar-value {
+    text-align: center;
+    font-weight: bold;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 1px;
+    color: #b3b3b3;
+    text-shadow: none;
+}
+
+.tg-tableware-container {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.tg-tableware-icon-container {
+    margin: 5px;
+    border-radius: 5px;
+    box-shadow: var(--item-shadow-selected);
+    padding: 5px;
+    width: 50px;
+    height: 50px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.tg-tableware-icon {
+    width: 34px;
+    height: 34px;
+}
+
+.tg-tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 4px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .tg-card-group-divider {
+        box-shadow: 0px 6px 6px -3px #12141b;
+    }
+
+    .tg-rating-icon {
+        color: #61677c;
+    }
+
+    .tg-rating-icon.filled {
+        color: #c7c7c7;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .tg-card-group-cards {
+        grid-template-columns: repeat(2, 360px);
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .tg-card-group-cards {
+        grid-template-columns: repeat(1, 360px);
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .tg-card-group-cards {
+        grid-template-columns: repeat(1, 90%);
+    }
+
+    .tg-card {
+        width: auto;
+    }
+}
+
+.tg-icon-leaf,
+.tg-icon-star {
+    font-family: "icomoon";
+}
+
+.tg-icon-leaf:before {
+    content: "\6c";
+}
+
+.tg-icon-star:before {
+    content: "\73";
+}
+
+.tg-group-icon {
+    font-size: 26px;
+    color: var(--group-color);
+}
+
+.tg-group-green {
+    --group-color: var(--group-color-green);
+}
+
+.tg-group-red .tg-group-icon {
+    --group-color: var(--group-color-red);
+}
+
+.tg-group-white .tg-group-icon {
+    --group-color: var(--group-color-white);
+}
+
+.tg-group-japanese .tg-group-icon {
+    --group-color: var(--group-color-japanese);
+}
+
+.tg-group-shu .tg-group-icon {
+    --group-color: var(--group-color-shu);
+}
+
+.tg-group-shen .tg-group-icon {
+    --group-color: var(--group-color-shen);
+}
+
+.tg-group-oolong .tg-group-icon {
+    --group-color: var(--group-color-oolong);
+}
+
+.tg-group-other .tg-group-icon {
+    --group-color: var(--group-color-other);
+}
+
+.tg-group-mate .tg-group-icon {
+    --group-color: var(--group-color-mate);
+}
+
+.tg-group-black .tg-group-icon {
+    --group-color: var(--group-color-black);
+}
