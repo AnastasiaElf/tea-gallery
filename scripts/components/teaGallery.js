@@ -71,6 +71,7 @@ export class TeaGallery {
 
         this.#elements.notFoundMessage = document.createElement("div");
         this.#elements.notFoundMessage.classList.add("tg-not-found-message");
+        this.#elements.notFoundMessage.classList.add("tg-hidden");
         this.#elements.notFoundMessage.innerHTML = "Nothing found";
         this.#elements.teaGalleryPage.appendChild(this.#elements.notFoundMessage);
     }
